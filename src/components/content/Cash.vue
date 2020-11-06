@@ -1,23 +1,37 @@
 <template>
     <div class="cash">
        <ul class="nav-tabs">
-                <li class="active">Quy trình</li>
-                <li>Thu, chi tiền</li>
+                <li v-bind:class="{active:currentTab == 0}" @click="changeTab(0)">Quy trình</li>
+                <li v-bind:class="{active:currentTab == 1}" @click="changeTab(1)">Thu, chi tiền</li>
                 <li>Kiểm kê</li>
                 <li>Báo cáo</li>
         </ul>
-        <Process />
+        <router-view />
     </div>
     
 </template>
 
 <script>
-import Process from './cash/Process'
     export default {
         components:{
-            Process
+        },
+        data(){
+            return{
+                currentTab:0
+            }
+        },
+        methods:{
+            changeTab(tab){
+                if(tab == 0){
+                    this.currentTab = 0;
+                    this.$router.push('/');
+                }else{
+                    this.currentTab = 1;
+                    this.$router.push('/receiveandpayment');
+                }
+                
+            }
         }
-        
     }
 </script>
 
@@ -40,6 +54,9 @@ import Process from './cash/Process'
     padding: 32px 20px 8px 20px;
     border-bottom: 4px solid transparent;
     cursor: pointer;
+}
+.nav-tabs li:hover{
+    color: #2ca01c;
 }
 .nav-tabs li.active{
     font-weight: bold;

@@ -5,8 +5,15 @@
                 <div class="process-cash">
                     <div class="title">Nghiệp vụ tiền mặt</div>
                     <div class="cash-content">
-                        <div class="process-board">
-
+                        <div class="process-board"></div>
+                        <div class="btn-process receive">
+                            <div class="title-button">Thu tiền</div>
+                        </div>
+                        <div class="btn-process payment">
+                            <div class="title-button">Chi tiền</div>
+                        </div>
+                        <div class="btn-process fund">
+                            <div class="title-button">Kiểm kê quỹ</div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +102,30 @@
     background-image:url('https://actappdc.misacdn.net/img/qt_TienMat.1f64b87b.svg');
     height: 340px;
 }
-
+.btn-process{
+    height: 90px;
+    width: 90px;
+    position: absolute;
+    transition: all .2s ease;
+    text-align: center;
+}
+.btn-process.receive{
+    top:32px;left: 90px;
+}
+.btn-process.fund{
+    top:125px;left: 335px;
+    width: 125px!important;
+}
+.btn-process.payment{
+    top:206px;left: 90px;
+}
+.title-button{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: flex-end;
+    padding-bottom: 10px;
+}
 
 
 
@@ -134,7 +164,7 @@
     width:25%;
     height: 100%;
 }
-.object-item:hover{
+.object-item:hover,.btn-process:hover{
     cursor: pointer;
     box-shadow:0 3px 6px rgba(0,0,0,.16);
 }
