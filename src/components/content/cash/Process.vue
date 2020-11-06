@@ -1,0 +1,183 @@
+<template>
+    <div class="process">
+        <div class="process-tab">
+            <div class="process-center">
+                <div class="process-cash">
+                    <div class="title">Nghiệp vụ tiền mặt</div>
+                    <div class="cash-content">
+                        <div class="process-board">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="process-object">
+                    <div class="object-item">
+                        <div class="dummy">
+                            <div class="icon icon-customer"></div>
+                            <div class="obj-text">Khách hàng</div>
+                        </div>
+                    </div>
+                     <div class="object-item">
+                        <div class="dummy">
+                            <div class="icon icon-provider"></div>
+                            <div class="obj-text">Nhà cung cấp</div>
+                        </div>
+                    </div>
+                     <div class="object-item">
+                        <div class="dummy">
+                            <div class="icon icon-employee"></div>
+                            <div class="obj-text">Nhân viên</div>
+                        </div>
+                    </div>
+                     <div class="object-item">
+                        <div class="dummy">
+                            <div class="icon icon-cal"></div>
+                            <div class="obj-text">Tính tỷ giá xuất quỹ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="process-report">
+                <div class="title">Báo cáo</div>
+                <div class="favorite-report">
+                    <ul>
+                        <li>Sổ kế toán chi tiết quỹ tiền mặt</li>
+                    </ul>
+                </div>
+                <div class="footer-report">
+                    Tất cả báo cáo
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        
+    }
+</script>
+
+<style scoped>
+.process{
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 114px);
+    overflow: auto;
+    align-items: center;
+}
+.process-tab{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.process-cash{
+    background-color: #fff;
+    border: 1px solid  #e5e5e5;
+    border-radius: 3px;
+    width: 690px;
+    height: 380px;
+}
+.title{
+    text-transform: uppercase;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #e5e5e5;
+}
+.cash-content{
+    position: relative;
+}
+.process-board{
+    background-image:url('https://actappdc.misacdn.net/img/qt_TienMat.1f64b87b.svg');
+    height: 340px;
+}
+
+
+
+
+.process-object{
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    margin-top: 10px;
+    height: 69px;
+    display: flex;
+}
+.process-object .dummy{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon.icon-customer{
+    background-position: -872px -200px;
+}
+.icon.icon-provider{
+    background-position: -928px -200px;
+}
+.icon.icon-employee{
+    background-position: -984px -200px;
+}
+.icon.icon-cal{
+    background-position: -1376px -256px;
+}
+
+.object-item{
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:25%;
+    height: 100%;
+}
+.object-item:hover{
+    cursor: pointer;
+    box-shadow:0 3px 6px rgba(0,0,0,.16);
+}
+
+
+.process-report{
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    margin-left: 10px;
+    width: 300px;
+    height: 460px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.favorite-report{
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+}
+.favorite-report ul{
+    margin: 0;
+    padding: 0 16px;
+}
+.favorite-report ul li{
+    align-items: center;
+    padding: 16px 0px;
+    margin-left: 25px;
+    color: #646464;
+}
+.favorite-report ul li:hover{
+    cursor: pointer;
+    color: #0075c0;
+}
+.footer-report{
+    border-top: 1px solid #e5e5e5;
+    cursor: pointer;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: #0075c0;
+}
+</style>
