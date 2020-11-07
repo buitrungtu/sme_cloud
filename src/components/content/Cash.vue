@@ -42,7 +42,7 @@
 }
 .nav-tabs{
     width: 100%;
-    height: 64px;
+    height: 60px;
     display: flex;
     padding-left: 0;
     position: relative;
@@ -51,7 +51,7 @@
 .nav-tabs li{
     list-style: none;
     height: 23px;
-    padding: 32px 20px 8px 20px;
+    padding: 32px 20px 4px 20px;
     border-bottom: 4px solid transparent;
     cursor: pointer;
 }

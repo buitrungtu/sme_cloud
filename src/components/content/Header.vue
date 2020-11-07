@@ -100,30 +100,7 @@
     display: flex;
     padding-right: 20px;
 }
-.header-search{
-    display: flex;
-    width: 200px;
-    margin-right: 20px;
-    align-items: center;
-    position: relative;
-}
-.txt-search{
-    width: 100%;
-    height: 32px;
-    outline: none;
-    border: 1px solid #ebedf0;
-    padding: 0px 10px;
-    border-radius:3px;
-    color: rgb(33, 33, 33);
-    font-size: 13px;
-    font-style: italic;
-}
-.icon.icon-search{
-    background-position: -992px -360px;
-    position: absolute;
-    top:16px;
-    right: 2px;
-}
+
 .tooltip{
     display: flex;
     align-items: center;
@@ -133,21 +110,7 @@
     margin: 0px 10px;
     cursor: pointer;
 }
-.icon.icon-category{
-    background-position: -568px -30px;
-}
-.icon.icon-setting{
-    background-position: -675px -30px;
-}
-.icon.icon-chat{    
-    background-position: -899px -30px;
-}
-.icon.icon-help{
-    background-position: -731px -30px;
-}
-.icon.icon-notification{
-    background-position: -788px -30px;
-}
+
 
 .account-info{
     display: flex;
@@ -174,4 +137,5 @@
     transform: rotate(1deg);
     padding-right: 10px;
 }
+
 </style>

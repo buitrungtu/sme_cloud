@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 14.5px;
+  }
+  .icon{
+    width: 24px;
+    height: 24px;
+    background: url("https://actappdc.misacdn.net/img/Sprites.bc13c6df.svg") no-repeat;
+    background-position: -424px -86px;
+    cursor: pointer;
+  }
+  .header-search{
+      display: flex;
+      width: 200px;
+      margin-right: 20px;
+      align-items: center;
+      position: relative;
+  }
+  .txt-search{
+      width: 100%;
+      height: 32px;
+      outline: none;
+      border: 1px solid #ebedf0;
+      padding: 0px 10px;
+      border-radius:3px;
+      color: rgb(33, 33, 33);
+      font-size: 13px;
+      font-style: italic;
+  }
+  .icon.icon-search{
+      background-position: -988px -356px;
+      position: absolute;
+      top:12px;
+      right: 4px;
+  }
+  .icon.icon-category{
+    background-position: -568px -30px;
+}
+.icon.icon-setting{
+    background-position: -675px -30px;
+}
+.icon.icon-chat{    
+    background-position: -899px -30px;
+}
+.icon.icon-help{
+    background-position: -731px -30px;
+}
+.icon.icon-notification{
+    background-position: -788px -30px;
+}
+.icon.icon-tour{
+    background-position: -984px -144px;
+}
+.icon.icon-close{
+    background-position: -144px -144px;
+}
+.tour-label{
+    padding-left: 5px;
+    color: #0075c0;
+    font-size: 13px;
+}
+.tour-label:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

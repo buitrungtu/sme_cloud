@@ -9,7 +9,7 @@
                         <div class="btn-process receive">
                             <div class="title-button">Thu tiền</div>
                         </div>
-                        <div class="btn-process payment">
+                        <div class="btn-process payment" @click="gotoPaymentVoucher()">
                             <div class="title-button">Chi tiền</div>
                         </div>
                         <div class="btn-process fund">
@@ -61,7 +61,11 @@
 
 <script>
     export default {
-        
+        methods:{
+            gotoPaymentVoucher(){
+                this.$router.push('/paymentvoucher');
+            }
+        }   
     }
 </script>
 
