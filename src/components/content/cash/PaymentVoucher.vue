@@ -23,14 +23,30 @@
                 </div>
             </div>
         </div>
-        <div class="body-layout">
-
+        <ContentPaymentVoucher />
+        <div class="footer-layout">
+            <div class="footer-left">
+                <button class="btn-cancel">Hủy</button>
+            </div>
+            <div class="footer-right">
+                <button class="btn-cancel">Cất</button>
+                <div class="btn-save-print">
+                    <button class="btn-text">Cất và In</button>
+                    <div class="split"></div>
+                    <button class="icon icon-down"></button>
+                </div>
+                
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import ContentPaymentVoucher from './ContentPaymentVoucher'
     export default {
+        components:{
+            ContentPaymentVoucher
+        },
         methods:{
             gotoHome(){
                 this.$router.push('/');
@@ -53,7 +69,6 @@
     padding: 9px 16px 9px 16px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 7px;
 }
 .header-left{
     display: flex;
@@ -122,11 +137,76 @@
 .toolkit > *{
     margin:0px 8px;
 }
-.body-layout{
-    flex: 1;
-    min-height: 0;
-    min-width: 0;
-    overflow: auto;
+
+.footer-layout{
+    z-index: 9;
+    width: 100%;
+    display: flex;
+    background-color: #38393d;
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-left,.footer-right{
+    padding: 8px 16px;
+    display: flex;
+}
+.btn-cancel{
+    height: 34px;
+    padding: 6px 20px;
+    border: 1px solid #6b6c72;
+    color: #fff;
+    background-color: transparent;
     position: relative;
+    border-radius: 3px;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.btn-save-print{
+    display: flex;
+    margin-left: 5px;
+    position: relative;
+}
+.btn-save-print .btn-text{
+    height: 34px;
+    padding: 6px 14px 6px 20px;
+    border-radius: 3px 0 0 3px;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: all .2s ease;
+    box-sizing: border-box;
+    background-color: #35bf22;
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 13px;
+}
+.btn-save-print .icon.icon-down{
+    background-color: #35bf22;
+    border-radius: 0 3px 3px 0;
+    height: 34px;
+    padding: 6px 16px 6px 8px;
+    position: relative;
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all .2s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-position: -840px -351px;
+    width: 42px;
+}
+.split{
+    position: absolute;
+    height: 20px;
+    background: #fff;
+    top: 7px;
+    right: 41px;
+    border-right: 2px solid #fff;
 }
 </style>

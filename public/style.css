@@ -4,6 +4,28 @@
     font-family: 'Lato', sans-serif;
     font-size: 14.5px;
   }
+ /* grid  */
+ .w-4-5{
+    width: 80%!important;
+ }
+ .w-1-5{
+    width: 20%!important;
+ }
+ .w-3-7{
+    width: 42.8571428%!important;
+ }
+ .w-4-7{
+    width: 57.1428571%!important;
+ }
+ .w-3-7{
+    width: 42.8571428%!important;
+ }
+
+
+
+
+
+
   .icon{
     width: 24px;
     height: 24px;
@@ -56,6 +78,12 @@
 .icon.icon-close{
     background-position: -144px -144px;
 }
+.icon.icon-add{
+    background-position: -28px -308px;
+}
+.icon.icon-down{
+    background-position: -556px -355px;
+}
 .tour-label{
     padding-left: 5px;
     color: #0075c0;
@@ -64,4 +92,7 @@
 .tour-label:hover{
     cursor: pointer;
     text-decoration: underline;
+}
+input,button{
+    outline: none;
 }
