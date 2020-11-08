@@ -25,21 +25,169 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="grid-content">
-            <table>
-                <thead>
-                    <th><input type="checkbox"></th>
-                     <th>Ngày thu tiền</th>
-                     <th>Số chứng từ</th>
-                     <th>Diễn giả</th>
-                     <th>Số tiền</th>
-                     <th>Đối tượng</th>
-                     <th>Lý do thu/chi</th>
-                     <th>Loại chứng từ</th>
-                     <th>Chức năng</th>
-                </thead>
-            </table>
-        </div> -->
+        <div class="grid-content">
+            <div class="table-scroll">
+                 <table>
+                    <thead>
+                        <tr>
+                            <th class="th-left-white"></th>
+                            <th class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </th>
+                            <div class="th-content">
+                                <th class="row-viewer th-viewer" style="min-width: 147px; width: 147px;">Ngày thu tiền</th>
+                                <th class="row-viewer th-viewer" style="min-width: 125px; width: 125px;">Số chứng từ</th>
+                                <th class="row-viewer th-viewer" style="min-width: 320px;">Diễn giải</th>
+                                <th class="row-viewer th-viewer" style="min-width: 150px; width: 150px;text-align: right;">Số tiền</th>
+                                <th class="row-viewer th-viewer" style="min-width: 228px; width: 228px;">Đối tượng</th>
+                                <th class="row-viewer th-viewer" style="min-width: 323px; width: 323px;">Lý do thu/chi</th>
+                                <th class="row-viewer th-viewer" style="min-width: 150px; width: 150px;">Loại chứng từ</th>
+                                <th class="row-viewer th-viewer" style="right: 30px; width: 110px; min-width: 110px;">Chức năng</th>
+                                <th class="out-right-gray"></th>
+                            </div>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody-viewer">
+                        <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="td-left-white"></th>
+                            <th class="multi-checkall" style="opacity:0!important;">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </th>
+                            <div class="th-content">
+                                <th class="row-viewer td-viewer" style="border:none;text-align: center!important;">Tổng</th>
+                                <th class="row-viewer td-viewer" style="min-width: 125px; width: 125px;opacity:0!important;">Số chứng từ</th>
+                                <th class="row-viewer td-viewer" style="min-width: 320px;opacity:0!important;">Diễn giải</th>
+                                <th class="row-viewer td-viewer" style="border:none;text-align: center!important;">31.949.951.758,00</th>
+                                <th class="row-viewer td-viewer" style="min-width: 228px; width: 228px;opacity:0!important;">Đối tượng</th>
+                                <th class="row-viewer td-viewer" style="min-width: 323px; width: 323px;opacity:0!important;">Lý do thu/chi</th>
+                                <th class="row-viewer td-viewer" style="min-width: 150px; width: 150px;opacity:0!important;">Loại chứng từ</th>
+                                <th class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;opacity:0!important;">Chức năng</th>
+                                <th class="out-right-gray"></th>
+                            </div>
+                        </tr>
+                    </tfoot>
+                 </table>
+            </div>
+           
+        </div>
     </div>
 </template>
 
@@ -55,8 +203,7 @@
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    padding: 16px 16px 10px 16px;
-    margin-bottom: 10px;
+    padding: 16px 16px 20px 16px;
 }
 .grid-filter-left{
     display: flex;
@@ -133,5 +280,150 @@
 }
 .grid-content{
     background: #fff;
+    min-width: 100%;
+}
+.table-scroll{
+    overflow-y: auto;
+    max-height: none;
+    min-width: calc(100% + 30px);
+}
+.table-scroll table{
+    border-spacing: 0;
+    min-width: 100%;
+}
+.th-left-white{
+    min-width: 16px;
+    max-width: 16px;
+    width: 16px;
+    background: #fff;
+    left: 0;
+    border: 0;
+    z-index: 3;
+    padding: 0;
+    position: sticky;
+}
+th,td{
+    padding: 6px 10px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border: 0;
+    text-align: left;
+    font-size: .85rem;
+}
+
+.multi-checkall{
+    z-index: 3;
+    position: sticky;
+    left: 16px;
+    top: 0;
+    background-color: #fff;
+    min-width: 40px;
+    width: 40px;
+    max-width: 40px;
+    border-bottom: 1px solid #e0e0e0;
+    min-height: 34px;
+    height: 34px;
+    vertical-align: middle;
+}
+.checkbox{
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+.checkbox-input{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    z-index: 200;
+    cursor: pointer;
+    left: 15px;
+}
+.th-content{
+    background-color: #fff;
+    display: contents;
+}
+
+.row-viewer{
+    min-height: 34px;
+    height: 34px;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: #fff;
+    vertical-align: middle;
+    left: unset!important;
+}
+.th-viewer{
+    border-left: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    text-transform: uppercase;
+}
+.td-viewer{
+    border-left: 1px dotted #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.out-right-gray{
+    min-width: 30px;
+    position: sticky;
+    border: none;
+    width: 30px;
+    max-width: 30px;
+    z-index: 3;
+    padding: 0;
+    background: #f4f5f6;
+    right: 0;
+    z-index: 99;
+}
+.tbody-viewer{
+    background-color: #fff;
+    display: contents;
+}
+.show-detail{
+    color: #0075c0;
+    width: 100%;
+    height: 100%;
+    line-height: 13px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+}
+.show-detail:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.btn-show{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-text{
+    padding: 6px 0 6px 16px!important;
+    color: #0075c0;
+    border-radius: 3px 0 0 3px;
+    height: 36px;
+    transition: all .2s ease;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+}
+.icon.btn-icon-show{
+    width: 46px;
+    color: #0075c0;
+    border-radius: 0 3px 3px 0;
+    height: 36px;
+    padding: 8px 10px 8px 10px;
+    position: relative;
+    background-position: -883px -350px;
+    border: none;
+}
+tfoot{
+    background-color: #f8f9fe !important;
 }
 </style>

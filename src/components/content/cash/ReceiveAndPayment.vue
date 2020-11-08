@@ -195,6 +195,7 @@ import Grid from './Grid'
     width: 72px;
     text-align: center;
     line-height: 30px;
+    cursor: pointer;
 }
 .nav-tab-left ul li.active{
     background: #ebedf0;
