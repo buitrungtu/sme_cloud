@@ -1,10 +1,10 @@
 <template>
     <div class="combobox">
         <div class="cb-label">{{this.label}}</div>
-        <div @click="hasClick()" class="cb-content" v-bind:class="{focus:isFocus}">
-            <input type="text" class="cb-input">
+        <div class="cb-content" v-bind:class="{focus:isFocus}">
+            <input type="text" class="cb-input" @focus="isFocus=true" @blur="isFocus=false">
             <div class="cb-action">
-                <div class="btn-add">
+                <div class="btn-add" @click="showAddSupplierDialog()">
                     <div class="icon icon-add"></div>
                 </div>
                 <div class="btn-option">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import {busData} from '@/main.js';
     export default {
         props:{
             label:String,
@@ -25,11 +26,8 @@
                 isFocus:false
             }
         },methods:{
-            hasClick(){
-                this.isFocus = true;
-            },
-            dontClick(){
-                this.isFocus = false;
+            showAddSupplierDialog(){
+               busData.$emit('showAddSupplierDialog')
             }
         }
     }
@@ -82,5 +80,9 @@
 
 .btn-option{
     border-left: 1px solid #ccc;
+}
+.btn-option:hover,.btn-add:hover{
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
 }
 </style>

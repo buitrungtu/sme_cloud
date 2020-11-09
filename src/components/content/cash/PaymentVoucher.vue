@@ -5,12 +5,7 @@
                 <div class="icon icon-history"></div>
                 <div class="title-layout">Phiếu chi PC00023</div>
                 <div class="payment-type">
-                    <div class="select-option">
-                        <input type="text" value="10. Chi khác">
-                    </div>
-                    <div class="btn-showoption">
-                        <div class="icon icon-down"></div>
-                    </div>               
+                   <MSSelect title="10. Chi khác"/>             
                  </div>
             </div>
             <div class="header-right">
@@ -23,7 +18,9 @@
                 </div>
             </div>
         </div>
+
         <ContentPaymentVoucher />
+        
         <div class="footer-layout">
             <div class="footer-left">
                 <button class="btn-cancel">Hủy</button>
@@ -43,9 +40,20 @@
 
 <script>
 import ContentPaymentVoucher from './ContentPaymentVoucher'
+import MSSelect from '@/components/common/MSSelect'
+
     export default {
         components:{
-            ContentPaymentVoucher
+            ContentPaymentVoucher,
+            MSSelect,
+        },
+        created(){
+            
+        },
+        data(){
+            return{
+                showAddSupplire:false
+            }
         },
         methods:{
             gotoHome(){
@@ -90,42 +98,10 @@ import ContentPaymentVoucher from './ContentPaymentVoucher'
 }
 .payment-type{
     margin-left: 50px;
-    display: flex;
     min-height: 32px;
-    border: 1px solid #babec5;
-    border-radius: 2px;
-    background-color: #fff;
-    overflow: hidden;
     width: 350px;
 }
-.select-option{
-    display: flex;
-    flex-basis: 100%;
-    flex-grow: 1;
-    flex-wrap: wrap;
-}
-.select-option input{
-    border: none;
-    font-size: 13px;
-    padding: 5px 10px;
-    padding-right: unset;
-    text-overflow: ellipsis;
-    background-color: transparent;
-    display: flex;
-    flex-grow: 1;
-}
-.btn-showoption{
-    width: 32px;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.icon.icon-down{
-    background-position: -554px -352px;
-    width: 100%;height: 100%;
-}
+
 .header-right{
     display: flex;
     align-items: center;

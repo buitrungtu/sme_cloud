@@ -3,8 +3,8 @@
         <div class="dt-label">
             {{this.label}}
         </div>
-        <div class="dt-content">
-             <input type="datetime" v-bind:placeholder="dateNow" class="input-date">
+        <div class="dt-content" v-bind:class="{focus:isFocus}">
+             <input type="datetime" v-bind:placeholder="dateNow" class="input-date" @focus="isFocus=true" @blur="isFocus=false">
             <div class="icon icon-datepicker"></div>
         </div>
     </div>
@@ -17,7 +17,8 @@
         },
         data(){
             return{
-                dateNow:"07/11/2020"
+                dateNow:"07/11/2020",
+                isFocus:false
             }
         },
         methods:{
@@ -66,5 +67,8 @@
     background-position-x: -120px;
     height: 100%;
     background-position: -128px -306px;
+}
+.focus{
+    border-color: #2ca01c;
 }
 </style>

@@ -8,7 +8,8 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes
 })
-
+// bus event
+export const busData = new Vue();
 Vue.config.productionTip = false
 
 new Vue({
