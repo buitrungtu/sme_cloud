@@ -23,9 +23,11 @@ export default {
     }
   },
   created(){
-    busData.$on('showAddSupplierDialog',()=>{
-      this.showAddSupplire=true;
-      this.showBlackModel = true;
+    busData.$on('showDialog',(mission)=>{
+      if(mission == 'AddSupplier'){
+        this.showAddSupplire=true;
+        this.showBlackModel = true;
+      }
     })
     busData.$on('closeDialogSupplier',()=>{
       this.showAddSupplire=false;

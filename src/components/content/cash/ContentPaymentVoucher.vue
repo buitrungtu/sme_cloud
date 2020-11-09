@@ -5,7 +5,7 @@
                 <div class="w-4-5 basic-info">
                     <div class="row-input">
                         <div class="w-3-7">
-                            <MSCombobox label="Đối tượng"/>
+                            <MSCombobox label="Đối tượng" mission="AddSupplier"/>
                         </div>
                         <div class="w-4-7 input-2">
                             <MSTextbox label="Người nhận"/>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="row-input">
                         <div class="w-3-7 input-1">
-                            <MSCombobox label="Nhân viên"/>
+                            <MSCombobox label="Nhân viên" mission="Employee" />
                         </div>
                         <div class="w-4-7 width-240">
                             <MSTextbox label="Kèm theo"/>

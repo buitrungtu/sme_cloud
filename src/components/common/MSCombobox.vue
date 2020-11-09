@@ -20,6 +20,7 @@ import {busData} from '@/main.js';
     export default {
         props:{
             label:String,
+            mission:String
         },
         data(){
             return{
@@ -27,7 +28,7 @@ import {busData} from '@/main.js';
             }
         },methods:{
             showAddSupplierDialog(){
-               busData.$emit('showAddSupplierDialog')
+               busData.$emit('showDialog',this.mission)
             }
         }
     }
