@@ -14,7 +14,7 @@
                 <div class="toolkit">
                     <div class="icon icon-setting"></div>
                     <div class="icon icon-help"></div>
-                    <div @click="gotoHome()" class="icon icon-close"></div>
+                    <div @click="goBack()" class="icon icon-close"></div>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@ import MSSelect from '@/components/common/MSSelect'
             }
         },
         methods:{
-            gotoHome(){
-                this.$router.push('/');
+            goBack(){
+                this.$router.back();
             }
         }
     }

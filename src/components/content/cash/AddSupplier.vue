@@ -6,16 +6,16 @@
                    <div class="title">Thông tin nhà cung cấp</div>
                    <div class="gr-radio">
                        <div class="radio">
-                           <input type="radio" v-model="check" v-bind:class="{checked:check}">
+                           <input type="radio" >
                            <div class="radio-name">Tổ chức</div>
                        </div>
                        <div class="radio">
-                           <input type="radio" v-model="check" v-bind:class="{checked:check}">
+                           <input type="radio">
                            <div class="radio-name">Cá nhân</div>
                        </div>
                    </div>
                    <div class="title-right">
-                       <input type="checkbox" class="checkbox">
+                       <input type="checkbox" >
                         <div class="radio-name">Là khách hàng</div>
                    </div>
                </div>
@@ -45,7 +45,7 @@
                        </div>
                    </div>
                    <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                       <div class="row-input">
+                       <div class="row-input" style="margin-bottom:1.5px">
                            <div class="w-2-5" style="padding-right: 12px;">
                                <MSTextbox label="Điện thoại"/>
                            </div>
@@ -66,7 +66,7 @@
                    <div class="divide"></div>
                    <div class="btn-footer">
                        <div class="btn-left">
-                           <button>Hủy</button>
+                           <button @click="btnCloseOnClick()">Hủy</button>
                        </div>
                        <div class="btn-right">
                            <button>Cất</button>
@@ -92,7 +92,6 @@ import MSTabOrder from '@/components/common/MSTabOrder'
         },
         data(){
             return{
-                check:false
             }
         },methods:{
             btnCloseOnClick(){
@@ -107,10 +106,6 @@ import MSTabOrder from '@/components/common/MSTabOrder'
 .dialog.dialog-supplier{
     min-width: 900px;
     max-width: 900px;
-    width: 900px;
-    height: 650px;
-    top: calc(50% - 325px);
-    left: calc(50% - 450px);
     transition: all .2s;
     z-index: 100;
     display: flex;
@@ -118,26 +113,7 @@ import MSTabOrder from '@/components/common/MSTabOrder'
     background-color: #fff;
     opacity: 1;
 }
-.dialog-header{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 5px 5px;
-    position: relative;
-}
-.dialog-title{
-    width: 100%;
-    padding: 20px 32px 20px 32px;
-    padding-right: 12px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px 5px 0 0;
-}
-.title{
-    font-size: 24px;
-    color: rgb(33, 33, 33);
-    font-weight: 700;
-}
+
 .gr-radio{
     display:flex;padding-left: 1rem!important;padding-right: 1rem!important;
     justify-content: center;
@@ -162,86 +138,12 @@ import MSTabOrder from '@/components/common/MSTabOrder'
 .radio .checked{
     border: 1px solid #2ca01c;
 }
-.title-right{
-    margin-left: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.checkbox{
+
+.title-right input{
     width: 18px;
     height: 18px;
-    border-radius: 2px;
-    border: 1px solid #afafaf;
-    background: #fff;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
     margin-right: 10px;
-}
-.dialog-close{
-    display: flex;
-    padding: 12px;
-}
-.dialog-close > *{
-    margin-left: 8px;
+    border: 1px solid #afafaf;
 }
 
-.dialog-content{
-    height: calc(100% - 73px);
-    transition: all .23s ease .1s;
-    flex-direction: column;
-    display: flex;
-    overflow: auto;
-    overflow-y: visible;
-    padding: 0 32px 20px 32px;
-}
-.dialog-body{
-    overflow: auto;
-}
-.body-info{
-    display: flex;
-    height: 225px;
-}
-.body-left{
-    padding-right: 26px;
-}
-.tab-info{
-    width: 100%;
-    overflow: visible;
-}
-
-.divide{
-    width: 100%;
-    border-top: 1px solid #e0e0e0;
-    margin: 25px 0 20px 0;
-    position: relative;
-}
-.btn-footer{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.btn-footer button{
-    height: 36px;
-    padding: 8px 20px;
-    border: 1px solid #8d9096;
-    color: #212121;
-    background-color: transparent;
-    transition: all .25s ease;
-    white-space: nowrap;
-    font-size: 13px;
-    line-height: 13px;
-    cursor: pointer;
-}
-.btn-footer button:hover:not(.save-and-add){
-    background-color: #d2d3d6;
-}
-.btn-right .save-and-add{
-    background: #248b15;
-    border: 1px solid transparent;
-    color: #fff;
-    margin-left: 5px;
-    border-radius: 3px;
-}
 </style>

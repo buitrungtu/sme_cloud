@@ -1,6 +1,6 @@
 <template>
     <div class="combobox">
-        <div class="cb-label">{{this.label}}</div>
+        <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <div class="cb-content" v-bind:class="{focus:isFocus}">
             <input type="text" class="cb-input" @focus="isFocus=true" @blur="isFocus=false">
             <div class="cb-action">
@@ -20,7 +20,8 @@ import {busData} from '@/main.js';
     export default {
         props:{
             label:String,
-            mission:String
+            mission:String,
+            required:Boolean
         },
         data(){
             return{

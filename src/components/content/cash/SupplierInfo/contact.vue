@@ -52,10 +52,5 @@ import MSTextbox from '@/components/common/MSTextbox'
 .contact{
     display: flex;
 }
-.label-input{
-    font-size: 12px;
-    font-weight: 700;
-    padding-bottom: 4px;
-    color: rgb(33, 33, 33);
-}
+
 </style>

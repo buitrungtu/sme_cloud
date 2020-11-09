@@ -19,7 +19,7 @@
                     </div>
                     <div class="row-input">
                         <div class="w-3-7 input-1">
-                            <MSCombobox label="Nhân viên" mission="Employee" />
+                            <MSCombobox label="Nhân viên" mission="AddEmployee" />
                         </div>
                         <div class="w-4-7 width-240">
                             <MSTextbox label="Kèm theo"/>

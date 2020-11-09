@@ -120,10 +120,109 @@ input,button{
 
 .dialog{
     position: fixed;
-    top: calc(50% - 350px);
-    left: calc(50% - 400px);
-    width: 800px;
-    height: 700px;
+    width: 900px;
+    height: 650px;
+    top: calc(50% - 325px);
+    left: calc(50% - 450px);
     background-color: #fff;
     z-index: 999;
+}
+.dialog-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px 5px;
+    position: relative;
+}
+.dialog-title{
+    width: 100%;
+    padding: 20px 32px 20px 32px;
+    padding-right: 12px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+}
+.title{
+    font-size: 24px;
+    color: rgb(33, 33, 33);
+    font-weight: 700;
+}
+
+.title-right{
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-close{
+    display: flex;
+    padding: 12px;
+}
+.dialog-close > *{
+    margin-left: 8px;
+}
+.dialog-content{
+    height: calc(100% - 73px);
+    transition: all .23s ease .1s;
+    flex-direction: column;
+    display: flex;
+    overflow: auto;
+    overflow-y: visible;
+    padding: 0 32px 20px 32px;
+}
+
+.dialog-body{
+    overflow: auto;
+}
+.body-info{
+    display: flex;
+    height: 225px;
+}
+.body-left{
+    padding-right: 26px;
+}
+.tab-info{
+    width: 100%;
+    overflow: visible;
+}
+
+.divide{
+    width: 100%;
+    border-top: 1px solid #e0e0e0;
+    margin: 25px 0 20px 0;
+    position: relative;
+}
+.btn-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-footer button{
+    height: 36px;
+    padding: 8px 20px;
+    border: 1px solid #8d9096;
+    color: #212121;
+    background-color: transparent;
+    transition: all .25s ease;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 13px;
+    cursor: pointer;
+}
+.btn-footer button:hover:not(.save-and-add){
+    background-color: #d2d3d6;
+}
+.btn-right .save-and-add{
+    background: #248b15;
+    border: 1px solid transparent;
+    color: #fff;
+    margin-left: 5px;
+    border-radius: 3px;
+}
+.label-input{
+    font-size: 12px;
+    font-weight: 700;
+    padding-bottom: 4px;
+    color: rgb(33, 33, 33);
 }
