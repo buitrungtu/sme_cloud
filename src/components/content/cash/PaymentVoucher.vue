@@ -21,6 +21,10 @@
 
         <ContentPaymentVoucher />
         
+        <div class="black-model" v-show="showBlackModel"></div>
+        <AddSupplier v-if="showAddSupplire"/>
+        <AddEmployee v-if="showAddEmployee"/>
+        
         <div class="footer-layout">
             <div class="footer-left">
                 <button class="btn-cancel">Hủy</button>
@@ -39,18 +43,42 @@
 import ContentPaymentVoucher from './ContentPaymentVoucher'
 import MSSelect from '@/components/common/MSSelect'
 import MSButton from '@/components/common/MSButton'
+
+import {busData} from '@/main.js'
+import AddSupplier from '@/components/content/cash/AddSupplier'
+import AddEmployee from '@/components/content/cash/AddEmployee'
     export default {
         components:{
             ContentPaymentVoucher,
             MSSelect,
-            MSButton
+            MSButton,
+            AddSupplier,
+            AddEmployee
         },
         created(){
-            
+            busData.$on('showDialog',(mission)=>{
+            if(mission == 'AddSupplier'){
+                this.showAddSupplire=true;
+                this.showBlackModel = true;
+            }else if(mission == 'AddEmployee'){
+                this.showAddEmployee=true;
+                this.showBlackModel = true;
+            }
+            })
+            busData.$on('closeDialogSupplier',()=>{
+                this.showAddSupplire=false;
+                this.showBlackModel = false;    
+            })
+            busData.$on('closeDialogEmployee',()=>{
+                this.showAddEmployee=false;
+                this.showBlackModel = false;
+            })
         },
         data(){
             return{
-                showAddSupplire:false
+                showBlackModel:false,
+                showAddSupplire:false,
+                showAddEmployee:false,
             }
         },
         methods:{
@@ -68,6 +96,9 @@ import MSButton from '@/components/common/MSButton'
     background: #fff;
     height: 100vh;
     width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .header-layout{
     top: 0;
