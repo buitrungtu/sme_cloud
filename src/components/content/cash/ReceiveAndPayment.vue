@@ -62,9 +62,18 @@
 
 <script>
 import Grid from './Grid'
+import {busData} from '@/main.js'
     export default {
         components:{
             Grid
+        },
+        data(){
+            return{
+                thisPage:'ReceivePayment'
+            }
+        },
+        created(){
+            busData.$emit('changeTab',1);
         },
         methods:{
             gotoPaymentVoucher(){

@@ -12,24 +12,28 @@
 </template>
 
 <script>
+import {busData} from '@/main.js'
     export default {
         components:{
         },
+       
         data(){
             return{
                 currentTab:0
             }
         },
+        created(){
+            busData.$on('changeTab',(tab)=>{
+                this.currentTab = tab;
+            })
+        },
         methods:{
             changeTab(tab){
                 if(tab == 0){
-                    this.currentTab = 0;
                     this.$router.push('/');
                 }else{
-                    this.currentTab = 1;
                     this.$router.push('/receiveandpayment');
                 }
-                
             }
         }
     }

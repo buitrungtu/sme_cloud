@@ -15,14 +15,14 @@
                         <MSTextbox label="Địa chỉ"/>
                     </div>
                     <div class="row-input input-1">
-                        <MSTextbox label="Lý do chi"/>
+                        <MSTextbox label="Lý do chi" value="Chi tiền cho "/>
                     </div>
                     <div class="row-input">
                         <div class="w-3-7 input-1">
                             <MSCombobox label="Nhân viên" mission="AddEmployee" />
                         </div>
                         <div class="w-4-7 width-240">
-                            <MSTextbox label="Kèm theo"/>
+                            <MSTextbox label="Kèm theo" textAlign = "right" placeholder="Số lượng"/>
                             <div class="root-invoice">Chứng từ gốc</div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <MSDatetime label="Ngày phiếu chi" />
                     </div>
                     <div class="row-input-right">
-                        <MSTextbox label="Số phiếu chi" />
+                        <MSTextbox label="Số phiếu chi" value="PC0023"/>
                     </div>
                 </div>
             </div>
@@ -69,13 +69,12 @@ import MSCombobox from '@/components/common/MSCombobox'
 import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
 import MSSelect from '@/components/common/MSSelect'
-
     export default {
         components:{
             MSCombobox,
             MSTextbox,
             MSDatetime,
-            MSSelect
+            MSSelect,
         }
     }
 

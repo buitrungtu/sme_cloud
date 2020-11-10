@@ -67,6 +67,7 @@ import {busData} from '@/main.js';
     background-color: transparent;
     display: flex;
     flex-grow: 1;
+    width: calc(100% - 64px);
 }
 .cb-action{
     display: flex;

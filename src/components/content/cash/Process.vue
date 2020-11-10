@@ -60,12 +60,21 @@
 </template>
 
 <script>
+import {busData} from '@/main.js'
     export default {
+        data(){
+            return{
+            }
+        },
+        created(){
+            busData.$emit('changeTab',0);
+        },
         methods:{
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
             }
         }   
+
     }
 </script>
 

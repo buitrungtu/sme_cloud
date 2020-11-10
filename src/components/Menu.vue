@@ -7,7 +7,7 @@
         <div class="menu-content">
             <div class="menu-item active">
                 <div class="icon icon-cash"></div>
-                <div class="content-text">
+                <div class="content-text" title="Tiền mặt">
                     Tiền mặt
                 </div>
             </div>

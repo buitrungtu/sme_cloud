@@ -32,8 +32,8 @@
  .w-4-7{
     width: 57.1428571%!important;
  }
- .w-3-7{
-    width: 42.8571428%!important;
+ .w-3-4{
+    width: 75%!important;
  }
  /* table */
  .row-input{
@@ -225,4 +225,8 @@ input,button{
     font-weight: 700;
     padding-bottom: 4px;
     color: rgb(33, 33, 33);
+    display: inline;
+}
+input:checked{
+    background-color: red;
 }

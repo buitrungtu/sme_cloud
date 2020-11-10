@@ -1,24 +1,31 @@
 <template>
     <div class="tab-order">
         <ul class="ul-header">
-            <li class="li-header active">
-                Liên hệ</li>
-            <li class="li-header">Điều khoản thanh toán</li>
+            <li class="li-header" v-bind:class="{active:thisTab==0}" @click="thisTab=0">Liên hệ</li>
+            <li class="li-header" v-bind:class="{active:thisTab==1}" @click="thisTab=1">Điều khoản thanh toán</li>
             <li class="li-header">Tài khoản ngân hàng</li>
             <li class="li-header">Địa chỉ khác</li>
             <li class="li-header">Ghi chú</li>
         </ul>
         <div class="content-tab">
-            <Contact />
+            <Contact v-show="thisTab == 0"/>
+            <TermsOfPayment v-show="thisTab == 1"/>
         </div>
     </div>
 </template>
 
 <script>
 import Contact from '@/components/content/cash/SupplierInfo/contact'
+import TermsOfPayment from '@/components/content/cash/SupplierInfo/TermsOfPayment'
     export default {
         components:{
-            Contact
+            Contact,
+            TermsOfPayment
+        },
+        data(){
+            return{
+                thisTab:0
+            }
         }
     }
 </script>

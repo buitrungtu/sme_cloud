@@ -42,7 +42,7 @@
                                 <th class="row-viewer th-viewer" style="min-width: 320px;">Diễn giải</th>
                                 <th class="row-viewer th-viewer" style="min-width: 150px; width: 150px;text-align: right;">Số tiền</th>
                                 <th class="row-viewer th-viewer" style="min-width: 228px; width: 228px;">Đối tượng</th>
-                                <th class="row-viewer th-viewer" style="min-width: 323px; width: 323px;">Lý do thu/chi</th>
+                                <th class="row-viewer th-viewer" style="min-width: 250px; width: 250px;">Lý do thu/chi</th>
                                 <th class="row-viewer th-viewer" style="min-width: 150px; width: 150px;">Loại chứng từ</th>
                                 <th class="row-viewer th-viewer" style="right: 30px; width: 110px; min-width: 110px;">Chức năng</th>
                                 <th class="out-right-gray"></th>
@@ -162,6 +162,118 @@
                                 <td class="out-right-gray"></td>
                             </div>
                         </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -188,12 +300,32 @@
             </div>
            
         </div>
+        <div class="grid-footer">
+            <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
+            <div class="footer-right">
+                <div class="recordOnPage"><MSSelect title="20 bản ghi trên 1 trang"/></div>
+                <div class="totalPage">
+                    <div class="pre disable">Trước</div>
+                    <div class="page-list">
+                        <div class="page active">1</div>
+                        <div class="page">2</div>
+                        <div class="page">3</div>
+                        <div class="page"></div>
+                        <div class="page">4</div>
+                    </div>
+                    <div class="next">Sau</div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import MSSelect from '@/components/common/MSSelect'
     export default {
-        
+        components:{
+            MSSelect
+        }
     }
 </script>
 
@@ -425,5 +557,49 @@ th,td{
 }
 tfoot{
     background-color: #f8f9fe !important;
+}
+.grid-footer{
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-left{
+    margin-left: 30px;
+}
+.footer-right{
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
+}
+.recordOnPage{
+    width: 200px;
+}
+.totalPage{
+    display: flex;
+    margin-left: 10px;
+}
+.page-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page{
+    padding:0px .5rem!important;
+    cursor: pointer;
+}
+.page.active{
+    border: 1px solid #e0e0e0;
+    font-weight: 700;
+    text-align: center;
+}
+.pre,.next{
+    margin: 0px 20px;
+}
+.disable{
+    cursor: default!important;
+    color: #9e9e9e;
 }
 </style>

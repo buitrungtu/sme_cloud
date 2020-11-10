@@ -27,12 +27,9 @@
             </div>
             <div class="footer-right">
                 <button class="btn-cancel">Cất</button>
-                <div class="btn-save-print">
-                    <button class="btn-text">Cất và In</button>
-                    <div class="split"></div>
-                    <button class="icon icon-down"></button>
+                <div class="btn-save-printf" style="margin-left: 5px;">
+                    <MSButton>Cất và In</MSButton>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -41,11 +38,12 @@
 <script>
 import ContentPaymentVoucher from './ContentPaymentVoucher'
 import MSSelect from '@/components/common/MSSelect'
-
+import MSButton from '@/components/common/MSButton'
     export default {
         components:{
             ContentPaymentVoucher,
             MSSelect,
+            MSButton
         },
         created(){
             
@@ -142,47 +140,4 @@ import MSSelect from '@/components/common/MSSelect'
     cursor: pointer;
 }
 
-.btn-save-print{
-    display: flex;
-    margin-left: 5px;
-    position: relative;
-}
-.btn-save-print .btn-text{
-    height: 34px;
-    padding: 6px 14px 6px 20px;
-    border-radius: 3px 0 0 3px;
-    border: 1px solid transparent;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-    transition: all .2s ease;
-    box-sizing: border-box;
-    background-color: #35bf22;
-    font-weight: 600;
-    white-space: nowrap;
-    font-size: 13px;
-    line-height: 13px;
-}
-.btn-save-print .icon.icon-down{
-    background-color: #35bf22;
-    border-radius: 0 3px 3px 0;
-    height: 34px;
-    padding: 6px 16px 6px 8px;
-    position: relative;
-    border: 1px solid transparent;
-    color: #fff;
-    transition: all .2s ease;
-    cursor: pointer;
-    box-sizing: border-box;
-    background-position: -840px -351px;
-    width: 42px;
-}
-.split{
-    position: absolute;
-    height: 20px;
-    background: #fff;
-    top: 7px;
-    right: 41px;
-    border-right: 2px solid #fff;
-}
 </style>

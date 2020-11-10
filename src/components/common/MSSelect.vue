@@ -1,13 +1,16 @@
 <template>
-    <div class="ms-select" v-bind:class="{focus:isFocus}">
-        <div class="select-option">
+    <div class="select">
+        <div class="sl-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
+        <div class="ms-select"  v-bind:class="{focus:isFocus}">
+            <div class="select-option">
             <input type="text" v-bind:value="title" @focus="isFocus=true" @blur="isFocus=false" readonly v-bind:placeholder="placeholder">
-        </div>
-        <div class="btn-showoption" @click="showOptionDetail=true">
-            <div class="icon icon-down"></div>
-        </div>
-        <div class="show-option-detail">
-            <MSGridtable v-show="false"/>
+            </div>
+            <div class="btn-showoption" @click="showOptionDetail=true">
+                <div class="icon icon-down"></div>
+            </div>
+            <div class="show-option-detail">
+                <MSGridtable v-show="false"/>
+            </div>
         </div>
     </div>
 </template>
@@ -16,8 +19,10 @@
 import MSGridtable from './MSGridtable'
     export default {
         props:{
+            label:String,
             title:String,
-            placeholder:String
+            placeholder:String,
+            required:Boolean
         },
         components:{
             MSGridtable
@@ -35,6 +40,17 @@ import MSGridtable from './MSGridtable'
 </script>
 
 <style scoped>
+.select{
+    width: 100%;
+    position: relative;
+    height: 100%;
+}
+.sl-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: #212121;
+    padding-bottom: 4px;
+}
 .show-option-detail{
     position: absolute;
     top: 0;

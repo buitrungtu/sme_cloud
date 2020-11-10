@@ -2,7 +2,7 @@
     <div class="textbox">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <div class="cb-content" v-bind:class="{focus:isFocus}">
-            <input type="text" class="cb-input" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder">
+            <input type="text" v-bind:style="TextAlign" class="cb-input" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-bind:value="value">
         </div>
     </div> 
 </template>
@@ -12,13 +12,23 @@
         props:{
             label:String,
             required:Boolean,
-            placeholder:String
+            placeholder:String,
+            value:String,
+            textAlign:{
+                type:String,
+                default:'left'
+            }
         },
         data(){
             return{
                 isFocus:false
             }
         },
+        computed:{
+            TextAlign(){
+                return 'text-align: '+this.textAlign;
+            }
+        }
        
     }
 </script>
@@ -53,4 +63,5 @@
 .focus{
     border-color: #2ca01c;
 }
+
 </style>

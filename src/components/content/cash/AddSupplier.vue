@@ -6,16 +6,16 @@
                    <div class="title">Thông tin nhà cung cấp</div>
                    <div class="gr-radio">
                        <div class="radio">
-                           <input type="radio" >
+                           <input type="radio" name="abc" value="1" v-model="picked" checked>
                            <div class="radio-name">Tổ chức</div>
                        </div>
                        <div class="radio">
-                           <input type="radio">
+                           <input type="radio" value="2" v-model="picked" name="abc">
                            <div class="radio-name">Cá nhân</div>
                        </div>
                    </div>
                    <div class="title-right">
-                       <input type="checkbox" >
+                       <input type="checkbox" v-model="isCus">
                         <div class="radio-name">Là khách hàng</div>
                    </div>
                </div>
@@ -27,40 +27,8 @@
        </header>
        <div class="dialog-content">
            <div class="dialog-body">
-               <div class="body-info">
-                   <div class="w-1-2 body-left">
-                       <div class="row-input">
-                           <div class="w-2-5" style="padding-right: 12px;">
-                               <MSTextbox label="Mã số thuế"/>
-                           </div>
-                           <div class="w-3-5">
-                               <MSTextbox label="Mã nhà cung cấp" v-bind:required="true"/>
-                           </div>
-                       </div>
-                       <div class="row-input">
-                          <MSTextbox label="Tên nhà cung cấp" v-bind:required="true" />
-                       </div>
-                       <div class="row-input">
-                          <MSTextbox label="Địa chỉ" style="height:60px"/>
-                       </div>
-                   </div>
-                   <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                       <div class="row-input" style="margin-bottom:1.5px">
-                           <div class="w-2-5" style="padding-right: 12px;">
-                               <MSTextbox label="Điện thoại"/>
-                           </div>
-                           <div class="w-3-5">
-                               <MSTextbox label="Website"/>
-                           </div>
-                       </div>
-                       <div class="row-input">
-                          <MSCombobox label="Nhóm nhà cung cấp" />
-                       </div>
-                       <div class="row-input">
-                          <MSCombobox label="Nhân viên mua hàng"/>
-                       </div>
-                   </div>
-               </div>
+                <Organization v-if="picked == '1'"/>
+                <Personal v-if="picked == '2'"/>
                 <MSTabOrder />  
                <div class="dialog-footer">
                    <div class="divide"></div>
@@ -80,22 +48,28 @@
 </template>
 
 <script>
-import MSTextbox from '@/components/common/MSTextbox'
-import MSCombobox from '@/components/common/MSCombobox'
 import {busData} from '@/main.js'
 import MSTabOrder from '@/components/common/MSTabOrder'
+import Organization from './SupplierInfo/InfoOrganization'
+import Personal from './SupplierInfo/InfoPersonal'
     export default {
         components:{
-            MSTextbox,
-            MSCombobox,
-            MSTabOrder
+            MSTabOrder,
+            Organization,
+            Personal
         },
         data(){
             return{
+                picked:"1",
+                isCus:false
             }
         },methods:{
             btnCloseOnClick(){
                busData.$emit('closeDialogSupplier');
+            }
+        },watch:{
+            isCus:function(){
+                busData.$emit('changeForm',this.isCus);
             }
         }
     }
@@ -130,13 +104,13 @@ import MSTabOrder from '@/components/common/MSTabOrder'
     border-radius: 50%;
     cursor: pointer;
     border: 1px solid #afafaf;
-    background: #fff;
     z-index: 1;
     justify-content: center;
     margin-right: 10px;
 }
-.radio .checked{
+.radio input:checked{
     border: 1px solid #2ca01c;
+    background: #2ca01c;
 }
 
 .title-right input{
