@@ -12,24 +12,23 @@
             size="small"
         >
             <el-option :value="1" class="cb-header">
-                <span style="float: left; width:100px">Đối tượng</span>
-                <span style="float: left; width:200px">Tên đối tượng</span>
-                <span style="float: left; width:120px">Mã số thuế</span>
-                <span style="float: left; width:200px">Địa chỉ</span>
-                <span style="float: left; width:50px; margin-right:10px">Điện thoại</span>
+                <span style="float: left; width:100px" class="ellipsis">Đối tượng</span>
+                <span style="float: left; width:200px" class="ellipsis">Tên đối tượng</span>
+                <span style="float: left; width:120px" class="ellipsis">Mã số thuế</span>
+                <span style="float: left; width:200px" class="ellipsis">Địa chỉ</span>
+                <span style="float: left; width:100px; margin-right:10px" class="ellipsis">Điện thoại</span>
             </el-option>
 
-            <div style="margin-top:40px"></div>
             <el-option
                 v-for="item in objTest"
                 :key="item.ID"
-                :value="item.ID"
+                :value="item.Customer"
                 >
-                <span style="float: left; width:100px">{{ item.Customer }}</span>
-                <span style="float: left; width:200px">{{ item.Name }}</span>
-                <span style="float: left; width:120px">{{ item.TaxCode }}</span>
-                <span style="float: left; width:200px">{{ item.Address }}</span>
-                <span style="float: left; width:50px; margin-right:10px">{{ item.Mobile }}</span>
+                <span style="float: left; width:100px;" class="ellipsis">{{ item.Customer }}</span>
+                <span style="float: left; width:200px" class="ellipsis">{{ item.Name }}</span>
+                <span style="float: left; width:120px" class="ellipsis">{{ item.TaxCode }}</span>
+                <span style="float: left; width:200px" class="ellipsis">{{ item.Address }}</span>
+                <span style="float: left; width:50px; margin-right:10px" class="ellipsis">{{ item.Mobile }}</span>
 
             </el-option>
         </el-select>
@@ -62,84 +61,80 @@ import {busData} from '@/main.js';
                 objTest: [
                     {
                     ID:1,
-                    Customer: 'DVTUAN',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'Cửa Hàng Thạnh TY',
+                    Name: 'Cửa Hàng Thạnh TY',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: 'Phú Xuân - Krông Năng',
                     Mobile:""
                     },  {
                         ID:2,
-                    Customer: 'BTTu',
-                    Name: 'ĐINH VĂN TUẤN',
-                    TaxCode: '132135645',
-                    Address: 'Tây Tựu',
+                    Customer: 'DAIDUONG',
+                    Name: 'Công ty Đại Dương',
+                    TaxCode: '',
+                    Address: '',
                     Mobile:""
                     },
                      {
                          ID:3,
-                    Customer: 'NBLuong',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'DIENLUC',
+                    Name: 'DIEN LUC MIEN TAY',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '',
                     Mobile:""
                     },
                      {
                          ID:4,
-                    Customer: 'NBHoang',
+                    Customer: 'DVTUAN',
                     Name: 'ĐINH VĂN TUẤN',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '',
                     Mobile:""
                     },
                      {
                          ID:5,
-                    Customer: 'NVManh',
-                    Name: 'ĐINH VĂN TUẤN',
-                    TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Customer: 'KH00001',
+                    Name: 'CÔNG TY TNHH THÀNH THẮNG 12',
+                    TaxCode: '3700650305',
+                    Address: 'Thửa đất 865, Tờ bản đồ 12, ấp Tân Hóa, Xã Tân Vĩnh Hiệp, Thị xã Tân Uyên, Bình Dương, Việt Nam 123',
                     Mobile:""
-                    },
-                     {
+                    }, {
                          ID:6,
-                    Customer: 'NPTuan',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'KH00009',
+                    Name: 'CLASSIC STORE',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '71 Hoa Lan Phường 2 Quận Phú Nhuận',
                     Mobile:""
-                    },
-                    {
+                    },{
                          ID:7,
-                    Customer: 'NPTuan',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'KH013',
+                    Name: 'Công ty cổ phần Đại Dương',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '68 Trần Bình Trọng, Hà Nội',
                     Mobile:""
-                    },
-                    {
+                    },{
                          ID:8,
-                    Customer: 'NPTuan',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'KH0111',
+                    Name: 'Công ty TNHH Ngôi Sao',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '12 Bùi Thị Xuân',
                     Mobile:""
-                    },
-                    {
+                    },{
                          ID:9,
-                    Customer: 'NPTuan',
-                    Name: 'ĐINH VĂN TUẤN',
+                    Customer: 'NCC0001',
+                    Name: 'Công ty CP Maxspeed',
                     TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Address: '14 Hoàng Quốc Việt, Hà Nội',
                     Mobile:""
-                    },
-                    {
+                    },{
                          ID:10,
-                    Customer: 'NPTuan',
-                    Name: 'ĐINH VĂN TUẤN',
-                    TaxCode: '',
-                    Address: 'Tây Tựu',
+                    Customer: 'NCC0026',
+                    Name: 'Công ty TNHH Ngôi Sao',
+                    TaxCode: '3702142147',
+                    Address: '337 Cầu Giấy, Hà Nội',
                     Mobile:""
                     },
-                    ],
+                    
+                ],
             }
         },methods:{
             showAddSupplierDialog(){
@@ -177,7 +172,6 @@ import {busData} from '@/main.js';
     cursor: default;
     color: #212121;
     font-weight: 700;
-    position: fixed;
     z-index: 5;
 }
 .hiden{
@@ -206,5 +200,10 @@ import {busData} from '@/main.js';
 .btn-option:hover,.btn-add:hover{
     background-color: #e0e0e0;
     border-color: #e0e0e0;
+}
+.ellipsis{
+    margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

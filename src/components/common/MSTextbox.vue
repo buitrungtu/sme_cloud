@@ -48,16 +48,15 @@
 .cb-content{
     width: 100%;
     display: flex;
-    min-height: 32px;
     border: 1px solid #babec5;
     border-radius: 2px;
     background-color: #fff;
     overflow: hidden;
-    height: 100%;
+    height: 30px;
 }
 .cb-input{
     border: none;
-    padding: 6px 10px;
+    padding: 0px 10px;
     width: 100%;
 }
 .focus{

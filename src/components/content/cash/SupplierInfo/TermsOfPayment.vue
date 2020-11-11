@@ -3,7 +3,7 @@
         <div class="w-3-4" style="display:flex">
             <div class="w-input">
                 <div class="row-input" >
-                    <MSCombobox label="Điều khoản thanh toán"/>
+                    <ObjCBB label="Điều khoản thanh toán"/>
                 </div>
             </div>
              <div class="w-input">
@@ -33,14 +33,14 @@
 <script>
 import MSSelect from '@/components/common/MSSelect'
 import MSTextbox from '@/components/common/MSTextbox'
-import MSCombobox from '@/components/common/MSCombobox'
+import ObjCBB from '@/components/common/combobox/ObjCBB'
 import {busData} from '@/main.js'
 
     export default {
         components:{
             MSSelect,
             MSTextbox,
-            MSCombobox
+            ObjCBB
         },
         data(){
             return{

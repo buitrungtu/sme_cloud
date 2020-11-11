@@ -34,13 +34,13 @@
                            </div>
                        </div>
                        <div class="row-input">
-                           <MSCombobox label="Đơn vị" v-bind:required="true"/>
+                           <UnitCBB label="Đơn vị" v-bind:required="true"/>
                        </div>
                        <div class="row-input">
                            <MSTextbox label="Chức danh"/>
                        </div>
                         <div class="row-input" v-show="isCus || isSupplier">
-                           <MSCombobox label="Nhóm khách hàng, nhà cung cấp" v-bind:required="true"/>
+                           <SupplierCBB label="Nhóm khách hàng, nhà cung cấp" v-bind:required="true"/>
                        </div>
                     </div>
                      <div class="w-1-2" style="padding:2.5px 2.3px 0px 0px">
@@ -99,19 +99,22 @@
 
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
-import MSCombobox from '@/components/common/MSCombobox'
 import MSDatetime from '@/components/common/MSDatetime'
 import MSTabOrder from '@/components/common/MSTabOrder'
 import MSSelect from '@/components/common/MSSelect'
 import {busData} from '@/main.js'
 
+import UnitCBB from '@/components/common/combobox/UnitCBB'
+import SupplierCBB from '@/components/common/combobox/SupplierCBB'
+
     export default {
         components:{
             MSTextbox,
-            MSCombobox,
             MSDatetime,
             MSTabOrder,
-            MSSelect
+            MSSelect,
+            SupplierCBB,
+            UnitCBB,
         },
         data(){
             return{

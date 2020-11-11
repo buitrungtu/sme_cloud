@@ -22,10 +22,10 @@
         </div>
         <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
             <div class="row-input" style="margin-bottom: 1.5px">
-                <MSCombobox label="Nhóm nhà cung cấp" />
+                <SupplierCBB label="Nhóm nhà cung cấp" />
             </div>
             <div class="row-input">
-                <MSCombobox label="Nhân viên mua hàng"/>
+                <Buyer label="Nhân viên mua hàng"/>
             </div>
         </div>
     </div>
@@ -33,12 +33,14 @@
 
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
-import MSCombobox from '@/components/common/MSCombobox'
+import SupplierCBB from '@/components/common/combobox/SupplierCBB'
+import Buyer from '@/components/common/combobox/EmployeeBuyer'
 import MSSelect from '@/components/common/MSSelect'
     export default {
         components:{
             MSTextbox,
-            MSCombobox,
+            SupplierCBB,
+            Buyer,
             MSSelect
         }
         
