@@ -5,7 +5,7 @@
                 <div class="icon icon-history"></div>
                 <div class="title-layout">Phiếu chi PC00023</div>
                 <div class="payment-type">
-                   <MSSelect title="10. Chi khác"/>             
+                   <MSSelect/>             
                  </div>
             </div>
             <div class="header-right">
@@ -43,7 +43,6 @@
 import ContentPaymentVoucher from './ContentPaymentVoucher'
 import MSSelect from '@/components/common/MSSelect'
 import MSButton from '@/components/common/MSButton'
-
 import {busData} from '@/main.js'
 import AddSupplier from '@/components/content/cash/AddSupplier'
 import AddEmployee from '@/components/content/cash/AddEmployee'

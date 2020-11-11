@@ -1,15 +1,44 @@
 <template>
     <div class="combobox">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <div class="cb-content" v-bind:class="{focus:isFocus}">
-            <input type="text" class="cb-input" @focus="isFocus=true" @blur="isFocus=false">
-            <div class="cb-action">
-                <div class="btn-add" @click="showAddSupplierDialog()">
-                    <div class="icon icon-add"></div>
-                </div>
-                <div class="btn-option">
-                    <div class="icon icon-down"></div>
-                </div>
+        <el-select
+            v-model="value"
+            filterable
+            remote
+            reserve-keyword
+            placeholder=""
+            :loading="loading"
+            popper-class="hiden"
+            size="small"
+        >
+            <el-option :value="1" class="cb-header">
+                <span style="float: left; width:100px">Đối tượng</span>
+                <span style="float: left; width:200px">Tên đối tượng</span>
+                <span style="float: left; width:120px">Mã số thuế</span>
+                <span style="float: left; width:200px">Địa chỉ</span>
+                <span style="float: left; width:50px; margin-right:10px">Điện thoại</span>
+            </el-option>
+
+            <div style="margin-top:40px"></div>
+            <el-option
+                v-for="item in objTest"
+                :key="item.ID"
+                :value="item.ID"
+                >
+                <span style="float: left; width:100px">{{ item.Customer }}</span>
+                <span style="float: left; width:200px">{{ item.Name }}</span>
+                <span style="float: left; width:120px">{{ item.TaxCode }}</span>
+                <span style="float: left; width:200px">{{ item.Address }}</span>
+                <span style="float: left; width:50px; margin-right:10px">{{ item.Mobile }}</span>
+
+            </el-option>
+        </el-select>
+       <div class="cb-action">
+            <div class="btn-add" @click="showAddSupplierDialog()">
+                <div class="icon icon-add"></div>
+            </div>
+            <div class="btn-option">
+                <div class="icon icon-down"></div>
             </div>
         </div>
     </div>
@@ -25,17 +54,114 @@ import {busData} from '@/main.js';
         },
         data(){
             return{
-                isFocus:false
+                isHide:true,
+                options: [],
+                value: [],
+                list: [],
+                loading: false,
+                objTest: [
+                    {
+                    ID:1,
+                    Customer: 'DVTUAN',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },  {
+                        ID:2,
+                    Customer: 'BTTu',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '132135645',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                     {
+                         ID:3,
+                    Customer: 'NBLuong',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                     {
+                         ID:4,
+                    Customer: 'NBHoang',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                     {
+                         ID:5,
+                    Customer: 'NVManh',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                     {
+                         ID:6,
+                    Customer: 'NPTuan',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                    {
+                         ID:7,
+                    Customer: 'NPTuan',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                    {
+                         ID:8,
+                    Customer: 'NPTuan',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                    {
+                         ID:9,
+                    Customer: 'NPTuan',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                    {
+                         ID:10,
+                    Customer: 'NPTuan',
+                    Name: 'ĐINH VĂN TUẤN',
+                    TaxCode: '',
+                    Address: 'Tây Tựu',
+                    Mobile:""
+                    },
+                    ],
             }
         },methods:{
             showAddSupplierDialog(){
                busData.$emit('showDialog',this.mission)
+            },
+            
+        },
+        watch:{
+            value:function(){
+                if(this.value){
+                    this.isHide = false;
+                }
             }
         }
+       
+
     }
+    
 </script>
 
 <style scoped>
+
 .combobox{
     width: 100%;
     position: relative;
@@ -46,31 +172,23 @@ import {busData} from '@/main.js';
     color: #212121;
     padding-bottom: 4px;
 }
-.cb-content{
-    width: 100%;
-    display: flex;
-    min-height: 32px;
-    border: 1px solid #babec5;
-    border-radius: 2px;
-    background-color: #fff;
-    overflow: hidden;
+.cb-header{
+    background: #f4f5f8;
+    cursor: default;
+    color: #212121;
+    font-weight: 700;
+    position: fixed;
+    z-index: 5;
 }
-.focus{
-    border-color: #2ca01c;
-}
-.cb-input{
-    border: none;
-    font-size: 13px;
-    padding: 5px 10px;
-    padding-right: unset;
-    text-overflow: ellipsis;
-    background-color: transparent;
-    display: flex;
-    flex-grow: 1;
-    width: calc(100% - 64px);
+.hiden{
+    display: none !important;
 }
 .cb-action{
     display: flex;
+    position: absolute;
+    top:20px;
+    right: 1px;
+    height: 30px;
 }
 .btn-add,.btn-option{
     width: 32px;
@@ -79,6 +197,7 @@ import {busData} from '@/main.js';
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    border-color: #35bf22;
 }
 
 .btn-option{

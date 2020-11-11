@@ -26,7 +26,7 @@
         },
         computed:{
             TextAlign(){
-                return 'text-align: '+this.textAlign;
+                return 'text-align: '+ this.textAlign;
             }
         }
        

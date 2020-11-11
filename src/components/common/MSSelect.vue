@@ -1,36 +1,69 @@
 <template>
     <div class="select">
-        <div class="sl-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <div class="ms-select"  v-bind:class="{focus:isFocus}">
-            <div class="select-option">
-            <input type="text" v-bind:value="title" @focus="isFocus=true" @blur="isFocus=false" readonly v-bind:placeholder="placeholder">
-            </div>
-            <div class="btn-showoption" @click="showOptionDetail=true">
-                <div class="icon icon-down"></div>
-            </div>
-            <div class="show-option-detail">
-                <MSGridtable v-show="false"/>
-            </div>
-        </div>
+        <el-select v-model="value" size="small">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            <span style="float: center">{{ item.label }}</span>
+            </el-option>
+        </el-select>
     </div>
 </template>
 
 <script>
-import MSGridtable from './MSGridtable'
     export default {
         props:{
-            label:String,
-            title:String,
-            placeholder:String,
-            required:Boolean
+            
         },
         components:{
-            MSGridtable
         },
         data(){
             return{
                 isFocus:false,
-                showOptionDetail:false
+                showOptionDetail:false,
+                options: [
+                    {
+                    value: '1',
+                    label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'
+                    }, {
+                    value: '2',
+                    label: '2. Tạm ứng cho nhân viên',
+                    
+                    }, {
+                    value: '3',
+                    label: '3. Chi mua ngoài có hóa đơn'
+                    }, {
+                    value: '4',
+                    label: '4. Gửi tiền vào ngân hàng'
+                    }, {
+                    value: '5',
+                    label: '5. Chi tiếp khách'
+                    },
+                    {
+                    value: '6',
+                    label: '6. Chi tạm ứng'
+                    },
+                    {
+                    value: '7',
+                    label: '7. Trả lương NV xưởng'
+                    },
+                    {
+                    value: '8',
+                    label: '8. Chi tiền điện'
+                    },
+                    {
+                    value: '9',
+                    label: '9. Chi tiền tiếp khách'
+                    },
+                    {
+                    value: '10',
+                    label: '10. Chi khác',
+                    },
+                ],
+                 value: '10'
             }
         },
         methods:{
@@ -40,68 +73,11 @@ import MSGridtable from './MSGridtable'
 </script>
 
 <style scoped>
+
 .select{
     width: 100%;
     position: relative;
     height: 100%;
 }
-.sl-label{
-    font-size: 12px;
-    font-weight: 700;
-    color: #212121;
-    padding-bottom: 4px;
-}
-.show-option-detail{
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.ms-select{
-    display: flex;
-    min-height: 32px;
-    border: 1px solid #babec5;
-    border-radius: 2px;
-    background-color: #fff;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-.select-option{
-    display: flex;
-    flex-basis: 100%;
-    flex-grow: 1;
-    flex-wrap: wrap;
-}
-.select-option input{
-    border: none;
-    font-size: 13px;
-    padding: 5px 10px;
-    padding-right: unset;
-    text-overflow: ellipsis;
-    background-color: transparent;
-    display: flex;
-    flex-grow: 1;
-    width: calc(100% - 32px);
-}
-.btn-showoption{
-    width: 32px;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.btn-showoption:hover{
-    background-color: #e0e0e0;
-    border-color: #e0e0e0;
-}
 
-.icon.icon-down{
-    background-position: -554px -352px;
-    width: 100%;height: 100%;
-}
-.focus{
-    border-color: #2ca01c;
-}
 </style>
