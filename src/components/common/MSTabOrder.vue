@@ -1,22 +1,26 @@
 <template>
     <div class="tab-order">
-        <el-tabs type="card">
-            <el-tab-pane label="Liên hệ"><Contact/></el-tab-pane>
-            <el-tab-pane label="Điều khoản thanh toán">Điều khoản thanh toán</el-tab-pane>
-            <el-tab-pane label="Tài khoản ngân hàng">tài khoản ngân hàng</el-tab-pane>
-            <el-tab-pane label="Địa chỉ khác">Địa chỉ khác</el-tab-pane>
-            <el-tab-pane label="Ghi chú">Ghi chú</el-tab-pane>
-        </el-tabs>
+        <ul class="ul-header">
+            <li class="li-header" v-bind:class="{active:thisTab==0}" @click="thisTab=0">Liên hệ</li>
+            <li class="li-header" v-bind:class="{active:thisTab==1}" @click="thisTab=1">Điều khoản thanh toán</li>
+            <li class="li-header">Tài khoản ngân hàng</li>
+            <li class="li-header">Địa chỉ khác</li>
+            <li class="li-header">Ghi chú</li>
+        </ul>
+        <div class="content-tab">
+            <Contact v-show="thisTab == 0"/>
+            <TermsOfPayment v-show="thisTab == 1"/>
+        </div>
     </div>
 </template>
 
 <script>
 import Contact from '@/components/content/cash/SupplierInfo/contact'
-// import TermsOfPayment from '@/components/content/cash/SupplierInfo/TermsOfPayment'
+import TermsOfPayment from '@/components/content/cash/SupplierInfo/TermsOfPayment'
     export default {
         components:{
             Contact,
-            // TermsOfPayment
+            TermsOfPayment
         },
         data(){
             return{
@@ -30,7 +34,6 @@ import Contact from '@/components/content/cash/SupplierInfo/contact'
 .tab-order{
     width: 100%;
     overflow: visible;
-    height: 100%;
 }
 .ul-header{
     margin: 0;

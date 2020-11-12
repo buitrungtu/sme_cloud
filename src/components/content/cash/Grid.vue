@@ -274,6 +274,202 @@
                                 <td class="out-right-gray"></td>
                             </div>
                         </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
+                         <tr>
+                            <td class="th-left-white"></td>
+                            <td class="multi-checkall">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox-input">
+                                </label>
+                            </td>
+                            <div class="th-content">
+                                <td class="row-viewer td-viewer" style="text-align: center!important;">08/11/2020</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">
+                                    <div class="show-detail">PC00026</div>
+                                </td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi tiền cho chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: right!important;padding-right:10px;">140.000,00</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">chi phí chành xe</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Chi khác</td>
+                                <td class="row-viewer td-viewer" style="text-align: left!important;padding-left:10px;">Phiếu chi</td>
+                                <td class="row-viewer td-viewer" style="right: 30px; width: 110px; min-width: 110px;">
+                                    <div class="btn-show">
+                                       <button class="btn-text">Xem</button>
+                                       <button class="icon btn-icon-show">
+                                           
+                                       </button>
+                                    </div>
+                                </td>
+                                <td class="out-right-gray"></td>
+                            </div>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -413,6 +609,7 @@ import MSSelect from '@/components/common/MSSelect'
 .grid-content{
     background: #fff;
     min-width: 100%;
+    position: relative;
 }
 .table-scroll{
     overflow-y: auto;

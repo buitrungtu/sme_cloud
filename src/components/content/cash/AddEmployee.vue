@@ -79,7 +79,7 @@
                        </div>
                     </div>
                 </div>
-                <EmployeeTab v-bind:class="{top40:isCus||isSupplier}" style="height:250px"/> 
+                <EmployeeTab v-bind:class="{top40:isCus||isSupplier}"/> 
                  <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">

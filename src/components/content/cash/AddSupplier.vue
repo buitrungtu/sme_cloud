@@ -29,7 +29,7 @@
            <div class="dialog-body">
                 <Organization v-if="picked == '1'"/>
                 <Personal v-if="picked == '2'"/>
-                <SupplierTab style="height:250px"/>  
+                <SupplierTab />  
                <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
