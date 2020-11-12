@@ -1,13 +1,12 @@
 <template>
     <div class="combobox">
-        <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
             v-model="value"
             filterable
-            remote
             reserve-keyword
             placeholder=""
             :loading="loading"
+            
         >
             <el-option :value="1" class="cb-header">
                 <span style="float: left; width:100px" class="ellipsis">Đối tượng</span>
@@ -19,10 +18,10 @@
 
             <div class="cbb-content">
                 <el-option
-                    v-for="item in objTest"
+                    v-for="item in listObj"
                     :key="item.ID"
                     :value="item.Customer"
-                    >
+                >
                     <span style="float: left; width:100px;" class="ellipsis">{{ item.Customer }}</span>
                     <span style="float: left; width:200px" class="ellipsis">{{ item.Name }}</span>
                     <span style="float: left; width:120px" class="ellipsis">{{ item.TaxCode }}</span>
@@ -30,26 +29,20 @@
                     <span style="float: left; width:50px; margin-right:10px" class="ellipsis">{{ item.Mobile }}</span>
                 </el-option>
             </div>
-            
+            <div class="add-new" @click="showAddSupplierDialog()">
+                <div class="icon icon-add" ></div>
+                <div class="text">Thêm mới (F9)</div>
+            </div>
         </el-select>
-       <div class="cb-action">
-            <div class="btn-add" @click="showAddSupplierDialog()">
-                <div class="icon icon-add"></div>
-            </div>
-            <div class="btn-option">
-                <div class="icon icon-down"></div>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
 import {busData} from '@/main.js';
+
     export default {
         props:{
-            label:String,
-            mission:String,
-            required:Boolean
+             mission:String,
         },
        
         data(){
@@ -58,7 +51,7 @@ import {busData} from '@/main.js';
                 value: [],
                 list: [],
                 loading: false,
-                objTest: [
+                listObj: [
                     {
                     ID:1,
                     Customer: 'Cửa Hàng Thạnh TY',
@@ -137,26 +130,26 @@ import {busData} from '@/main.js';
                 ],
             }
         },methods:{
-            showAddSupplierDialog(){
+           showAddSupplierDialog(){
                busData.$emit('showDialog',this.mission)
             },
-           
         },
         watch:{
-           
+            value:function(){
+                for(let i = 0;i<this.listObj.length;i++){
+                    if(this.listObj[i].Customer == this.value){
+                        busData.$emit('completeName',this.listObj[i].Name);
+                        break;
+                    }
+                }
+            }
         }
        
-
     }
     
 </script>
 
 <style scoped>
-
-.combobox{
-    width: 100%;
-    position: relative;
-}
 .cbb-content{
     overflow-y: scroll;
     overflow-x:hidden;
@@ -169,6 +162,28 @@ import {busData} from '@/main.js';
     background: rgba(144,147,153,.3);
 }
 
+.add-new{
+    width: calc(100% - 20px);
+    height: 32px;
+    background: #ebedf0;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+.text{
+    color:#35bf22;
+    cursor: pointer;
+}
+
+
+
+.cbb-content::-webkit-scrollbar-thumb{
+    background: #248b15;
+}
+.combobox{
+    width: 100%;
+    position: relative;
+}
 .cb-label{
     font-size: 12px;
     font-weight: 700;
@@ -185,30 +200,7 @@ import {busData} from '@/main.js';
 .el-select-dropdown.el-popper.is-multiple.hidden{
     background-color: red;
 }
-.cb-action{
-    display: flex;
-    position: absolute;
-    top:20px;
-    right: 1px;
-    height: 30px;
-}
-.btn-add,.btn-option{
-    width: 32px;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-color: #35bf22;
-}
 
-.btn-option{
-    border-left: 1px solid #ccc;
-}
-.btn-option:hover,.btn-add:hover{
-    background-color: #e0e0e0;
-    border-color: #e0e0e0;
-}
 .ellipsis{
     margin: 0 10px;
     overflow: hidden;

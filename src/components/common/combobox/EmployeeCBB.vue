@@ -17,18 +17,19 @@
                 <span style="float: left; width:200px">Đơn vị</span>
                 <span style="float: left; width:100px;margin-right:10px">ĐT di động</span>
             </el-option>
-
-            <el-option
-                v-for="item in employees"
-                :key="item.EmployeeID"
-                :value="item.EmployeeName"
-                >
-                <span style="float: left; min-width:100px">{{ item.EmployeeID }}</span>
-                <span style="float: left; min-width:200px">{{ item.EmployeeName }}</span>
-                <span style="float: left; min-width:120px">{{ item.Department }}</span>
-                <span style="float: left; min-width:200px;;margin-right:10px">{{ item.Mobile }}</span>
-
-            </el-option>
+            <div class="cbb-content">
+                <el-option
+                    v-for="item in employees"
+                    :key="item.EmployeeID"
+                    :value="item.EmployeeName"
+                    >
+                    <span style="float: left; min-width:100px">{{ item.EmployeeID }}</span>
+                    <span style="float: left; min-width:200px">{{ item.EmployeeName }}</span>
+                    <span style="float: left; min-width:120px">{{ item.Department }}</span>
+                    <span style="float: left; min-width:200px;;margin-right:10px">{{ item.Mobile }}</span>
+                </el-option>
+            </div>
+           
         </el-select>
        <div class="cb-action">
             <div class="btn-add" @click="showAddSupplierDialog()">
@@ -117,6 +118,17 @@ import {busData} from '@/main.js';
 .combobox{
     width: 100%;
     position: relative;
+}
+.cbb-content{
+    overflow-y: scroll;
+    overflow-x:hidden;
+    width: 100%;
+    max-height: 195px;
+    box-sizing: border-box;
+}
+.cbb-content::-webkit-scrollbar{
+    width: 7px;
+    background: rgba(144,147,153,.3);
 }
 .cb-label{
     font-size: 12px;

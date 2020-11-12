@@ -3,7 +3,7 @@
         <div class="w-1-2" style="padding-right: 26px;" >
             <label class="label-input">Người liên hệ</label>
             <div class="row-input" style="padding-bottom: 4px;">
-               <MSSelect style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
+               <MSSelect v-bind:arrs="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
                <MSTextbox style="width:calc(100% - 112px)" placeholder="Họ và tên"/> 
             </div>
             <div class="row-input" style="padding-bottom: 4px;">
@@ -51,7 +51,16 @@ import MSTextbox from '@/components/common/MSTextbox'
         },
         data(){
             return{
-                isCus:false
+                isCus:false,
+                options:[{value:'1',label:'Anh'},
+                        {value:'2',label:'Chị'},
+                        {value:'3',label:'Bạn'},
+                        {value:'4',label:'Bà'},
+                        {value:'5',label:'Miss'},
+                        {value:'6',label:'Mr'},
+                        {value:'7',label:'Mrs'},
+                        {value:'8',label:'Ông'},
+                ]
             }
         },
         created(){

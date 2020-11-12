@@ -5,7 +5,7 @@
                 <div class="icon icon-history"></div>
                 <div class="title-layout">Phiếu chi PC00023</div>
                 <div class="payment-type">
-                   <MSSelect/>             
+                   <MSSelect v-bind:arrs="options" value="10"/>             
                  </div>
             </div>
             <div class="header-right">
@@ -52,7 +52,7 @@ import AddEmployee from '@/components/content/cash/AddEmployee'
             MSSelect,
             MSButton,
             AddSupplier,
-            AddEmployee
+            AddEmployee,
         },
         created(){
             busData.$on('showDialog',(mission)=>{
@@ -78,6 +78,46 @@ import AddEmployee from '@/components/content/cash/AddEmployee'
                 showBlackModel:false,
                 showAddSupplire:false,
                 showAddEmployee:false,
+                options: [
+                    {
+                    value: '1',
+                    label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'
+                    }, {
+                    value: '2',
+                    label: '2. Tạm ứng cho nhân viên',
+                    
+                    }, {
+                    value: '3',
+                    label: '3. Chi mua ngoài có hóa đơn'
+                    }, {
+                    value: '4',
+                    label: '4. Gửi tiền vào ngân hàng'
+                    }, {
+                    value: '5',
+                    label: '5. Chi tiếp khách'
+                    },
+                    {
+                    value: '6',
+                    label: '6. Chi tạm ứng'
+                    },
+                    {
+                    value: '7',
+                    label: '7. Trả lương NV xưởng'
+                    },
+                    {
+                    value: '8',
+                    label: '8. Chi tiền điện'
+                    },
+                    {
+                    value: '9',
+                    label: '9. Chi tiền tiếp khách'
+                    },
+                    {
+                    value: '10',
+                    label: '10. Chi khác',
+                    },
+                ],
+                
             }
         },
         methods:{

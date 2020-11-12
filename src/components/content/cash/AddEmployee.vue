@@ -79,7 +79,7 @@
                        </div>
                     </div>
                 </div>
-                <MSTabOrder v-bind:class="{top40:isCus||isSupplier}"/> 
+                <EmployeeTab v-bind:class="{top40:isCus||isSupplier}" style="height:250px"/> 
                  <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
@@ -100,7 +100,7 @@
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
-import MSTabOrder from '@/components/common/MSTabOrder'
+import EmployeeTab from '@/components/common/TabOrder/EmployeeTab'
 import MSSelect from '@/components/common/MSSelect'
 import {busData} from '@/main.js'
 
@@ -111,7 +111,7 @@ import SupplierCBB from '@/components/common/combobox/SupplierCBB'
         components:{
             MSTextbox,
             MSDatetime,
-            MSTabOrder,
+            EmployeeTab,
             MSSelect,
             SupplierCBB,
             UnitCBB,

@@ -4,7 +4,6 @@
         <el-select
             v-model="value"
             filterable
-            remote
             reserve-keyword
             placeholder=""
             :loading="loading"
@@ -12,81 +11,54 @@
             size="small"
         >
             <el-option :value="1" class="cb-header">
-                <span style="float: left; width:200px">Mã đơn vị</span>
-                <span style="float: left; width:250px">Tên đơn vị</span>
+                <span style="float: left; width:100px">Mã loại tiền</span>
+                <span style="float: left; width:150px">Tên loại tiền</span>
             </el-option>
-
-            <div class="cbb-content">
-                <el-option
-                    v-for="item in units"
-                    :key="item.UnitID"
-                    :value="item.UnitName"
-                    >
-                    <span style="float: left; min-width:200px">{{ item.UnitID }}</span>
-                    <span style="float: left; min-width:250px">{{ item.UnitName }}</span>
-                </el-option>
-            </div>
-            
-        </el-select>
-       <div class="cb-action">
-            <div class="btn-add">
-                <div class="icon icon-add"></div>
-            </div>
-            <div class="btn-option">
-                <div class="icon icon-down"></div>
-            </div>
+        <div class="cbb-content">
+             <el-option
+                v-for="item in currencys"
+                :key="item.MoneyID"
+                :value="item.MoneyID"
+                >
+                <span style="float: left; min-width:100px">{{ item.MoneyID }}</span>
+                <span style="float: left; min-width:150px">{{ item.MoneyName }}</span>
+            </el-option>
         </div>
+           
+        </el-select>
     </div>
 </template>
 
 <script>
-import {busData} from '@/main.js';
     export default {
         props:{
-            label:String,
-            mission:String,
-            required:Boolean
+           required:Boolean,
+           label:String,
+
         },
         data(){
             return{
                 isHide:true,
                 options: [],
-                value: [],
+                value: 'VND',
                 list: [],
                 loading: false,
-                units: [
+                currencys: [
                     {
-                    UnitID:"HIK",
-                    UnitName: 'Công ty TNHH HIK',
+                    MoneyID:"VND",
+                    MoneyName: 'Việt Nam đồng',
                     },  {
-                    UnitID:"03156312",
-                    UnitName: 'Công ty TNHH Thép KIM YEN',
+                     MoneyID:"USD",
+                    MoneyName: 'Đô la Mỹ',
                     },
-                     {
-                     UnitID:"PĐTXD",
-                    UnitName: 'Phòng đầu tư xây dựng',
-                    },
-                    {
-                     UnitID:"PHC",
-                    UnitName: 'Phòng Hành Chính',
-                    },
-                    {
-                    UnitID:"PKT",
-                    UnitName: 'Phòng Kế Toán',
-                    }
                     ],
             }
         },methods:{
-            showAddSupplierDialog(){
-               busData.$emit('showDialog',this.mission)
-            },
             
         },
         watch:{
             value:function(){
-                if(this.value){
-                    this.isHide = false;
-                }
+                console.log(this.value);
             }
         }
        
@@ -112,6 +84,7 @@ import {busData} from '@/main.js';
     width: 7px;
     background: rgba(144,147,153,.3);
 }
+
 .cb-label{
     font-size: 12px;
     font-weight: 700;
@@ -131,7 +104,7 @@ import {busData} from '@/main.js';
 .cb-action{
     display: flex;
     position: absolute;
-    top:22px;
+    top:20px;
     right: 1px;
     height: 30px;
 }

@@ -29,7 +29,7 @@
            <div class="dialog-body">
                 <Organization v-if="picked == '1'"/>
                 <Personal v-if="picked == '2'"/>
-                <MSTabOrder />  
+                <SupplierTab style="height:250px"/>  
                <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
@@ -49,12 +49,12 @@
 
 <script>
 import {busData} from '@/main.js'
-import MSTabOrder from '@/components/common/MSTabOrder'
+import SupplierTab from '@/components/common/TabOrder/SupplierTab'
 import Organization from './SupplierInfo/InfoOrganization'
 import Personal from './SupplierInfo/InfoPersonal'
     export default {
         components:{
-            MSTabOrder,
+            SupplierTab,
             Organization,
             Personal
         },
@@ -81,7 +81,7 @@ import Personal from './SupplierInfo/InfoPersonal'
     min-width: 900px;
     max-width: 900px;
     transition: all .2s;
-    z-index: 100;
+    z-index: 5;
     display: flex;
     flex-direction: column;
     background-color: #fff;

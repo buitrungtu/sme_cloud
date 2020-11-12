@@ -1,8 +1,9 @@
 <template>
     <div class="select">
-        <el-select v-model="value" size="small">
+        <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
+        <el-select v-model="value" size="small"  :placeholder="placeholder">
             <el-option
-                v-for="item in options"
+                v-for="item in arrs"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -16,7 +17,10 @@
 <script>
     export default {
         props:{
-            
+            arrs:Array, // mỗi phần tử là 1 obj có 2 thuộc tính: value và label
+            label:String,
+            required:Boolean,
+            placeholder:String
         },
         components:{
         },
@@ -24,46 +28,7 @@
             return{
                 isFocus:false,
                 showOptionDetail:false,
-                options: [
-                    {
-                    value: '1',
-                    label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'
-                    }, {
-                    value: '2',
-                    label: '2. Tạm ứng cho nhân viên',
-                    
-                    }, {
-                    value: '3',
-                    label: '3. Chi mua ngoài có hóa đơn'
-                    }, {
-                    value: '4',
-                    label: '4. Gửi tiền vào ngân hàng'
-                    }, {
-                    value: '5',
-                    label: '5. Chi tiếp khách'
-                    },
-                    {
-                    value: '6',
-                    label: '6. Chi tạm ứng'
-                    },
-                    {
-                    value: '7',
-                    label: '7. Trả lương NV xưởng'
-                    },
-                    {
-                    value: '8',
-                    label: '8. Chi tiền điện'
-                    },
-                    {
-                    value: '9',
-                    label: '9. Chi tiền tiếp khách'
-                    },
-                    {
-                    value: '10',
-                    label: '10. Chi khác',
-                    },
-                ],
-                 value: '10'
+                value:""
             }
         },
         methods:{
@@ -79,5 +44,10 @@
     position: relative;
     height: 100%;
 }
-
+.cb-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: #212121;
+    padding-bottom: 4px;
+}
 </style>

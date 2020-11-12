@@ -13,7 +13,7 @@
                 <MSTextbox label="Tên nhà cung cấp" v-bind:required="true" />
             </div>
             <div class="row-input">
-                <MSTextbox label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                <MSTextbox v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
             </div>
         </div>
         <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">

@@ -9,15 +9,15 @@
                     <MSTextbox label="Mã số thuế"/>
                 </div>
             </div>
-            <label class="label-input">Người liên hệ</label>
+            <label class="label-input">Tên nhà cung cấp</label>
             <div class="row-input">
                <div class="row-input" style="padding-bottom: 4px;">
-                    <MSSelect style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
+                    <MSSelect v-bind:arrs="options" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
                     <MSTextbox style="width:calc(100% - 116px)" placeholder="Họ và tên"/> 
                 </div>
             </div>
             <div class="row-input">
-                <MSTextbox label="Địa chỉ" style="height:60px" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu giấy, Hà Nội"/>
+                <MSTextbox v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu giấy, Hà Nội"/>
             </div>
         </div>
         <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
@@ -42,6 +42,19 @@ import MSSelect from '@/components/common/MSSelect'
             SupplierCBB,
             Buyer,
             MSSelect
+        },
+        data(){
+            return{
+                options:[{value:'1',label:'Anh'},
+                        {value:'2',label:'Chị'},
+                        {value:'3',label:'Bạn'},
+                        {value:'4',label:'Bà'},
+                        {value:'5',label:'Miss'},
+                        {value:'6',label:'Mr'},
+                        {value:'7',label:'Mrs'},
+                        {value:'8',label:'Ông'},
+                ]
+            }
         }
         
     }

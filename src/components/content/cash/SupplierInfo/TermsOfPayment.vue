@@ -19,10 +19,10 @@
         </div>
         <div class="row-input">
             <div class="w-input" v-show="isCus">
-                <MSSelect label="Tài khoản công nợ phải thu" title="131"/>
+                <DebtAccountCBB label="Tài khoản công nợ phải thu" currentValue="131" type='collect'/>
             </div>
             <div class="w-input" >
-                <MSSelect label="Tài khoản công nợ phải trả" title="331"/>
+                <DebtAccountCBB label="Tài khoản công nợ phải trả" currentValue="331" type='pay'/>
             </div>
         </div>
         
@@ -31,16 +31,16 @@
 </template>
 
 <script>
-import MSSelect from '@/components/common/MSSelect'
 import MSTextbox from '@/components/common/MSTextbox'
 import ObjCBB from '@/components/common/combobox/ObjCBB'
 import {busData} from '@/main.js'
+import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
 
     export default {
         components:{
-            MSSelect,
             MSTextbox,
-            ObjCBB
+            ObjCBB,
+            DebtAccountCBB
         },
         data(){
             return{

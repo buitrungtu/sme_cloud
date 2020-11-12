@@ -1,35 +1,81 @@
 <template>
     <div class="textbox">
-        <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <div class="cb-content" v-bind:class="{focus:isFocus}">
-            <input type="text" v-bind:style="TextAlign" class="cb-input" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-bind:value="value">
+        <div class="cb-label" v-show="label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
+        <div class="cb-content" v-bind:class="{focus:isFocus}" v-show="!textarea">
+            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="content">
+        </div>
+        <div class="cb-content-2" v-bind:class="{focus:isFocus}" v-show="textarea">
+            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="content">
         </div>
     </div> 
 </template>
 
 <script>
+import {busData} from '@/main.js';
     export default {
         props:{
-            label:String,
+            textarea:Boolean,
+            label:{
+                type:String,
+                default:''
+            },
             required:Boolean,
             placeholder:String,
             value:String,
             textAlign:{
                 type:String,
                 default:'left'
+            },
+            number:{
+                type:Boolean,
+                default:false
+            },
+            ID:String,
+            readonly:Boolean
+        },
+        created(){
+            this.content = this.value;
+            if(this.ID == 'ObjName'){
+                busData.$on('completeName',(name)=>{
+                    this.content = name;
+                })
             }
+           
         },
         data(){
             return{
-                isFocus:false
+                isFocus:false,
+                content : "",
             }
         },
         computed:{
             TextAlign(){
                 return 'text-align: '+ this.textAlign;
             }
+        },watch:{
+            content:function(){
+                if(this.number){
+                    if(Number(this.content)){
+                        try {
+                            var x = this.content;
+                            x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
+                            x = x.split("").reverse().join(""); // đảo chuỗi
+                            x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm
+                                return e + ".";
+                            });
+                            x = x.split("").reverse().join("");// đảo lại chuỗi
+                            x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
+                            this.content = x;
+                        } catch{
+                            console.log('Lỗi chỗ format tiền nè bạn ơi');
+                        }
+                    }else{
+                        this.content = "";
+                    }
+                }
+                
+            }
         }
-       
     }
 </script>
 
@@ -45,6 +91,7 @@
     color: #212121;
     padding-bottom: 4px;
 }
+
 .cb-content{
     width: 100%;
     display: flex;
@@ -52,13 +99,23 @@
     border-radius: 2px;
     background-color: #fff;
     overflow: hidden;
-    height: 30px;
+    height: 31px;
+}
+.cb-content-2{
+    width: 100%;
+    display: flex;
+    border: 1px solid #babec5;
+    border-radius: 2px;
+    background-color: #fff;
+    overflow: hidden;
+    height: 65px;
 }
 .cb-input{
     border: none;
     padding: 0px 10px;
     width: 100%;
 }
+
 .focus{
     border-color: #2ca01c;
 }

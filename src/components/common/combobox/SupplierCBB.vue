@@ -15,16 +15,17 @@
                 <span style="float: left; width:200px">Mã nhóm KH, NCC</span>
                 <span style="float: left; width:250px">Tên nhóm KH, NCC</span>
             </el-option>
-
-            <el-option
-                v-for="item in suppliers"
-                :key="item.supplierID"
-                :value="item.supplierName"
-                >
-                <span style="float: left; min-width:200px">{{ item.supplierID }}</span>
-                <span style="float: left; min-width:250px">{{ item.supplierName }}</span>
-
-            </el-option>
+            <div class="cbb-content">
+                 <el-option
+                    v-for="item in suppliers"
+                    :key="item.supplierID"
+                    :value="item.supplierName"
+                    >
+                    <span style="float: left; min-width:200px">{{ item.supplierID }}</span>
+                    <span style="float: left; min-width:250px">{{ item.supplierName }}</span>
+                </el-option>
+            </div>
+           
         </el-select>
        <div class="cb-action">
             <div class="btn-add" @click="showAddSupplierDialog()">
@@ -92,6 +93,17 @@ import {busData} from '@/main.js';
     width: 100%;
     position: relative;
 }
+.cbb-content{
+    overflow-y: scroll;
+    overflow-x:hidden;
+    width: 100%;
+    max-height: 195px;
+    box-sizing: border-box;
+}
+.cbb-content::-webkit-scrollbar{
+    width: 7px;
+    background: rgba(144,147,153,.3);
+}
 .cb-label{
     font-size: 12px;
     font-weight: 700;
@@ -111,7 +123,7 @@ import {busData} from '@/main.js';
 .cb-action{
     display: flex;
     position: absolute;
-    top:20px;
+    top:21px;
     right: 1px;
     height: 30px;
 }

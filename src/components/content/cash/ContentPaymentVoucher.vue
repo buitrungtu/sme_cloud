@@ -22,7 +22,7 @@
                             <EmployeeCBB label="Nhân viên" mission="AddEmployee" />
                         </div>
                         <div class="w-4-7 width-240">
-                            <MSTextbox label="Kèm theo" textAlign = "right" placeholder="Số lượng"/>
+                            <MSTextbox label="Kèm theo" v-bind:number="true" textAlign = "right" placeholder="Số lượng"/>
                             <div class="root-invoice">Chứng từ gốc</div>
                         </div>
                     </div>
@@ -56,10 +56,11 @@
                  <div class="head-right">
                     <div class="label">Loại tiền</div>
                     <div class="select">
-                        <MSSelect title="VND"/>
+                        <CurrencyCBB />
                     </div>
                 </div>
             </div>
+            <MSTableAccounting/>
         </div>
     </div>
 </template>
@@ -67,16 +68,18 @@
 <script>
 import ObjCBB from '@/components/common/combobox/ObjCBB'
 import EmployeeCBB from '@/components/common/combobox/EmployeeCBB'
+import CurrencyCBB from '@/components/common/combobox/CurrencyCBB'
 import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
-import MSSelect from '@/components/common/MSSelect'
+import MSTableAccounting from '@/components/common/MSTableAccounting'
     export default {
         components:{
             ObjCBB,
             EmployeeCBB,
             MSTextbox,
             MSDatetime,
-            MSSelect,
+            CurrencyCBB,
+            MSTableAccounting
         }
     }
 
@@ -164,6 +167,7 @@ import MSSelect from '@/components/common/MSSelect'
     position: relative;
     display: inline-block;
     overflow: visible;
+    height: calc(100vh - 415px);
 }
 .grid-head{
     display: flex;
