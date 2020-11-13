@@ -9,23 +9,27 @@
             :loading="loading"
         >
             <el-option :value="1" class="cb-header">
-                <span style="float: left; width:200px" class="ellipsis" v-for="(thead,index) in listHeader" :key="index">{{thead}}</span>
+                <span v-for="(thead,index) in header" :key="index" :style="{float: 'left', width:thead.width + 'px'}" class="ellipsis" >{{thead.label}}</span>
             </el-option>
             <div class="cbb-content">
                 <el-option
-                    v-for="(item,index) in listItems"
+                    v-for="(item,index) in data"
                     :key="index"
                     :value="item.Customer"
                     >
-                    <span style="float: left; width:200px;" class="ellipsis" v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}</span>
+                    <span :style="{float: 'left', width:header[i].width + 'px'}" class="ellipsis" v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}</span>
                 </el-option>
             </div>
             
         </el-select>
-       <div class="cb-action">
+       <div class="cb-action" v-show="plus">
             <div class="btn-add" @click="showDialog()">
                 <div class="icon icon-add"></div>
             </div>
+        </div>
+        <div class="add-new" v-show="addNewF9">
+            <div class="icon icon-add" ></div>
+            <div class="text">Thêm mới (F9)</div>
         </div>
     </div>
 </template>
@@ -36,10 +40,15 @@ import {busData} from '@/main.js';
     export default {
         props:{
             mission:String,
-            listHeader:Array,
-            listItems:Array,
+            header:Array,
+            data:Array,
             label:String,
-            required:Boolean
+            required:Boolean,
+            plus:{
+                type:Boolean,
+                default:true
+            },
+            addNewF9:Boolean
         },
         data(){
             return{
@@ -109,5 +118,18 @@ import {busData} from '@/main.js';
 .btn-option:hover,.btn-add:hover{
     background-color: #e0e0e0;
     border-color: #e0e0e0;
+}
+
+.add-new{
+    width: calc(100% - 20px);
+    height: 32px;
+    background: #ebedf0;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+.add-new .text{
+    color:#35bf22;
+    cursor: pointer;
 }
 </style>

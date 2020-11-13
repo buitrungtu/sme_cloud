@@ -6,7 +6,9 @@
                 <li>Kiểm kê</li>
                 <li>Báo cáo</li>
         </ul>
+
         <router-view />
+        
     </div>
     
 </template>

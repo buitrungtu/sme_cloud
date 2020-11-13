@@ -351,42 +351,7 @@ import MSSelect from '@/components/common/MSSelect'
     padding: 13px 12px 0 12px;
     background-position: -243px -130px;
 }
-.btn-filter{
-    margin-right: 12px;
-    display: inline-block;
-    display: flex;
-    border: 2px solid;
-    padding: 0 16px!important;
-    border-radius: 30px;
-    color: #212121;
-    height: 34px;
-    position: relative;
-} 
-.btn-filter button{
-    font-weight: 600;
-    position: relative;
-    color: inherit;
-    transition: all .25s ease;
-    white-space: nowrap;
-    font-size: 13px;
-    line-height: 13px;
-    border: none;
-    background: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    cursor: pointer;
-}
-.icon.icon-filtdown{
-    background-position: -553px -355px;
-}
-.filter-time{
-    line-height: 35px;
-    margin-right: 10px;
-    color: #212121;
-    white-space: nowrap;
-}
+
 .grid-filter-right{
     display: flex;
     justify-content: center;

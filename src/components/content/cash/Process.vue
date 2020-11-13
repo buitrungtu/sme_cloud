@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="process-object">
-                    <div class="object-item">
+                    <div class="object-item" @click="gotoSupplierPage()">
                         <div class="dummy">
                             <div class="icon icon-customer"></div>
                             <div class="obj-text">Đối tượng</div>
@@ -61,6 +61,9 @@ import {busData} from '@/main.js'
         methods:{
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
+            },
+            gotoSupplierPage(){
+                this.$router.push('/supplierpage');
             }
         }   
 

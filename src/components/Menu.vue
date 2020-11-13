@@ -5,7 +5,7 @@
             <div id="logo"></div>
         </div>
         <div class="menu-content">
-            <div class="menu-item active">
+            <div class="menu-item active" @click="gotoCash()">
                 <div class="icon icon-cash"></div>
                 <div class="content-text" title="Tiền mặt">
                     Tiền mặt
@@ -18,7 +18,11 @@
 
 <script>
     export default {
-        
+        methods:{
+            gotoCash(){
+                this.$router.push('/');
+            }
+        }
     }
 </script>
 

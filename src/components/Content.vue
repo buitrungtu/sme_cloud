@@ -2,7 +2,7 @@
     <div class="content">
         <Header />
         <div class="router-content">
-            <Cash />
+            <router-view />
         </div>
         
     </div>
@@ -10,12 +10,10 @@
 
 <script>
 import Header from './content/Header'
-import Cash from './content/Cash'
 
     export default {
         components:{
             Header,
-            Cash
         }
     }
 </script>

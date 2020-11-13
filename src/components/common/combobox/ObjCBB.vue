@@ -1,6 +1,6 @@
 <template>
     <div class="combobox">
-        <BaseCBB :mission="mission" :listHeader="listTh" :listItems ="objTest" :label="label"/>
+        <BaseCBB :mission="mission" :header="listTh" :data ="objTest" :label="label"/>
     </div>
 </template>
 
@@ -22,71 +22,75 @@ import BaseCBB from '../BaseCBB'
                 options: [],
                 value: [],
                 loading: false,
-                listTh:['Đối tượng','Tên đối tượng','Mã số thuế','Địa chỉ','Điện thoại'],
+                listTh:[{label:'Đối tượng',width:100},
+                        {label:'Tên đối tượng',width:200},
+                        {label:'Mã số thuế',width:150},
+                        {label:'Địa chỉ',width:250},
+                        {label:'Điện thoại',width:100},],
                 objTest: [
                     {
-                    Customer: 'Cửa Hàng Thạnh TY',
-                    Name: 'Cửa Hàng Thạnh TY',
-                    TaxCode: '',
-                    Address: 'Phú Xuân - Krông Năng',
-                    Mobile:""
+                        Customer: 'Cửa Hàng Thạnh TY',
+                        Name: 'Cửa Hàng Thạnh TY',
+                        TaxCode: '',
+                        Address: 'Phú Xuân - Krông Năng',
+                        Mobile:""
                     },  {
-                    Customer: 'DAIDUONG',
-                    Name: 'Công ty Đại Dương',
-                    TaxCode: '',
-                    Address: '',
-                    Mobile:""
+                        Customer: 'DAIDUONG',
+                        Name: 'Công ty Đại Dương',
+                        TaxCode: '',
+                        Address: '',
+                        Mobile:""
                     },
                      {
-                    Customer: 'DIENLUC',
-                    Name: 'DIEN LUC MIEN TAY',
-                    TaxCode: '',
-                    Address: '',
-                    Mobile:""
+                        Customer: 'DIENLUC',
+                        Name: 'DIEN LUC MIEN TAY',
+                        TaxCode: '',
+                        Address: '',
+                        Mobile:""
                     },
                      {
-                    Customer: 'DVTUAN',
-                    Name: 'ĐINH VĂN TUẤN',
-                    TaxCode: '',
-                    Address: '',
-                    Mobile:""
+                        Customer: 'DVTUAN',
+                        Name: 'ĐINH VĂN TUẤN',
+                        TaxCode: '',
+                        Address: '',
+                        Mobile:""
                     },
                      {
-                    Customer: 'KH00001',
-                    Name: 'CÔNG TY TNHH THÀNH THẮNG 12',
-                    TaxCode: '3700650305',
-                    Address: 'Thửa đất 865, Tờ bản đồ 12, ấp Tân Hóa, Xã Tân Vĩnh Hiệp, Thị xã Tân Uyên, Bình Dương, Việt Nam 123',
-                    Mobile:""
+                        Customer: 'KH00001',
+                        Name: 'CÔNG TY TNHH THÀNH THẮNG 12',
+                        TaxCode: '3700650305',
+                        Address: 'Thửa đất 865, Tờ bản đồ 12, ấp Tân Hóa, Xã Tân Vĩnh Hiệp, Thị xã Tân Uyên, Bình Dương, Việt Nam 123',
+                        Mobile:""
                     }, {
-                    Customer: 'KH00009',
-                    Name: 'CLASSIC STORE',
-                    TaxCode: '',
-                    Address: '71 Hoa Lan Phường 2 Quận Phú Nhuận',
-                    Mobile:""
+                        Customer: 'KH00009',
+                        Name: 'CLASSIC STORE',
+                        TaxCode: '',
+                        Address: '71 Hoa Lan Phường 2 Quận Phú Nhuận',
+                        Mobile:""
                     },{
-                    Customer: 'KH013',
-                    Name: 'Công ty cổ phần Đại Dương',
-                    TaxCode: '',
-                    Address: '68 Trần Bình Trọng, Hà Nội',
-                    Mobile:""
+                        Customer: 'KH013',
+                        Name: 'Công ty cổ phần Đại Dương',
+                        TaxCode: '',
+                        Address: '68 Trần Bình Trọng, Hà Nội',
+                        Mobile:""
                     },{
-                    Customer: 'KH0111',
-                    Name: 'Công ty TNHH Ngôi Sao',
-                    TaxCode: '',
-                    Address: '12 Bùi Thị Xuân',
-                    Mobile:""
+                        Customer: 'KH0111',
+                        Name: 'Công ty TNHH Ngôi Sao',
+                        TaxCode: '',
+                        Address: '12 Bùi Thị Xuân',
+                        Mobile:"0986025125"
                     },{
-                    Customer: 'NCC0001',
-                    Name: 'Công ty CP Maxspeed',
-                    TaxCode: '',
-                    Address: '14 Hoàng Quốc Việt, Hà Nội',
-                    Mobile:""
+                        Customer: 'NCC0001',
+                        Name: 'Công ty CP Maxspeed',
+                        TaxCode: '',
+                        Address: '14 Hoàng Quốc Việt, Hà Nội',
+                        Mobile:""
                     },{
-                    Customer: 'NCC0026',
-                    Name: 'Công ty TNHH Ngôi Sao',
-                    TaxCode: '3702142147',
-                    Address: '337 Cầu Giấy, Hà Nội',
-                    Mobile:""
+                        Customer: 'NCC0026',
+                        Name: 'Công ty TNHH Ngôi Sao',
+                        TaxCode: '3702142147',
+                        Address: '337 Cầu Giấy, Hà Nội',
+                        Mobile:""
                     },
                     
                 ],
