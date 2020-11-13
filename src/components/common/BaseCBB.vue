@@ -1,4 +1,4 @@
-    <template>
+<template>
     <div class="combobox">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
@@ -7,27 +7,23 @@
             reserve-keyword
             placeholder=""
             :loading="loading"
-            popper-class="hiden"
-            size="small"
         >
             <el-option :value="1" class="cb-header">
-                <span style="float: left; width:200px">Mã nhân viên</span>
-                <span style="float: left; width:250px">Tên nhân viên</span>
+                <span style="float: left; width:200px" class="ellipsis" v-for="(thead,index) in listHeader" :key="index">{{thead}}</span>
             </el-option>
-            
             <div class="cbb-content">
                 <el-option
-                    v-for="item in employees"
-                    :key="item.EmployeeID"
-                    :value="item.EmployeeName"
+                    v-for="(item,index) in listItems"
+                    :key="index"
+                    :value="item.Customer"
                     >
-                    <span style="float: left; min-width:200px">{{ item.EmployeeID }}</span>
-                    <span style="float: left; min-width:250px">{{ item.EmployeeName }}</span>
+                    <span style="float: left; width:200px;" class="ellipsis" v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}</span>
                 </el-option>
             </div>
+            
         </el-select>
        <div class="cb-action">
-            <div class="btn-add" @click="showAddSupplierDialog()">
+            <div class="btn-add" @click="showDialog()">
                 <div class="icon icon-add"></div>
             </div>
         </div>
@@ -36,58 +32,28 @@
 
 <script>
 import {busData} from '@/main.js';
+
     export default {
         props:{
-            label:String,
             mission:String,
+            listHeader:Array,
+            listItems:Array,
+            label:String,
             required:Boolean
         },
         data(){
             return{
-                isHide:true,
                 options: [],
                 value: [],
-                list: [],
                 loading: false,
-                employees: [
-                    {
-                    EmployeeID:"DVTUAN",
-                    EmployeeName: 'ĐINH VĂN TUẤN',
-                    },  {
-                    EmployeeID:"KIM YEN",
-                    EmployeeName: 'KIM YEN',
-                    },
-                     {
-                     EmployeeID:"NV001",
-                    EmployeeName: 'Lê Quang Đức',
-                    },
-                    {
-                     EmployeeID:"NV002",
-                    EmployeeName: 'Tạ Nguyệt Phương',
-                    },
-                    {
-                     EmployeeID:"NV003",
-                    EmployeeName: 'Nguyễn Văn Nam',
-                    }
-                    ],
             }
-        },methods:{
-            showAddSupplierDialog(){
-               busData.$emit('showDialog','AddEmployee')
-            },
-            
         },
-        watch:{
-            value:function(){
-                if(this.value){
-                    this.isHide = false;
-                }
-            }
-        }
-       
-
+        methods:{
+            showDialog(){
+               busData.$emit('showDialog',this.mission)
+            },
+        },
     }
-    
 </script>
 
 <style scoped>
@@ -107,13 +73,13 @@ import {busData} from '@/main.js';
     width: 7px;
     background: rgba(144,147,153,.3);
 }
-
 .cb-label{
     font-size: 12px;
     font-weight: 700;
     color: #212121;
     padding-bottom: 4px;
 }
+
 .cb-header{
     background: #f4f5f8;
     cursor: default;
@@ -121,9 +87,7 @@ import {busData} from '@/main.js';
     font-weight: 700;
     z-index: 5;
 }
-.hiden{
-    display: none !important;
-}
+
 .cb-action{
     display: flex;
     position: absolute;
@@ -132,7 +96,7 @@ import {busData} from '@/main.js';
     height: 30px;
     border-right: 1px solid #ccc;
 }
-.btn-add,.btn-option{
+.btn-add{
     width: 32px;
     background-color: transparent;
     display: flex;
@@ -142,9 +106,6 @@ import {busData} from '@/main.js';
     border-color: #35bf22;
 }
 
-.btn-option{
-    border-left: 1px solid #ccc;
-}
 .btn-option:hover,.btn-add:hover{
     background-color: #e0e0e0;
     border-color: #e0e0e0;

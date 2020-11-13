@@ -27,9 +27,11 @@
        </header>
        <div class="dialog-content">
            <div class="dialog-body">
-                <Organization v-if="picked == '1'"/>
-                <Personal v-if="picked == '2'"/>
-                <SupplierTab />  
+
+                <InfoOrganization v-if="picked == '1'"/>
+                <InfoPersonal v-if="picked == '2'"/>
+                <SupplierTab /> 
+                 
                <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
@@ -50,13 +52,13 @@
 <script>
 import {busData} from '@/main.js'
 import SupplierTab from '@/components/common/TabOrder/SupplierTab'
-import Organization from './SupplierInfo/InfoOrganization'
-import Personal from './SupplierInfo/InfoPersonal'
+import InfoOrganization from './SupplierInfo/InfoOrganization'
+import InfoPersonal from './SupplierInfo/InfoPersonal'
     export default {
         components:{
             SupplierTab,
-            Organization,
-            Personal
+            InfoOrganization,
+            InfoPersonal
         },
         data(){
             return{

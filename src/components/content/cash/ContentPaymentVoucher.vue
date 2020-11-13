@@ -167,7 +167,7 @@ import MSTableAccounting from '@/components/common/MSTableAccounting'
     position: relative;
     display: inline-block;
     overflow: visible;
-    height: calc(100vh - 415px);
+    height: calc(100vh - 420px);
 }
 .grid-head{
     display: flex;

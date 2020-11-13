@@ -21,9 +21,13 @@
 
         <ContentPaymentVoucher />
         
-        <div class="black-model" v-show="showBlackModel"></div>
+        <div class="black-model" v-show="showBlackModel1"></div>
+        <div class="black-model-2" v-show="showBlackModel2"></div>
+        <div class="black-model-3" v-show="showBlackModel3"></div>
+
         <AddSupplier v-if="showAddSupplire"/>
         <AddEmployee v-if="showAddEmployee"/>
+        <AddGroupSupplier v-if="showAddGroupSupplier"/>
         
         <div class="footer-layout">
             <div class="footer-left">
@@ -46,6 +50,7 @@ import MSButton from '@/components/common/MSButton'
 import {busData} from '@/main.js'
 import AddSupplier from '@/components/content/cash/AddSupplier'
 import AddEmployee from '@/components/content/cash/AddEmployee'
+import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
     export default {
         components:{
             ContentPaymentVoucher,
@@ -53,31 +58,42 @@ import AddEmployee from '@/components/content/cash/AddEmployee'
             MSButton,
             AddSupplier,
             AddEmployee,
+            AddGroupSupplier
         },
         created(){
             busData.$on('showDialog',(mission)=>{
             if(mission == 'AddSupplier'){
                 this.showAddSupplire=true;
-                this.showBlackModel = true;
+                this.showBlackModel1 = true;
             }else if(mission == 'AddEmployee'){
                 this.showAddEmployee=true;
-                this.showBlackModel = true;
+                this.showBlackModel2 = true;
+            }else if(mission == 'AddGroupSupplier'){
+                this.showAddGroupSupplier=true;
+                this.showBlackModel3 = true;
             }
             })
             busData.$on('closeDialogSupplier',()=>{
                 this.showAddSupplire=false;
-                this.showBlackModel = false;    
+                this.showBlackModel1 = false;    
             })
             busData.$on('closeDialogEmployee',()=>{
                 this.showAddEmployee=false;
-                this.showBlackModel = false;
+                this.showBlackModel2 = false;
+            })
+            busData.$on('closeDialogGroupSupplier',()=>{
+                this.showAddGroupSupplier=false;
+                this.showBlackModel3 = false;
             })
         },
         data(){
             return{
-                showBlackModel:false,
+                showBlackModel1:false,
+                showBlackModel2:false,
+                showBlackModel3:false,
                 showAddSupplire:false,
                 showAddEmployee:false,
+                showAddGroupSupplier:false,
                 options: [
                     {
                     value: '1',
@@ -209,5 +225,20 @@ import AddEmployee from '@/components/content/cash/AddEmployee'
     transition: all .2s ease;
     cursor: pointer;
 }
-
+.black-model,.black-model-2,.black-model-3{
+   position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.4;
+    background-color: #000;
+    z-index: 4;
+}
+.black-model-2{
+    z-index: 6;
+}
+.black-model-3{
+    z-index: 8;
+}
 </style>

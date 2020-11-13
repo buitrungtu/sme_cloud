@@ -4,7 +4,6 @@
         <el-select
             v-model="value"
             filterable
-            remote
             reserve-keyword
             placeholder=""
             :loading="loading"
@@ -28,12 +27,9 @@
             </div>
             
         </el-select>
-       <div class="cb-action">
-            <div class="btn-add">
+       <div class="cb-action" v-show="plus">
+            <div class="btn-add" @click="showDialogAddUnit()">
                 <div class="icon icon-add"></div>
-            </div>
-            <div class="btn-option">
-                <div class="icon icon-down"></div>
             </div>
         </div>
     </div>
@@ -45,7 +41,11 @@ import {busData} from '@/main.js';
         props:{
             label:String,
             mission:String,
-            required:Boolean
+            required:Boolean,
+            plus:{
+                type:Boolean,
+                default:true
+            }
         },
         data(){
             return{
@@ -77,8 +77,8 @@ import {busData} from '@/main.js';
                     ],
             }
         },methods:{
-            showAddSupplierDialog(){
-               busData.$emit('showDialog',this.mission)
+            showDialogAddUnit(){
+               busData.$emit('showDialogAddUnit');
             },
             
         },
@@ -132,8 +132,9 @@ import {busData} from '@/main.js';
     display: flex;
     position: absolute;
     top:22px;
-    right: 1px;
+    right: 32px;
     height: 30px;
+    border-right: 1px solid #ccc;
 }
 .btn-add,.btn-option{
     width: 32px;

@@ -4,7 +4,6 @@
         <el-select
             v-model="value"
             filterable
-            remote
             reserve-keyword
             placeholder=""
             :loading="loading"
@@ -28,12 +27,10 @@
            
         </el-select>
        <div class="cb-action">
-            <div class="btn-add" @click="showAddSupplierDialog()">
+            <div class="btn-add" @click="showAddDialog()">
                 <div class="icon icon-add"></div>
             </div>
-            <div class="btn-option">
-                <div class="icon icon-down"></div>
-            </div>
+           
         </div>
     </div>
 </template>
@@ -69,8 +66,8 @@ import {busData} from '@/main.js';
                     ],
             }
         },methods:{
-            showAddSupplierDialog(){
-               busData.$emit('showDialog',this.mission)
+            showAddDialog(){
+               busData.$emit('showDialog','AddGroupSupplier');
             },
             
         },
@@ -123,9 +120,10 @@ import {busData} from '@/main.js';
 .cb-action{
     display: flex;
     position: absolute;
-    top:21px;
-    right: 1px;
+    top:22px;
+    right: 32px;
     height: 30px;
+    border-right: 1px solid #ccc;
 }
 .btn-add,.btn-option{
     width: 32px;

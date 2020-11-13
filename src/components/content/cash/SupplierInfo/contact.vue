@@ -4,7 +4,7 @@
             <label class="label-input">Người liên hệ</label>
             <div class="row-input" style="padding-bottom: 4px;">
                <MSSelect v-bind:arrs="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
-               <MSTextbox style="width:calc(100% - 112px)" placeholder="Họ và tên"/> 
+               <MSTextbox style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
             </div>
             <div class="row-input" style="padding-bottom: 4px;">
                 <MSTextbox placeholder="Email"/> 

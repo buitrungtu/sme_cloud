@@ -4,10 +4,11 @@
             {{this.label}}
         </div>
         <el-date-picker
-            v-model="value1"
+            v-model="value"
             type="date"
             placeholder=""
-            format="dd-MM-yyyy"  
+            format="dd/MM/yyyy"
+            clear-icon="" 
         >
         </el-date-picker>
     </div>
@@ -20,11 +21,16 @@
         },
         data(){
             return{
-                 value1: '',
+                 value: '',
             }
         },
-        methods:{
-            
+        created(){
+            var today =  new Date();
+            var dd = String(today. getDate()).padStart(2, '0');
+            var mm = String(today. getMonth() + 1).padStart(2, '0');
+            var yyyy = today. getFullYear();
+            today = mm + '/' + dd + '/' + yyyy;
+            this.value = today
         }
     }
 </script>

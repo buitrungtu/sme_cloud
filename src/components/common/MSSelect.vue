@@ -1,7 +1,7 @@
 <template>
     <div class="select">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <el-select v-model="value" size="small"  :placeholder="placeholder">
+        <el-select v-model="content" size="small"  :placeholder="placeholder">
             <el-option
                 v-for="item in arrs"
                 :key="item.value"
@@ -20,7 +20,8 @@
             arrs:Array, // mỗi phần tử là 1 obj có 2 thuộc tính: value và label
             label:String,
             required:Boolean,
-            placeholder:String
+            placeholder:String,
+            value:String
         },
         components:{
         },
@@ -28,8 +29,11 @@
             return{
                 isFocus:false,
                 showOptionDetail:false,
-                value:""
+                content:""
             }
+        },
+        created(){
+            this.content= this.value;
         },
         methods:{
 

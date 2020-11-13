@@ -43,7 +43,6 @@
  .row-input{
     display: flex;
     padding-bottom: 10px;
-    align-items: flex-end;
     width: 100%;
 }
 
@@ -231,4 +230,13 @@ input,button{
     padding-bottom: 4px;
     color: rgb(33, 33, 33);
     display: inline;
+}
+.el-input__suffix:hover{
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+.ellipsis{
+    margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

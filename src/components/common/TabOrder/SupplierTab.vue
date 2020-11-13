@@ -87,9 +87,10 @@ import OtherAddress from '@/components/content/cash/SupplierInfo/OtherAddress'
 }
 .note textarea{
     border: 1px solid #ccc;
-    height: 100%;
-    width: 100%;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
     outline: none;
+    padding: 10px;
 }
 .note textarea:focus{
     border-color: #2ca01c;

@@ -21,27 +21,16 @@
                     <div class="object-item">
                         <div class="dummy">
                             <div class="icon icon-customer"></div>
-                            <div class="obj-text">Khách hàng</div>
+                            <div class="obj-text">Đối tượng</div>
                         </div>
                     </div>
                      <div class="object-item">
                         <div class="dummy">
                             <div class="icon icon-provider"></div>
-                            <div class="obj-text">Nhà cung cấp</div>
+                            <div class="obj-text">Tài khoản</div>
                         </div>
                     </div>
-                     <div class="object-item">
-                        <div class="dummy">
-                            <div class="icon icon-employee"></div>
-                            <div class="obj-text">Nhân viên</div>
-                        </div>
-                    </div>
-                     <div class="object-item">
-                        <div class="dummy">
-                            <div class="icon icon-cal"></div>
-                            <div class="obj-text">Tính tỷ giá xuất quỹ</div>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             <div class="process-report">
@@ -174,7 +163,7 @@ import {busData} from '@/main.js'
     display: flex;
     align-items: center;
     justify-content: center;
-    width:25%;
+    width:50%;
     height: 100%;
 }
 .object-item:hover,.btn-process:hover{

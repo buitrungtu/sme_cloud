@@ -48,6 +48,9 @@ import {busData} from '@/main.js';
                 content : "",
             }
         },
+        methods:{
+           
+        },
         computed:{
             TextAlign(){
                 return 'text-align: '+ this.textAlign;
@@ -55,7 +58,8 @@ import {busData} from '@/main.js';
         },watch:{
             content:function(){
                 if(this.number){
-                    if(Number(this.content)){
+                    var reg = /^[0-9.]*$/;
+                    if(reg.test(this.content)){
                         try {
                             var x = this.content;
                             x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi

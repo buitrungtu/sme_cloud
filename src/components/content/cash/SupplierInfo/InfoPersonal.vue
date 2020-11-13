@@ -5,7 +5,7 @@
                 <div class="w-3-5" style="padding-right: 12px;">
                     <MSTextbox label="Mã nhà cung cấp" value="ĐIỆN LỰC ĐĂK LĂK1" v-bind:required="true"/>
                 </div>
-                <div class="w-2-5">
+                <div class="w-2-5" style="padding-top:2px">
                     <MSTextbox label="Mã số thuế"/>
                 </div>
             </div>
@@ -13,7 +13,7 @@
             <div class="row-input">
                <div class="row-input" style="padding-bottom: 4px;">
                     <MSSelect v-bind:arrs="options" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
-                    <MSTextbox style="width:calc(100% - 116px)" placeholder="Họ và tên"/> 
+                    <MSTextbox style="width:calc(100% - 116px);padding-top:3px" placeholder="Họ và tên"/> 
                 </div>
             </div>
             <div class="row-input">

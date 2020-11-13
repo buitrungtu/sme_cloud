@@ -56,13 +56,6 @@
         },methods:{
             
         },
-        watch:{
-            value:function(){
-                console.log(this.value);
-            }
-        }
-       
-
     }
     
 </script>

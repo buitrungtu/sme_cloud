@@ -62,7 +62,7 @@
                            <div class="w-3-5" style="padding-right:6px">
                                 <MSTextbox label="Số CMND"/>
                            </div>
-                           <div class="w-2-5">
+                           <div class="w-2-5" style="margin-top:2.5px">
                                 <MSDatetime label="Ngày cấp "/>
                            </div>
                        </div>
@@ -94,6 +94,7 @@
                </div>
            </div>
        </div>
+    <AddUnit />
     </div>
 </template>
 
@@ -103,9 +104,9 @@ import MSDatetime from '@/components/common/MSDatetime'
 import EmployeeTab from '@/components/common/TabOrder/EmployeeTab'
 import MSSelect from '@/components/common/MSSelect'
 import {busData} from '@/main.js'
-
 import UnitCBB from '@/components/common/combobox/UnitCBB'
 import SupplierCBB from '@/components/common/combobox/SupplierCBB'
+import AddUnit from '@/components/content/cash/AddUnit'
 
     export default {
         components:{
@@ -115,6 +116,7 @@ import SupplierCBB from '@/components/common/combobox/SupplierCBB'
             MSSelect,
             SupplierCBB,
             UnitCBB,
+            AddUnit
         },
         data(){
             return{
@@ -136,6 +138,7 @@ import SupplierCBB from '@/components/common/combobox/SupplierCBB'
     height: 700px;
     top: calc(50% - 350px);
     left: calc(50% - 450px);
+    z-index: 7;
 }
 .gr-checkbox{
     display:flex;padding-left: 1rem!important;padding-right: 1rem!important;

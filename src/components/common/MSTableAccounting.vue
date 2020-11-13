@@ -4,43 +4,39 @@
             <el-table-column prop="date" label="#" width="50" type="index">
             </el-table-column>
 
-            <el-table-column prop="name" label="Diễn giải" width="200">
-                <template slot-scope="scope">
-                    <el-input size="small"
-                        style="text-align:center"
-                        v-model="scope.row.name"></el-input>
-                </template>
+            <el-table-column prop="name" label="DIỄN GIẢI" width="200">
+                <MSTextBox  value="Chi tiền cho " />
             </el-table-column>
 
-            <el-table-column prop="state" label="TK Nợ" width="125">
-                  <DebtAccountCBB currentValue="" mission=""/>
+            <el-table-column prop="state" label="TK NỢ" width="125">
+                <DebtAccountCBB currentValue="" mission=""/>
             </el-table-column>
 
-            <el-table-column prop="state" label="TK Có" width="125">
-                  <DebtAccountCBB currentValue="1111" mission=""/>
+            <el-table-column prop="state" label="TK CÓ" width="125">
+                <DebtAccountCBB currentValue="1111" mission=""/>
             </el-table-column>
 
-            <el-table-column prop="address" label="Số tiền" width="150">
-                <MSTextBox value="" v-bind:number="true"/>
+            <el-table-column prop="address" label="SỐ TIỀN" width="150">
+                <MSTextBox value=""  v-bind:number="true" textAlign = "right"/>
             </el-table-column>
 
-            <el-table-column prop="zip" label="Đối tượng" width="200">
+            <el-table-column prop="zip" label="ĐỐI TƯỢNG" width="200">
                 <ObjCBB2 mission="AddSupplier"/>
             </el-table-column>
 
-            <el-table-column prop="zip" label="Tên đối tượng" width="250">
+            <el-table-column prop="zip" label="TÊN ĐỐI TƯỢNG" width="250">
                 <MSTextBox value="" v-bind:readonly="true" ID="ObjName"/>
             </el-table-column>
 
-            <el-table-column prop="zip" label="Khoản mục CP" width="150">
+            <el-table-column prop="zip" label="KHOẢN MỤC CP" width="150">
                <ExpenseItem />
             </el-table-column>
 
-            <el-table-column prop="zip" label="TK Ngân hàng" width="250">
+            <el-table-column prop="zip" label="TK NGÂN HÀNG" width="250">
                 <BankAccount/>
             </el-table-column>
 
-            <el-table-column prop="zip" label="Hợp đồng bán" width="300">
+            <el-table-column prop="zip" label="HỢP ĐỒNG BÁN" width="300">
                 <SaleContract/>
             </el-table-column>
 
@@ -134,7 +130,7 @@ import MSTextBox from '@/components/common/MSTextbox'
   border-style:solid;   
 }
 .icon.icon-delete{
-    background-position: -464px -312px;
+    background-position: -460px -312px;
 }
 .grid-footer{
     width: calc(100% - 60px);
