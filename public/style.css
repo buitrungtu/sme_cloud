@@ -276,3 +276,11 @@ input,button{
     color: #212121;
     white-space: nowrap;
 }
+.el-table__body-wrapper::-webkit-scrollbar{
+    width: 5px;
+    background: #fff;
+}
+.el-table tr th.is-leaf{
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}

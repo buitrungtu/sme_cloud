@@ -153,7 +153,7 @@ import {busData} from '@/main.js'
 .receive-payment .body{
     padding: 0 30px 0 0;
     overflow: auto;
-    height: calc(100vh - 140px);
+    height: calc(100vh - 138px);
 }
 .overview{
     display: flex;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="grid-Supp">
         <div class="grid-filter">
             <div class="grid-filter-left">
                 <div class="icon icon-checkall"></div>
@@ -28,7 +28,7 @@
                 ref="multipleTable"
                 :data="data"
                 style="width: 100%"
-                height="438"
+                height="100%"
                 @selection-change="handleSelectionChange"
             >
 
@@ -46,59 +46,60 @@
                 <el-table-column
                 property="name"
                 label="TÊN NHÀ CUNG CẤP"
-                width="225">
+                width="400">
                 </el-table-column>
 
                 <el-table-column
                 property="address"
                 label="ĐỊA CHỈ"
-                 width="275">
+                 width="300">
                 </el-table-column>
 
                  <el-table-column
                 property="address"
                 label="CÔNG NỢ"
-                 width="150">
+                 width="170">
                 </el-table-column>
 
                  <el-table-column
                 property="address"
                 label="MÃ SỐ THUẾ"
-                 width="150">
+                 width="170">
                 </el-table-column>
 
                  <el-table-column
                 property="address"
                 label="ĐIỆN THOẠI"
-                 width="150">
+                 width="170">
                 </el-table-column>
 
                  <el-table-column
                     fixed="right"
                     label="Chức năng"
-                    width="150">
+                    width="175">
                     <div style="display:flex;align-items: center;justify-content: center;">
                         <Dropdown />
                     </div>
                 </el-table-column>
 
             </el-table>
-           
-        </div>
-        <div class="grid-footer">
-            <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
-            <div class="footer-right">
-                <div class="recordOnPage"><MSSelect title="20 bản ghi trên 1 trang"/></div>
-                <div class="totalPage">
-                    <div class="pre disable">Trước</div>
-                    <div class="page-list">
-                        <div class="page active">1</div>
-                        <div class="page">2</div>
-                        <div class="page">3</div>
-                        <div class="page"></div>
-                        <div class="page">4</div>
+            <div class="footer-fixed">
+                <div class="grid-footer">
+                <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
+                    <div class="footer-right">
+                        <div class="recordOnPage"><MSSelect title="20 bản ghi trên 1 trang"/></div>
+                        <div class="totalPage">
+                            <div class="pre disable">Trước</div>
+                            <div class="page-list">
+                                <div class="page active">1</div>
+                                <div class="page">2</div>
+                                <div class="page">3</div>
+                                <div class="page"></div>
+                                <div class="page">4</div>
+                            </div>
+                            <div class="next">Sau</div>
+                        </div>
                     </div>
-                    <div class="next">Sau</div>
                 </div>
             </div>
         </div>
@@ -143,7 +144,53 @@ import Dropdown from './Dropdown'
                 date: '2016-05-07',
                 name: 'Tom',
                 address: 'No. 189, Grove St, Los Angeles'
-                }],
+                },
+                {
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                },{
+                date: '2016-05-07',
+                name: 'Tom',
+                address: 'No. 189, Grove St, Los Angeles'
+                }
+                ],
                 multipleSelection: []
             }
         },
@@ -166,6 +213,9 @@ import Dropdown from './Dropdown'
 </script>
 
 <style scoped>
+.grid-Supp{
+    height:calc(100% - 131px);
+}
 .grid-filter{
     display: flex;
     justify-content: space-between;
@@ -197,6 +247,7 @@ import Dropdown from './Dropdown'
     background-position: -88px -200px;
      margin: 0px 6px;
 }
+
 .collap-over{
     border: 2px solid #e2e9f2;
     background: #f2f5f8;
@@ -214,6 +265,7 @@ import Dropdown from './Dropdown'
 .grid-content{
     background: #fff;
     width: 100%;
+    height:calc(100% - 80px);
 }
 .table-scroll{
     overflow-y: auto;
@@ -223,80 +275,6 @@ import Dropdown from './Dropdown'
 .table-scroll table{
     border-spacing: 0;
     min-width: 100%;
-}
-.th-left-white{
-    min-width: 16px;
-    max-width: 16px;
-    width: 16px;
-    background: #fff;
-    left: 0;
-    border: 0;
-    z-index: 3;
-    padding: 0;
-    position: sticky;
-}
-th,td{
-    padding: 6px 10px;
-    padding-top: 5px;
-    padding-bottom: 3px;
-    border: 0;
-    text-align: left;
-    font-size: .85rem;
-}
-
-.multi-checkall{
-    z-index: 3;
-    position: sticky;
-    left: 16px;
-    top: 0;
-    background-color: #fff;
-    min-width: 40px;
-    width: 40px;
-    max-width: 40px;
-    border-bottom: 1px solid #e0e0e0;
-    min-height: 34px;
-    height: 34px;
-    vertical-align: middle;
-}
-.checkbox{
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-}
-.checkbox-input{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    z-index: 200;
-    cursor: pointer;
-    left: 15px;
-}
-.th-content{
-    background-color: #fff;
-    display: contents;
-}
-
-.row-viewer{
-    min-height: 34px;
-    height: 34px;
-    position: sticky;
-    z-index: 2;
-    top: 0;
-    background-color: #fff;
-    vertical-align: middle;
-    left: unset!important;
-}
-.th-viewer{
-    border-left: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    text-transform: uppercase;
-}
-.td-viewer{
-    border-left: 1px dotted #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
 }
 
 .out-right-gray{
@@ -358,6 +336,14 @@ th,td{
 }
 tfoot{
     background-color: #f8f9fe !important;
+}
+
+.footer-fixed{
+    position: fixed;
+    bottom: 5px;
+    left: 185px;
+    width: calc(100% - 215px);
+    z-index: 100;
 }
 .grid-footer{
     width: 100%;
