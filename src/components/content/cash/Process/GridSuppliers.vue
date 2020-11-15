@@ -38,13 +38,13 @@
                 </el-table-column>
 
                 <el-table-column
+                property="supplierCode"
                 label="MÃ NHÀ CUNG CẤP"
                 width="225">
-                <template slot-scope="scope">{{ scope.row.date }}</template>
                 </el-table-column>
 
                 <el-table-column
-                property="name"
+                property="supplierName"
                 label="TÊN NHÀ CUNG CẤP"
                 width="400">
                 </el-table-column>
@@ -56,19 +56,19 @@
                 </el-table-column>
 
                  <el-table-column
-                property="address"
+                property="debt"
                 label="CÔNG NỢ"
                  width="170">
                 </el-table-column>
 
                  <el-table-column
-                property="address"
+                property="taxCode"
                 label="MÃ SỐ THUẾ"
                  width="170">
                 </el-table-column>
 
                  <el-table-column
-                property="address"
+                property="mobile"
                 label="ĐIỆN THOẠI"
                  width="170">
                 </el-table-column>
@@ -109,6 +109,7 @@
 <script>
 import MSSelect from '@/components/common/MSSelect'
 import Dropdown from './Dropdown'
+import axios from 'axios';
     export default {
         components:{
             MSSelect,
@@ -116,85 +117,16 @@ import Dropdown from './Dropdown'
         },
         data() {
             return {
-                data: [{
-                date: '2016-05-03',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }, {
-                date: '2016-05-02',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }, {
-                date: '2016-05-04',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles No. 189, Grove St, Los Angeles '
-                }, {
-                date: '2016-05-01',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }, {
-                date: '2016-05-08',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }, {
-                date: '2016-05-06',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }, {
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },
-                {
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                },{
-                date: '2016-05-07',
-                name: 'Tom',
-                address: 'No. 189, Grove St, Los Angeles'
-                }
+                data: [
                 ],
                 multipleSelection: []
             }
         },
-
+        created(){
+            axios.get('https://localhost:44392/api/supplier')
+                .then(response => (this.data = response.data))
+                .catch(error => (console.log("Lỗi: "+error)))
+        },
         methods: {
             toggleSelection(rows) {
                 if (rows) {
