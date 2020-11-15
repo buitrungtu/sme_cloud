@@ -4,6 +4,9 @@ import ReceiveAndPayment from './components/content/cash/ReceiveAndPayment'
 import PaymentVoucher from './components/content/cash/PaymentVoucher'
 import SupplierPage from './components/content/cash/Process/SupplierPage'
 import Cash from './components/content/Cash'
+import AccountPage from './components/content/cash/Process/AccountPage'
+
+
 export const routes = [
     {path:'/',name:'homepage',component:HomePage,
         children:[
@@ -14,6 +17,7 @@ export const routes = [
                     {path:'/paymentvoucher',name:'paymentvoucher',component:PaymentVoucher},
                 ]},
             {path:'/supplierpage',name:'supplierpage',component:SupplierPage},
+            {path:'/accountpage',name:'account',component:AccountPage},
         ]
     },
 ]

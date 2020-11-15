@@ -24,7 +24,7 @@
                             <div class="obj-text">Đối tượng</div>
                         </div>
                     </div>
-                     <div class="object-item">
+                     <div class="object-item" @click="gotoAccountPage()">
                         <div class="dummy">
                             <div class="icon icon-provider"></div>
                             <div class="obj-text">Tài khoản</div>
@@ -64,6 +64,9 @@ import {busData} from '@/main.js'
             },
             gotoSupplierPage(){
                 this.$router.push('/supplierpage');
+            },
+            gotoAccountPage(){
+                this.$router.push('/accountpage');
             }
         }   
 

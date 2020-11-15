@@ -280,6 +280,11 @@ input,button{
     width: 5px;
     background: #fff;
 }
+.el-table__body-wrapper::-webkit-scrollbar-thumb{
+    width: 5px;
+    background: #e0e0e0;
+}
+
 .el-table tr th.is-leaf{
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;

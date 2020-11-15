@@ -15,7 +15,7 @@
                 <el-option
                     v-for="(item,index) in data"
                     :key="index"
-                    :value="item.Customer"
+                    :value="Object.values(item)[indexshow-1]"
                     >
                     <span :style="{float: 'left', width:header[i].width + 'px'}" class="ellipsis" v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}</span>
                 </el-option>
@@ -40,15 +40,16 @@ import {busData} from '@/main.js';
     export default {
         props:{
             mission:String,
-            header:Array,
-            data:Array,
+            header:Array, //mảng các obj 2 thuộc tính label,width của từng cột
+            data:Array, // mảng dữ liệu hiện lên
             label:String,
             required:Boolean,
             plus:{
-                type:Boolean,
+                type:Boolean,   
                 default:true
             },
-            addNewF9:Boolean
+            addNewF9:Boolean,
+            indexshow:Number //tính từ 1
         },
         data(){
             return{

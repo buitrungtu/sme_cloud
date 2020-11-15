@@ -16,7 +16,7 @@
                 <div class="btn-filter">
                     <button>Tiện ích <div class="icon icon-filtdown"></div> </button>
                 </div>
-                <div class="button-add" @click="gotoPaymentVoucher()">
+                <div class="button-add" @click="showDialogAddSupplier()">
                     <button>Thêm</button>
                     <button class="down-list">
                         <div class="split"></div>
@@ -49,27 +49,38 @@
             
             <GridSuppliers /> 
         </div>
+        <div class="black-model" v-show="isShow"></div>
+        <AddSupplier v-if="isShow"/>
     </div>
 </template>
 
 <script>
 import GridSuppliers from './GridSuppliers'
 import {busData} from '@/main.js'
+import AddSupplier from '../AddSupplier'
     export default {
         components:{
-            GridSuppliers
+            GridSuppliers,
+            AddSupplier
         },
         data(){
             return{
-                thisPage:'ReceivePayment'
+                thisPage:'ReceivePayment',
+                isShow:false,
             }
         },
         created(){
             busData.$emit('changeTab',1);
+            busData.$on('closeDialogSupplier',()=>{
+                this.isShow=false;
+            })
         },
         methods:{
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
+            },
+            showDialogAddSupplier(){
+                this.isShow = true;
             }
         }
     }
@@ -195,5 +206,14 @@ import {busData} from '@/main.js'
     align-items: center;
     margin-right: 8px;
 }
-
+.black-model{
+   position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.4;
+    background-color: #000;
+    z-index: 4;
+}
 </style>

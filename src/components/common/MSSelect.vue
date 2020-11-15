@@ -3,7 +3,7 @@
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select v-model="content" size="small"  :placeholder="placeholder">
             <el-option
-                v-for="item in arrs"
+                v-for="item in data"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -17,7 +17,7 @@
 <script>
     export default {
         props:{
-            arrs:Array, // mỗi phần tử là 1 obj có 2 thuộc tính: value và label
+            data:Array, // mỗi phần tử là 1 obj có 2 thuộc tính: value và label
             label:String,
             required:Boolean,
             placeholder:String,
