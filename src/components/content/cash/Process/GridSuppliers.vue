@@ -38,7 +38,7 @@
                 </el-table-column>
 
                 <el-table-column
-                property="supplierCode"
+                property="supplierId"
                 label="MÃ NHÀ CUNG CẤP"
                 width="225">
                 </el-table-column>
@@ -78,7 +78,7 @@
                     label="Chức năng"
                     width="175">
                     <div style="display:flex;align-items: center;justify-content: center;">
-                        <Dropdown />
+                        <Dropdown label="Trả tiền" />
                     </div>
                 </el-table-column>
 
@@ -123,7 +123,7 @@ import axios from 'axios';
             }
         },
         created(){
-            axios.get('https://localhost:44392/api/supplier')
+            axios.get('https://localhost:44346/api/Suppliers')
                 .then(response => (this.data = response.data))
                 .catch(error => (console.log("Lỗi: "+error)))
         },
@@ -275,7 +275,7 @@ tfoot{
     bottom: 5px;
     left: 185px;
     width: calc(100% - 215px);
-    z-index: 100;
+    z-index: 2;
 }
 .grid-footer{
     width: 100%;

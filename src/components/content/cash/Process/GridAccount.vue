@@ -20,45 +20,45 @@
                 :data="data"
                 style="width: 100%"
                 height="100%"
-                
-                row-key="AccountID"
+                row-key="accountId"
                 v-bind:default-expand-all="collapse"
 
                 @selection-change="handleSelectionChange"
             >
 
                 <el-table-column
-                    prop="AccountID"
+                    prop="accountId"
                     label="SỐ TÀI KHOẢN"
-                    width="150">
+                    width="150"
+                    >
                 </el-table-column>
 
                  <el-table-column
-                    prop="AccountName"
+                    prop="accountName"
                     label="TÊN TÀI KHOẢN"
-                    width="250">
+                    width="300">
                 </el-table-column>
 
                 <el-table-column
-                    prop="Type"
+                    prop="nature"
                     label="TÍNH CHẤT"
                     width="150">
                 </el-table-column>
 
                 <el-table-column
-                    prop="AccountNameEN"
+                    prop="accountNameEn"
                     label="TÊN TIẾNG ANH"
-                    width="250">
+                    width="300">
                 </el-table-column>
 
                  <el-table-column
-                    prop="Note"
+                    prop="note"
                     label="DIỄN GIẢI"
                     width="300">
                 </el-table-column>
 
                 <el-table-column
-                    prop="Status"
+                    prop="status"
                     label="TRẠNG THÁI"
                     width="150">
                 </el-table-column>
@@ -69,7 +69,7 @@
                     label="Chức năng"
                     width="150">
                     <div style="display:flex;align-items: center;justify-content: center;">
-                        <Dropdown />
+                        <Dropdown label="Sửa"/>
                     </div>
                 </el-table-column>
 
@@ -85,82 +85,52 @@
 
 <script>
 import Dropdown from './Dropdown'
+import axios from 'axios';
+
     export default {
         components:{
             Dropdown
         },
         data() {
             return {
-                collapse:true,
-                data: 
-                [
-                    {
-                        AccountID: '111',
-                        AccountName: 'Tiền mặt',
-                        Type:'Dư Nợ',
-                        AccountNameEN:'Cash in hand',
-                        Note:'',
-                        Status:'Đang sử dụng',
-                        children: [{
-                                AccountID: '1111',
-                                AccountName: 'Tiền Việt Nam',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Vietnam dong',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            }, {
-                                AccountID: '1112',
-                                AccountName: 'Ngoại tệ',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Foreign currency',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            },{
-                                AccountID: '1113',
-                                AccountName: 'Vàng tiền tệ',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Monetary gold',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            }
-                        ]
-                    },
-                    {
-                        AccountID: '112',
-                        AccountName: 'Tiền gửi ngân hàng',
-                        Type:'Dư Nợ',
-                        AccountNameEN:'Cash in bank',
-                        Note:'',
-                        Status:'Đang sử dụng',
-                        children: [{
-                                AccountID: '1121',
-                                AccountName: 'Tiền Việt Nam',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Vietnam dong',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            }, {
-                                AccountID: '1122',
-                                AccountName: 'Ngoại tệ',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Foreign currency',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            },{
-                                AccountID: '1123',
-                                AccountName: 'Vàng tiền tệ',
-                                Type:'Dư Nợ',
-                                AccountNameEN:'Monetary gold',
-                                Note:'',
-                                Status:'Đang sử dụng',
-                            }
-                        ]
-                    },
-                ],
+                collapse:false,
+                data:[],
                 multipleSelection: []
             }
         },
-
+        created(){
+            let tempdata = [];
+            let seft = this;
+            axios({
+                methods:'GET',
+                url:'https://localhost:44346/api/accounts'
+            }).then(function(res){
+                tempdata = res.data;
+                for(let i =0 ;i<tempdata.length;i++){
+                    tempdata[i].children = [];
+                    if(!tempdata[i].parent){
+                        tempdata[i].parent = 0;
+                    }
+                    let sureNot = false;
+                    for(let j=i+1;j<tempdata.length;j++){
+                        if(tempdata[i].accountId == tempdata[j].root){
+                            tempdata[i].children.push(tempdata[j]);
+                            tempdata[j].parent = 1;
+                        }else{
+                            sureNot == true;
+                        }
+                    }
+                    if(sureNot == true) continue;
+                }
+                let result =  tempdata.filter(function(item){
+                    return item.children.length >= 1 && item.parent == 0;
+                })
+                console.log(result);
+                seft.data = result;
+            }).catch(function(err){
+                console.log(err);
+            })
+        },
         methods: {
             toggleSelection(rows) {
                 if (rows) {

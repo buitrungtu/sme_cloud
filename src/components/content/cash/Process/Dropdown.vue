@@ -2,7 +2,7 @@
     <div>
         <el-dropdown>
             <span class="el-dropdown-link">
-               Trả tiền <i class="el-icon-caret-bottom"></i>
+               {{label}} <i class="el-icon-caret-bottom"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>Xem</el-dropdown-item>
@@ -15,7 +15,9 @@
 
 <script>
     export default {
-        
+        props:{
+            label:String
+        }
     }
 </script>
 
