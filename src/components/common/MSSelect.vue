@@ -1,7 +1,7 @@
 <template>
     <div class="select">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <el-select v-model="content" size="small"  :placeholder="placeholder">
+        <el-select v-model="content" size="small" :disabled="disable" :placeholder="placeholder">
             <el-option
                 v-for="item in data"
                 :key="item.value"
@@ -21,7 +21,8 @@
             label:String,
             required:Boolean,
             placeholder:String,
-            value:String
+            value:String,
+            disable:Boolean
         },
         components:{
         },

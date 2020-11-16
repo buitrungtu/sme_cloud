@@ -2,10 +2,14 @@
     <div class="textbox">
         <div class="cb-label" v-show="label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <div class="cb-content" v-bind:class="{focus:isFocus}" v-show="!textarea">
-            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="content">
+            <input 
+                type="text" v-bind:style="TextAlign" 
+                class="cb-input" v-bind:readonly="readonly" 
+                @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder"
+                 v-model="content" @input="changeInput">
         </div>
         <div class="cb-content-2" v-bind:class="{focus:isFocus}" v-show="textarea">
-            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="content">
+            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="value" @keyup="$emit('update:value', value);">
         </div>
     </div> 
 </template>
@@ -21,7 +25,6 @@ import {busData} from '@/main.js';
             },
             required:Boolean,
             placeholder:String,
-            value:String,
             textAlign:{
                 type:String,
                 default:'left'
@@ -31,7 +34,8 @@ import {busData} from '@/main.js';
                 default:false
             },
             ID:String,
-            readonly:Boolean
+            readonly:Boolean,
+            value:String
         },
         created(){
             this.content = this.value;
@@ -49,7 +53,10 @@ import {busData} from '@/main.js';
             }
         },
         methods:{
-           
+           changeInput(event){
+               this.content = event.target.value;   
+               this.$emit('valueChanged',this.content);
+           }
         },
         computed:{
             TextAlign(){
