@@ -20,23 +20,84 @@
        </header>
        <div class="dialog-content">
            <div class="dialog-body">
+            <div class="body-info" v-show="picked == '1'">
+                <div class="w-1-2 body-left">
+                    <div class="row-input">
+                        <div class="w-2-5" style="padding:2.5px 12px 0px 0px;">
+                            <MSTextbox fildname :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                        </div>
+                        <div class="w-3-5">
+                            <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  v-bind:required="true"/>
+                        </div>
+                    </div>
+                    <div class="row-input">
+                        <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" v-bind:required="true" />
+                    </div>
+                    <div class="row-input">
+                        <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                    </div>
+                </div> 
+                <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
+                    <div class="row-input" style="margin-bottom:1.5px">
+                        <div class="w-2-5" style="padding-right: 12px;">
+                            <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
+                        </div>
+                        <div class="w-3-5">
+                            <MSTextbox :value="obj.Website" @valueChanged="obj.Website = $event" label="Website"/>
+                        </div>
+                    </div>
+                    <div class="row-input">
+                        <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                    </div>
+                    <div class="row-input">
+                        <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                    </div>
+                </div>
+            </div>
 
-                <InfoOrganization v-if="picked == '1'"/>
-                <InfoPersonal v-if="picked == '2'"/>
-                <SupplierTab :isPer="picked"/> 
-                 
-               <div class="dialog-footer">
-                   <div class="divide"></div>
-                   <div class="btn-footer">
-                       <div class="btn-left">
-                           <button @click="btnCloseOnClick()">Hủy</button>
-                       </div>
-                       <div class="btn-right">
-                           <button>Cất</button>
-                           <button class="save-and-add">Cất và thêm</button>
-                       </div>
-                   </div>
-               </div>
+            <div class="body-info" v-show="picked == '2'">
+                <div class="w-1-2 body-left">
+                    <div class="row-input">
+                        <div class="w-3-5" style="padding-right: 12px;">
+                            <MSTextbox label="Mã nhà cung cấp" value="ĐIỆN LỰC ĐĂK LĂK1" v-bind:required="true"/>
+                        </div>
+                        <div class="w-2-5" style="padding-top:2px">
+                            <MSTextbox label="Mã số thuế"/>
+                        </div>
+                    </div>
+                    <label class="label-input">Tên nhà cung cấp</label>
+                    <div class="row-input">
+                    <div class="row-input" style="padding-bottom: 4px;">
+                            <MSSelect :data="vocatives" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSTextbox style="width:calc(100% - 116px);padding-top:3px" placeholder="Họ và tên"/> 
+                        </div>
+                    </div>
+                    <div class="row-input">
+                        <MSTextbox v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu giấy, Hà Nội"/>
+                    </div>
+                </div>
+                <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
+                    <div class="row-input">
+                        <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 mission="AddGropSupplier"/>
+                    </div>
+                    <div class="row-input" style="padding-top:2.5px">
+                        <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                    </div>
+                </div>
+            </div>
+            <SupplierTab :isPer="picked"/> 
+            <div class="dialog-footer">
+                <div class="divide"></div>
+                <div class="btn-footer">
+                    <div class="btn-left">
+                        <button @click="btnCloseOnClick()">Hủy</button>
+                    </div>
+                    <div class="btn-right">
+                        <button @click="btnSaveOnClick()"> Cất</button>
+                        <button class="save-and-add">Cất và thêm</button>
+                    </div>
+                </div>
+            </div>
            </div>
        </div>
         <AddGroupSupplier :visible="showFormAddGroupSupplier"/>
@@ -48,11 +109,11 @@
 <script>
 import {busData} from '@/main.js'
 import SupplierTab from '@/components/common/TabOrder/SupplierTab'
-import InfoOrganization from './SupplierInfo/InfoOrganization'
-import InfoPersonal from './SupplierInfo/InfoPersonal'
 import AddGroupSupplier from './AddGroupSupplier'
 import AddEmployee from './AddEmployee'
-import axios from 'axios';
+import MSTextbox from '@/components/common/MSTextbox'
+import BaseCBB from '@/components/common/BaseCBB'
+import MSSelect from '@/components/common/MSSelect'
 
     export default {
         props:{
@@ -61,20 +122,51 @@ import axios from 'axios';
         },
         components:{
             SupplierTab,
-            InfoOrganization,
-            InfoPersonal,
             AddGroupSupplier,
-            AddEmployee
+            AddEmployee,
+            MSTextbox,
+            BaseCBB,
+            MSSelect
         },
         data(){
             return{
                 picked:'1',
                 isCus:false,
                 showFormAddGroupSupplier:false,
-                showFormAddEmployee:false
+                showFormAddEmployee:false,
+                headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
+                dataGroupSupplies:[],
+                headeEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
+                dataEmployees:[],
+                vocatives:[
+                    {value:'1',label:'Anh'},
+                    {value:'2',label:'Chị'},
+                    {value:'3',label:'Em'},
+                    {value:'4',label:'Bạn'},
+                    {value:'5',label:'Ông'},
+                    {value:'6',label:'Bà'},
+                    {value:'7',label:'Mr'},
+                    {value:'8',label:'Mrs'},
+                ],
+
+                //data của đối tượng
+                obj:{},
+
             }
         },
         created(){
+            
+            // let externalScript = document.createElement('script')
+            // externalScript.setAttribute('src', '@/get_api.js')
+            // document.head.appendChild(externalScript)
+
+
+            // var url = 'https://localhost:44346/api/GroupSuppliers'
+            // this.dataGroupSupplies = API.GetData(url)
+
+            // var url = 'https://localhost:44346/api/Employees'
+            // this.dataEmployees = API.GetData(url)
+
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
                     this.showFormAddGroupSupplier = true;
@@ -89,20 +181,23 @@ import axios from 'axios';
                 this.showFormAddEmployee = false;
             })
             
-            if(this.state == 'Edit'){ // form sửa
-                // lấy dữ liệu từ serve
-                axios({
-                    methods:'GET',
-                    url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
-                }).then(function(res){
-                    console.log(res.data);
-                }).catch(function(err){
-                    console.log(err);
-                })
-
-            }
+            // if(this.state == 'Edit'){ // form sửa
+            //     // lấy dữ liệu từ serve
+            //     axios({
+            //         methods:'GET',
+            //         url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
+            //     }).then(function(res){
+            //         console.log(res.data);
+            //     }).catch(function(err){
+            //         console.log(err);
+            //     })
+            // }
         }
         ,methods:{
+            btnSaveOnClick(){
+                var temp = document.getElementById('test');
+                console.log(temp);
+            },
             btnCloseOnClick(){
                busData.$emit('closeDialogSupplier');
             }
@@ -111,7 +206,8 @@ import axios from 'axios';
         },watch:{
             isCus:function(){
                 busData.$emit('changeForm',this.isCus);
-            }
+            },
+           
         }
     }
 </script>

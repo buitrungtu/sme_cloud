@@ -78,6 +78,7 @@ import {busData} from '@/main.js';
 .combobox{
     width: 100%;
     position: relative;
+    height: 51px;
 }
 .cbb-content{
     overflow-y: scroll;

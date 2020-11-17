@@ -9,7 +9,10 @@
                  v-model="content" @input="changeInput">
         </div>
         <div class="cb-content-2" v-bind:class="{focus:isFocus}" v-show="textarea">
-            <input type="text" v-bind:style="TextAlign" class="cb-input" v-bind:readonly="readonly" @focus="isFocus=true" @blur="isFocus=false" v-bind:placeholder="placeholder" v-model="value" @keyup="$emit('update:value', value);">
+            <textarea  v-bind:style="TextAlign" class="input-area" 
+                v-bind:readonly="readonly" @focus="isFocus=true"
+                 @blur="isFocus=false" v-bind:placeholder="placeholder" 
+                 v-model="content" @input="changeInput"></textarea>
         </div>
     </div> 
 </template>
@@ -126,7 +129,11 @@ import {busData} from '@/main.js';
     padding: 0px 10px;
     width: 100%;
 }
-
+.input-area{
+    border: none;
+    padding: 8px 10px;
+    width: 100%;
+}
 .focus{
     border-color: #2ca01c;
 }
