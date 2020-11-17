@@ -2,21 +2,14 @@
     <div class="dialog dialog-supplier">
        <header class="dialog-header">
            <div class="dialog-title">
-               <div class="tilte-content" style="display:flex">
+               <div class="tilte-content" style="display:flex;align-items: center;">
                    <div class="title">Thông tin nhà cung cấp</div>
                    <div class="gr-radio">
-                       <div class="radio">
-                           <input type="radio" name="abc" value="1" v-model="picked" checked>
-                           <div class="radio-name">Tổ chức</div>
-                       </div>
-                       <div class="radio">
-                           <input type="radio" value="2" v-model="picked" name="abc">
-                           <div class="radio-name">Cá nhân</div>
-                       </div>
+                       <el-radio v-model="picked" checked label="1">Tổ chức</el-radio>
+                        <el-radio v-model="picked" label="2">Cá nhân</el-radio>
                    </div>
                    <div class="title-right">
-                       <input type="checkbox" v-model="isCus">
-                        <div class="radio-name">Là khách hàng</div>
+                        <el-checkbox v-model="isCus">Là khách hàng</el-checkbox>
                    </div>
                </div>
            </div>
@@ -30,7 +23,7 @@
 
                 <InfoOrganization v-if="picked == '1'"/>
                 <InfoPersonal v-if="picked == '2'"/>
-                <SupplierTab /> 
+                <SupplierTab :isPer="picked"/> 
                  
                <div class="dialog-footer">
                    <div class="divide"></div>
@@ -46,6 +39,9 @@
                </div>
            </div>
        </div>
+        <AddGroupSupplier :visible="showFormAddGroupSupplier"/>
+        <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
+        <AddEmployee :visible="showFormAddEmployee"/>
     </div>
 </template>
 
@@ -54,21 +50,64 @@ import {busData} from '@/main.js'
 import SupplierTab from '@/components/common/TabOrder/SupplierTab'
 import InfoOrganization from './SupplierInfo/InfoOrganization'
 import InfoPersonal from './SupplierInfo/InfoPersonal'
+import AddGroupSupplier from './AddGroupSupplier'
+import AddEmployee from './AddEmployee'
+import axios from 'axios';
+
     export default {
+        props:{
+            state:String,
+            supplierID:String
+        },
         components:{
             SupplierTab,
             InfoOrganization,
-            InfoPersonal
+            InfoPersonal,
+            AddGroupSupplier,
+            AddEmployee
         },
         data(){
             return{
-                picked:"1",
-                isCus:false
+                picked:'1',
+                isCus:false,
+                showFormAddGroupSupplier:false,
+                showFormAddEmployee:false
             }
-        },methods:{
+        },
+        created(){
+            busData.$on('showDialog',(mission)=>{
+                if(mission == 'AddGropSupplier'){
+                    this.showFormAddGroupSupplier = true;
+                }else if(mission == 'AddEmployee'){
+                    this.showFormAddEmployee = true;
+                }
+            })
+            busData.$on('closeDialogGroupSupplier',()=>{
+                this.showFormAddGroupSupplier = false;
+            })
+            busData.$on('closeDialogEmployee',()=>{
+                this.showFormAddEmployee = false;
+            })
+            
+            if(this.state == 'Edit'){ // form sửa
+                // lấy dữ liệu từ serve
+                axios({
+                    methods:'GET',
+                    url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
+                }).then(function(res){
+                    console.log(res.data);
+                }).catch(function(err){
+                    console.log(err);
+                })
+
+            }
+        }
+        ,methods:{
             btnCloseOnClick(){
                busData.$emit('closeDialogSupplier');
             }
+
+
         },watch:{
             isCus:function(){
                 busData.$emit('changeForm',this.isCus);

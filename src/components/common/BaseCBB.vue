@@ -7,6 +7,7 @@
             reserve-keyword
             placeholder=""
             :loading="loading"
+            :multiple="multiple"
         >
             <el-option :value="1" class="cb-header">
                 <span v-for="(thead,index) in header" :key="index" :style="{float: 'left', width:thead.width + 'px'}" class="ellipsis" >{{thead.label}}</span>
@@ -49,7 +50,8 @@ import {busData} from '@/main.js';
                 default:true
             },
             addNewF9:Boolean,
-            indexshow:Number //tính từ 1
+            indexshow:Number, //tính từ 1,
+            multiple:Boolean
         },
         data(){
             return{
@@ -63,6 +65,11 @@ import {busData} from '@/main.js';
                busData.$emit('showDialog',this.mission)
             },
         },
+        watch:{
+            options:function(){
+                console.log(this.options);
+            }
+        }
     }
 </script>
 
@@ -105,6 +112,7 @@ import {busData} from '@/main.js';
     right: 32px;
     height: 30px;
     border-right: 1px solid #ccc;
+    z-index: 1;
 }
 .btn-add{
     width: 32px;

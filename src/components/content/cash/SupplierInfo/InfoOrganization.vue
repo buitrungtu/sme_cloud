@@ -26,10 +26,10 @@
                 </div>
             </div>
             <div class="row-input">
-                <SupplierCBB label="Nhóm nhà cung cấp" />
+                <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
             </div>
             <div class="row-input">
-                <Buyer label="Nhân viên mua hàng"/>
+                <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
             </div>
         </div>
     </div>
@@ -37,13 +37,30 @@
 
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
-import SupplierCBB from '@/components/common/combobox/SupplierCBB'
-import Buyer from '@/components/common/combobox/EmployeeBuyer'
+import BaseCBB from '@/components/common/BaseCBB'
+import axios from 'axios'
     export default {
         components:{
             MSTextbox,
-            SupplierCBB,
-            Buyer
+            BaseCBB,
+        },
+        data(){
+            return{
+                headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
+                dataGroupSupplies:[],
+                headeEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
+                dataEmployees:[],
+            }
+            
+        },
+        created(){
+            axios.get('https://localhost:44346/api/GroupSuppliers')
+                .then(response => (this.dataGroupSupplies = response.data))
+                .catch(error => (console.log("Lỗi: "+error)))
+
+            axios.get('https://localhost:44346/api/Employees')
+                .then(response => (this.dataEmployees = response.data))
+                .catch(error => (console.log("Lỗi: "+error)))
         }
         
     }

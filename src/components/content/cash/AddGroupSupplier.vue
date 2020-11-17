@@ -1,5 +1,5 @@
 <template>
-    <div class="dialog dialog-group-supplier">
+    <div class="dialog dialog-group-supplier" v-show="visible">
         <header class="dialog-header">
            <div class="dialog-title">
                <div class="tilte-content" style="display:flex">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="label-input">Thuộc</div>
                 <div class="row-input">
-                    <SupplierCBB />
+                    <BaseCBB :header="headeGroupSupplies" :data="data" :indexshow=2 :plus="false" />
                 </div>
                 <div class="row-input" style="padding-bottom:40px">
                     <MSTextbox v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
@@ -48,11 +48,23 @@
 <script>
 import {busData} from '@/main.js';
 import MSTextbox from '@/components/common/MSTextbox'
-import SupplierCBB from '@/components/common/combobox/SupplierCBB'
+import BaseCBB from '@/components/common/BaseCBB'
     export default {
+        props:{
+            visible:Boolean
+        },
         components:{
             MSTextbox,
-            SupplierCBB
+            BaseCBB
+        },
+        data(){
+            return{
+                headeGroupSupplies:[{label:'Mã nhóm',width:'100'},{label:'Tên nhóm',width:'200'}],
+                data:[
+                    {id:'01',name:'Tạm'},
+                    {id:'02',name:'Lâu dài'},
+                ]
+            }
         },
         methods:{
             btnCloseOnClick(){

@@ -46,11 +46,10 @@
                     <div class="title-money">Đã thanh toán (30 ngày gần đây)</div>
                 </div>
             </div>
-            
             <GridSuppliers /> 
         </div>
         <div class="black-model" v-show="isShow"></div>
-        <AddSupplier v-if="isShow"/>
+        <AddSupplier v-if="isShow" :state="stateForm" :supplierID="suppID"/>
     </div>
 </template>
 
@@ -61,18 +60,26 @@ import AddSupplier from '../AddSupplier'
     export default {
         components:{
             GridSuppliers,
-            AddSupplier
+            AddSupplier,
         },
         data(){
             return{
                 thisPage:'ReceivePayment',
                 isShow:false,
+                stateForm:'Add',
+                suppID:''
             }
         },
         created(){
             busData.$emit('changeTab',1);
             busData.$on('closeDialogSupplier',()=>{
                 this.isShow=false;
+            })
+
+            busData.$on('editSupplier',(suppID)=>{
+                this.stateForm = 'Edit';
+                this.suppID = suppID;
+                this.isShow = true;
             })
         },
         methods:{

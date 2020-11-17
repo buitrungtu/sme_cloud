@@ -3,7 +3,6 @@
     padding: 0;
     font-family: 'Lato', sans-serif;
     font-size: 14.5px;
-    color: #212121;
   }
  /* grid  */
  .w-1-2{
@@ -297,4 +296,23 @@ input,button{
 }
 .title-money{
     color: #fff;
+}
+.black-model,.black-model-2,.black-model-3{
+    position: fixed;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     opacity: 0.4;
+     background-color: #000;
+     z-index: 4;
+ }
+ .black-model-2{
+     z-index: 6;
+ }
+ .icon.icon-down{
+    background-position: -896px -359px;
+}
+.el-dropdown-link{
+    color: #0075c0;
 }

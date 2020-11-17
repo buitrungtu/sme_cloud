@@ -12,7 +12,7 @@
             <label class="label-input">Tên nhà cung cấp</label>
             <div class="row-input">
                <div class="row-input" style="padding-bottom: 4px;">
-                    <MSSelect v-bind:arrs="options" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
+                    <MSSelect v-bind:data="options" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
                     <MSTextbox style="width:calc(100% - 116px);padding-top:3px" placeholder="Họ và tên"/> 
                 </div>
             </div>
@@ -22,10 +22,10 @@
         </div>
         <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
             <div class="row-input" style="margin-bottom: 1.5px">
-                <SupplierCBB label="Nhóm nhà cung cấp" />
+                <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
             </div>
             <div class="row-input">
-                <Buyer label="Nhân viên mua hàng"/>
+                <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
             </div>
         </div>
     </div>
@@ -33,28 +33,33 @@
 
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
-import SupplierCBB from '@/components/common/combobox/SupplierCBB'
-import Buyer from '@/components/common/combobox/EmployeeBuyer'
 import MSSelect from '@/components/common/MSSelect'
+import BaseCBB from '@/components/common/BaseCBB'
+import axios from 'axios'
+
     export default {
         components:{
             MSTextbox,
-            SupplierCBB,
-            Buyer,
+            BaseCBB,
             MSSelect
         },
         data(){
             return{
-                options:[{value:'1',label:'Anh'},
-                        {value:'2',label:'Chị'},
-                        {value:'3',label:'Bạn'},
-                        {value:'4',label:'Bà'},
-                        {value:'5',label:'Miss'},
-                        {value:'6',label:'Mr'},
-                        {value:'7',label:'Mrs'},
-                        {value:'8',label:'Ông'},
-                ]
+                headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
+                dataGroupSupplies:[],
+                headeEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
+                dataEmployees:[],
+                options:[]
             }
+        },
+        created(){
+            axios.get('https://localhost:44346/api/GroupSuppliers')
+                .then(response => (this.dataGroupSupplies = response.data))
+                .catch(error => (console.log("Lỗi: "+error)))
+
+            axios.get('https://localhost:44346/api/Employees')
+                .then(response => (this.dataEmployees = response.data))
+                .catch(error => (console.log("Lỗi: "+error)))
         }
         
     }

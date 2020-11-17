@@ -8,7 +8,7 @@
             <li class="li-header" v-bind:class="{active:thisTab==4}" @click="thisTab=4">Ghi chú</li>
         </ul>
         <div class="content-tab">
-            <Contact v-show="thisTab == 0"/>
+            <Contact v-show="thisTab == 0" :isPer="isPer"/>
             <TermsOfPayment v-show="thisTab == 1"/>
             <BankAccount v-show="thisTab == 2"/>
             <OtherAddress v-show="thisTab == 3"/>
@@ -25,6 +25,9 @@ import TermsOfPayment from '@/components/content/cash/SupplierInfo/TermsOfPaymen
 import BankAccount from '@/components/content/cash/SupplierInfo/BankAccount'
 import OtherAddress from '@/components/content/cash/SupplierInfo/OtherAddress' 
     export default {
+        props:{
+            isPer:String
+        },
         components:{
             Contact,
             TermsOfPayment,

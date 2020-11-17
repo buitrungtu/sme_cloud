@@ -29,7 +29,6 @@
                 :data="data"
                 style="width: 100%"
                 height="100%"
-                @selection-change="handleSelectionChange"
             >
 
                 <el-table-column
@@ -77,9 +76,21 @@
                     fixed="right"
                     label="Chức năng"
                     width="175">
-                    <div style="display:flex;align-items: center;justify-content: center;">
-                        <Dropdown label="Trả tiền" />
-                    </div>
+                    <template slot-scope="control">
+                        <div style="display:flex;align-items: center;justify-content: center;">
+                            <el-dropdown>
+                                <span class="el-dropdown-link">
+                                Trả tiền <i class="el-icon-caret-bottom"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xem</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Sửa</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xóa</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
+                    </template>
+                    
                 </el-table-column>
 
             </el-table>
@@ -107,19 +118,17 @@
 </template>
 
 <script>
+import {busData} from '@/main.js'
 import MSSelect from '@/components/common/MSSelect'
-import Dropdown from './Dropdown'
 import axios from 'axios';
     export default {
         components:{
             MSSelect,
-            Dropdown
         },
         data() {
             return {
                 data: [
                 ],
-                multipleSelection: []
             }
         },
         created(){
@@ -128,17 +137,8 @@ import axios from 'axios';
                 .catch(error => (console.log("Lỗi: "+error)))
         },
         methods: {
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            selectdRow(SuppID){
+                busData.$emit('editSupplier',SuppID);
             }
         }
     }

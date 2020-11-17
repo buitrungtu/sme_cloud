@@ -40,7 +40,7 @@
                 </el-table-column>
 
                 <el-table-column
-                    prop="nature"
+                    prop="natureName"
                     label="TÍNH CHẤT"
                     width="150">
                 </el-table-column>
@@ -52,7 +52,7 @@
                 </el-table-column>
 
                  <el-table-column
-                    prop="note"
+                    prop="explain"
                     label="DIỄN GIẢI"
                     width="300">
                 </el-table-column>
@@ -68,9 +68,20 @@
                     fixed="right"
                     label="Chức năng"
                     width="150">
-                    <div style="display:flex;align-items: center;justify-content: center;">
-                        <Dropdown label="Sửa"/>
-                    </div>
+                    <template slot-scope="control">
+                        <div style="display:flex;align-items: center;justify-content: center;">
+                            <el-dropdown>
+                                <span class="el-dropdown-link">
+                                Sửa <i class="el-icon-caret-bottom"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Nhân bản</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xóa</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Ngưng sử dụng</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
+                    </template>
                 </el-table-column>
 
             </el-table>
@@ -84,12 +95,10 @@
 </template>
 
 <script>
-import Dropdown from './Dropdown'
 import axios from 'axios';
 
     export default {
         components:{
-            Dropdown
         },
         data() {
             return {
@@ -108,6 +117,8 @@ import axios from 'axios';
                 tempdata = res.data;
                 for(let i =0 ;i<tempdata.length;i++){
                     tempdata[i].children = [];
+                    tempdata[i].status == "true"?tempdata[i].status = 'Đang sử dụng':'Ngưng sử dụng';
+
                     if(!tempdata[i].parent){
                         tempdata[i].parent = 0;
                     }
@@ -125,7 +136,6 @@ import axios from 'axios';
                 let result =  tempdata.filter(function(item){
                     return item.children.length >= 1 && item.parent == 0;
                 })
-                console.log(result);
                 seft.data = result;
             }).catch(function(err){
                 console.log(err);
@@ -147,6 +157,9 @@ import axios from 'axios';
             collapseAll(){
                 this.collapse = !this.collapse;
                 console.log( this.collapse);
+            },
+            selectdRow(accountID){
+                console.log(accountID);
             }
         }
     }

@@ -178,7 +178,7 @@ import {busData} from '@/main.js';
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
-
+import axios from 'axios'
     export default {
         components:{
             MSTextbox,
@@ -191,14 +191,6 @@ import MSSelect from '@/components/common/MSSelect'
                 drawer: false,
                 thead:[{width:'100',label:'Số tài khoản'},{width:'200',label:'Tên tài khoản'}],
                 ListAccount:[
-                    {AccountID:'111',AccountName:'Tiền mặt'},
-                    {AccountID:'1111',AccountName:'Tiền Việt Nam'},
-                    {AccountID:'1112',AccountName:'Ngoại tệ'},
-                    {AccountID:'1113',AccountName:'Vàng tiền tệ'},
-                    {AccountID:'112',AccountName:'Tiền gửi ngân hàng'},
-                    {AccountID:'1121',AccountName:'Tiền Việt Nam'},
-                    {AccountID:'1122',AccountName:'Ngoại tệ'},
-                    {AccountID:'1123',AccountName:'Vàng tiền tệ'},
                 ],
                 ListType:[
                     {value:'1',label:'Dư Nợ'},
@@ -219,9 +211,31 @@ import MSSelect from '@/components/common/MSSelect'
             };
         },
         created(){
+
+            let seft = this;
+
+
             busData.$on('showDialogAddAccount',()=>{
                 this.drawer = true;
             })
+            
+            axios({
+                methods:'GET',
+                url:'https://localhost:44346/api/accounts'
+            }).then(function(res){
+                for(let i =0;i<res.data.length;i++){
+                    let obj = {};
+                    obj.AccountID = res.data[i].accountId;
+                    obj.AccountName = res.data[i].accountName;
+                    seft.ListAccount.push(obj);
+                }
+            })
+
+
+
+
+
+
         },
         methods:{
             handleChange(val) {

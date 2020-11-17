@@ -1,6 +1,6 @@
 <template>
     <div class="combobox">
-        <BaseCBB :mission="mission" :header="listTh" :data ="objTest" :label="label"/>
+        <BaseCBB :mission="mission" :header="listTh" :data ="objTest" :label="label" :indexshow=1 />
     </div>
 </template>
 

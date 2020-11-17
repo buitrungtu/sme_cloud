@@ -5,7 +5,7 @@
                 <div class="icon icon-history"></div>
                 <div class="title-layout">Phiếu chi PC00023</div>
                 <div class="payment-type">
-                   <MSSelect v-bind:arrs="options" value="10"/>             
+                   <MSSelect v-bind:data="options" value="10"/>             
                  </div>
             </div>
             <div class="header-right">
@@ -23,10 +23,9 @@
         
         <div class="black-model" v-show="showBlackModel1"></div>
         <div class="black-model-2" v-show="showBlackModel2"></div>
-        <div class="black-model-3" v-show="showBlackModel3"></div>
 
         <AddSupplier v-if="showAddSupplire"/>
-        <AddEmployee v-if="showAddEmployee"/>
+        <AddEmployee :visible="showAddEmployee"/>
         <AddGroupSupplier v-if="showAddGroupSupplier"/>
         
         <div class="footer-layout">
@@ -225,20 +224,5 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
     transition: all .2s ease;
     cursor: pointer;
 }
-.black-model,.black-model-2,.black-model-3{
-   position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.4;
-    background-color: #000;
-    z-index: 4;
-}
-.black-model-2{
-    z-index: 6;
-}
-.black-model-3{
-    z-index: 8;
-}
+
 </style>

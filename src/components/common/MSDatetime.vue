@@ -6,7 +6,7 @@
         <el-date-picker
             v-model="value"
             type="date"
-            placeholder=""
+            :placeholder="placeholder"
             format="dd/MM/yyyy"
             clear-icon="" 
         >
@@ -17,7 +17,8 @@
 <script>
     export default {
         props:{
-            label:String
+            label:String,
+            placeholder:String
         },
         data(){
             return{
@@ -25,12 +26,14 @@
             }
         },
         created(){
-            var today =  new Date();
-            var dd = String(today. getDate()).padStart(2, '0');
-            var mm = String(today. getMonth() + 1).padStart(2, '0');
-            var yyyy = today. getFullYear();
-            today = mm + '/' + dd + '/' + yyyy;
-            this.value = today
+            if(!this.placeholder){
+                var today =  new Date();
+                var dd = String(today. getDate()).padStart(2, '0');
+                var mm = String(today. getMonth() + 1).padStart(2, '0');
+                var yyyy = today. getFullYear();
+                today = mm + '/' + dd + '/' + yyyy;
+                this.value = today
+            }
         }
     }
 </script>
