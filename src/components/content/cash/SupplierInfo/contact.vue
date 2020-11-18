@@ -85,10 +85,7 @@
 </template>
 
 <script>
-import {busData} from '@/main.js'
-import MSSelect from '@/components/common/MSSelect'
-import MSTextbox from '@/components/common/MSTextbox'
-import MSDatetime from '@/components/common/MSDatetime'
+
     export default {
         props:{
             isPer:String
@@ -101,21 +98,11 @@ import MSDatetime from '@/components/common/MSDatetime'
         data(){
             return{
                 isCus:false,
-                options:[{value:'1',label:'Anh'},
-                        {value:'2',label:'Chị'},
-                        {value:'3',label:'Bạn'},
-                        {value:'4',label:'Bà'},
-                        {value:'5',label:'Miss'},
-                        {value:'6',label:'Mr'},
-                        {value:'7',label:'Mrs'},
-                        {value:'8',label:'Ông'},
-                ]
+                
             }
         },
         created(){
-            busData.$on('changeForm',(mode)=>{
-                this.isCus = mode;
-            })
+            
         }
         
     }

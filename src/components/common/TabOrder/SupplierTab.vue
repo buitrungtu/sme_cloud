@@ -7,11 +7,193 @@
             <li class="li-header" v-bind:class="{active:thisTab==3}" @click="thisTab=3">Địa chỉ khác</li>
             <li class="li-header" v-bind:class="{active:thisTab==4}" @click="thisTab=4">Ghi chú</li>
         </ul>
-        <div class="content-tab">
-            <Contact v-show="thisTab == 0" :isPer="isPer"/>
-            <TermsOfPayment v-show="thisTab == 1"/>
-            <BankAccount v-show="thisTab == 2"/>
-            <OtherAddress v-show="thisTab == 3"/>
+        <div class="content-tab" >
+            <div class="contact" v-show="thisTab == 0">
+                <div class="organization" style="display:flex" v-show="isPer == false">
+                    <div class="w-1-2" style="padding-right: 26px;" >
+                        <label class="label-input">Người liên hệ</label>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                        <MSSelect :data="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
+                        <MSTextbox style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox placeholder="Email"/> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div class="w-1-2">
+                                <MSTextbox placeholder="Số điện thoại"/>
+                            </div>
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;"  v-show="isCus">
+                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                        </div>
+                    </div>
+                    <div class="w-1-2" v-show="!isCus">
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                        </div>
+                    </div>
+                    <div class="w-1-2" v-show="isCus">
+                        <label class="label-input">Người nhận hóa đơn điện tử</label>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox placeholder="Họ và tên"/> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div class="w-1-2">
+                                <MSTextbox placeholder="Số điện thoại"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="personal" style="display:flex" v-show="isPer == true">
+                    <div class="w-1-2" style="padding-right: 26px;" >
+                        <label class="label-input">Thông tin liên hệ</label>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox style="padding-top:3px" placeholder="Email"/> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div class="w-1-2">
+                                <MSTextbox style="padding-top:3px" placeholder="Điện thoại di động"/> 
+                            </div> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div class="w-1-2">
+                                <MSTextbox style="padding-top:3px" placeholder="Điện thoại cố định"/> 
+                            </div>
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                        </div>
+                    </div>
+                
+                    <div class="w-1-2">
+                        <label class="label-input">Thông tin CMND/Thẻ căn cước</label>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div class="w-1-2" >
+                                <MSTextbox style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
+                            </div> 
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <div style="width:calc(50% + 2.5px)">
+                                <MSDatetime  placeholder="Ngày cấp"/> 
+                            </div>
+                        </div>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                        <MSTextbox placeholder="Nơi cấp"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="term-payment"  v-show="thisTab == 1">
+                <div class="w-3-4" style="display:flex">
+                    <div class="w-input">
+                        <div class="row-input" >
+                            <BaseCBB label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                        </div>
+                    </div>
+                    <div class="w-input">
+                        <div class="row-input" >
+                            <MSTextbox label="Số ngày được nợ"/>
+                        </div>
+                    </div>
+                    <div class="w-input">
+                        <div class="row-input" >
+                            <MSTextbox label="Số nợ tối đa"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-input">
+                    <div class="w-input" v-show="isCus">
+                        <DebtAccountCBB label="Tài khoản công nợ phải thu" currentValue="131" type='collect'/>
+                    </div>
+                    <div class="w-input" >
+                        <DebtAccountCBB label="Tài khoản công nợ phải trả" currentValue="331" type='pay'/>
+                    </div>
+                </div>
+            </div>
+            <div class="bank-account" v-show="thisTab == 2">
+                <el-table :data="tableData" style="width: 100%" max-height="250">
+                    <el-table-column prop="address" label="SỐ TÀI KHOẢN" width="175">
+                        <MSTextbox />
+                    </el-table-column>
+                    <el-table-column prop="address" label="TÊN NGÂN HÀNG" width="175">
+                        <MSTextbox />
+                    </el-table-column>
+                    <el-table-column prop="address" label="CHI NHÁNH" width="172">
+                        <MSTextbox />
+                    </el-table-column>
+                    <el-table-column prop="address" label="TỈNH/TP CỦA NGÂN HÀNG" width="250">
+                        <MSTextbox />
+                    </el-table-column>
+
+                    <el-table-column fixed="right" label="" width="43">
+                        <template slot-scope="scope">
+                            <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                                <div class="icon icon-delete"></div>
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="grid-footer">
+                    <div class="btn-grid-act">
+                        <button @click="addRow()">Thêm dòng</button>
+                        <button @click="removeAllRow()">Xóa hết dòng</button>
+                    </div>
+                </div>
+            </div>
+            <div class="other-address" v-show="thisTab == 3">
+                <div class="w-1-2" style="padding-right:26px">
+                    <label class="label-input">Vị trí địa lý</label>
+                    <div class="row-input">
+                        <div class="w-1-2" style="padding-right:12px">
+                            <MSSelect/>
+                        </div>
+                        <div class="w-1-2">
+                            <MSSelect/>
+                        </div>
+                    </div>
+                    <div class="row-input" >
+                        <div class="w-1-2" style="padding-right:12px">
+                            <MSSelect/>
+                        </div>
+                        <div class="w-1-2">
+                            <MSSelect/>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1-2" style="position: relative;">
+                    <div class="title-right">
+                        <input type="checkbox">
+                        <div class="radio-name">Giống địa chỉ nhà cung cấp</div>
+                    </div>
+                    <el-table :data="tableData" style="width: 100%;" max-height="250">
+                        
+                        <el-table-column prop="zip" label="Vị trí địa lý" width="300">
+                            <MSTextbox/>
+                        </el-table-column>
+
+                        <el-table-column fixed="right" label="" width="43">
+                            <template slot-scope="scope">
+                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                                    <div class="icon icon-delete"></div>
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="grid-footer">
+                    <div class="btn-grid-act">
+                        <button @click="addRow()">Thêm dòng</button>
+                        <button @click="removeAllRow()">Xóa hết dòng</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+
             <div class="note" v-show="thisTab == 4">
                 <textarea tabindex="1"></textarea>
             </div>
@@ -20,24 +202,69 @@
 </template>
 
 <script>
-import Contact from '@/components/content/cash/SupplierInfo/contact'
-import TermsOfPayment from '@/components/content/cash/SupplierInfo/TermsOfPayment'
-import BankAccount from '@/components/content/cash/SupplierInfo/BankAccount'
-import OtherAddress from '@/components/content/cash/SupplierInfo/OtherAddress' 
+import MSSelect from '@/components/common/MSSelect'
+import MSTextbox from '@/components/common/MSTextbox'
+import MSDatetime from '@/components/common/MSDatetime'
+import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
+import BaseCBB from '@/components/common/BaseCBB'
+import {busData} from '@/main.js'
+
     export default {
         props:{
-            isPer:String
+            isPer:Boolean
         },
         components:{
-            Contact,
-            TermsOfPayment,
-            BankAccount,
-            OtherAddress
+            MSTextbox,
+            MSSelect,
+            MSDatetime,
+            BaseCBB,
+            DebtAccountCBB
         },
         data(){
             return{
-                thisTab:0
+                thisTab:0,
+                isCus:false,
+                options:[{value:'1',label:'Anh'},
+                        {value:'2',label:'Chị'},
+                        {value:'3',label:'Bạn'},
+                        {value:'4',label:'Bà'},
+                        {value:'5',label:'Miss'},
+                        {value:'6',label:'Mr'},
+                        {value:'7',label:'Mrs'},
+                        {value:'8',label:'Ông'},
+                ],
+                header:[{label:'Mã điều khoản',width:'100'},{label:'Tên điều khoản',width:'250'}],
+                data:[{TermsOfPayment:'DK01',TermsOfPaymentName:'Tên gì đó 1'},
+                        {TermsOfPayment:'DK02',TermsOfPaymentName:'Tên gì đó 2 '},
+                        {TermsOfPayment:'DK03',TermsOfPaymentName:'Tên gì đó3 '}
+                ],
+                tableData: [{
+                    
+                },],
+                addCount:0
             }
+        },
+        created(){
+            busData.$on('changeForm',(mode)=>{
+                this.isCus = mode;
+            })
+        },
+        methods:{
+            deleteRow(index) {
+                this.tableData.splice(index, 1);
+                if(this.addCount > 0)
+                -- this.addCount;
+            },
+            addRow(){
+                let newRow  = {
+                    
+                };
+                this.tableData = [newRow,...this.tableData];
+                ++ this.addCount;
+            },
+            removeAllRow(){
+                this.tableData = []
+            },
         }
     }
 </script>
@@ -97,5 +324,86 @@ import OtherAddress from '@/components/content/cash/SupplierInfo/OtherAddress'
 }
 .note textarea:focus{
     border-color: #2ca01c;
+}
+.w-input{
+    width: 192px;
+    padding-right: 12px;
+}
+.bank-account{
+    width: 100%;
+}
+.icon.icon-delete{
+    background-position: -464px -312px;
+}
+.grid-footer{
+    width: calc(100% - 60px);
+    background-color: #fff;
+}
+.btn-grid-act{
+    padding-top: 10px;
+    padding-bottom: 32px;
+}
+.btn-grid-act button{
+    padding: 2px 20px;
+    margin-right: 10px;
+    border-color: #8d9096;
+    border-radius: 2.5px;
+    height: 24px;
+    border: 1px solid #8d9096;
+    color: #212121;
+    background-color: transparent;
+    transition: all .2s ease;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+}
+.other-address{
+    display: flex;
+    width: 100%;
+}
+.title-right{
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    height: 32px;
+    z-index: 4;
+}
+.title-right input{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border: 1px solid #afafaf;
+}
+.bank-account{
+    width: 100%;
+}
+.icon.icon-delete{
+    background-position: -464px -312px;
+}
+.grid-footer{
+    width: calc(100% - 60px);
+    background-color: #fff;
+}
+.btn-grid-act{
+    padding-top: 10px;
+    padding-bottom: 32px;
+}
+.btn-grid-act button{
+    padding: 2px 20px;
+    margin-right: 10px;
+    border-color: #8d9096;
+    border-radius: 2.5px;
+    height: 24px;
+    border: 1px solid #8d9096;
+    color: #212121;
+    background-color: transparent;
+    transition: all .2s ease;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
 }
 </style>

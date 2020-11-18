@@ -16,9 +16,12 @@
                 <el-option
                     v-for="(item,index) in data"
                     :key="index"
-                    :value="Object.values(item)[indexshow-1]"
+                    :value="Object.values(item)[0]"
+                    :label="Object.values(item)[indexshow-1]"
                     >
-                    <span :style="{float: 'left', width:header[i].width + 'px'}" class="ellipsis" v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}</span>
+                    <span :style="{float: 'left', width:header[i].width + 'px'}" class="ellipsis" 
+                        v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}
+                    </span>
                 </el-option>
             </div>
             
@@ -28,7 +31,7 @@
                 <div class="icon icon-add"></div>
             </div>
         </div>
-        <div class="add-new" v-show="addNewF9">
+        <div class="add-new" v-show="addNewF9"> 
             <div class="icon icon-add" ></div>
             <div class="text">Thêm mới (F9)</div>
         </div>
@@ -51,14 +54,19 @@ import {busData} from '@/main.js';
             },
             addNewF9:Boolean,
             indexshow:Number, //tính từ 1,
-            multiple:Boolean
+            multiple:Boolean,
+            valueFix:Array,
         },
         data(){
             return{
                 options: [],
-                value: [],
+                value:[],
                 loading: false,
+                show:''
             }
+        },
+        created(){
+            this.value = this.valueFix;
         },
         methods:{
             showDialog(){
@@ -66,9 +74,9 @@ import {busData} from '@/main.js';
             },
         },
         watch:{
-            options:function(){
-                console.log(this.options);
-            }
+           value:function(){
+               this.$emit('valueCBBChanged',this.value);
+           }
         }
     }
 </script>

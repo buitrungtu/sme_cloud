@@ -5,11 +5,11 @@
                <div class="tilte-content" style="display:flex;align-items: center;">
                    <div class="title">Thông tin nhà cung cấp</div>
                    <div class="gr-radio">
-                       <el-radio v-model="picked" checked label="1">Tổ chức</el-radio>
-                        <el-radio v-model="picked" label="2">Cá nhân</el-radio>
+                       <el-radio v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
+                        <el-radio v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
                    </div>
                    <div class="title-right">
-                        <el-checkbox v-model="isCus">Là khách hàng</el-checkbox>
+                        <el-checkbox v-model="obj.IsCustomer" @change="cusChange()">Là khách hàng</el-checkbox>
                    </div>
                </div>
            </div>
@@ -20,7 +20,7 @@
        </header>
        <div class="dialog-content">
            <div class="dialog-body">
-            <div class="body-info" v-show="picked == '1'">
+            <div class="body-info" v-show="obj.IsPersonal == false">
                 <div class="w-1-2 body-left">
                     <div class="row-input">
                         <div class="w-2-5" style="padding:2.5px 12px 0px 0px;">
@@ -47,15 +47,15 @@
                         </div>
                     </div>
                     <div class="row-input">
-                        <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                        <BaseCBB :valueFix="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                     </div>
                     <div class="row-input">
-                        <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                        <BaseCBB :valueFix="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                     </div>
                 </div>
             </div>
 
-            <div class="body-info" v-show="picked == '2'">
+            <div class="body-info" v-show="obj.IsPersonal == true">
                 <div class="w-1-2 body-left">
                     <div class="row-input">
                         <div class="w-3-5" style="padding-right: 12px;">
@@ -85,7 +85,9 @@
                     </div>
                 </div>
             </div>
-            <SupplierTab :isPer="picked"/> 
+
+            <SupplierTab :isPer="obj.IsPersonal"/> 
+            
             <div class="dialog-footer">
                 <div class="divide"></div>
                 <div class="btn-footer">
@@ -114,7 +116,7 @@ import AddEmployee from './AddEmployee'
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
-
+import axios from 'axios';
     export default {
         props:{
             state:String,
@@ -131,7 +133,6 @@ import MSSelect from '@/components/common/MSSelect'
         data(){
             return{
                 picked:'1',
-                isCus:false,
                 showFormAddGroupSupplier:false,
                 showFormAddEmployee:false,
                 headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
@@ -150,23 +151,37 @@ import MSSelect from '@/components/common/MSSelect'
                 ],
 
                 //data của đối tượng
-                obj:{},
+                obj:{
+                    IsPersonal:false,
+                    IsCustomer:false
+                },
 
             }
         },
         created(){
-            
-            // let externalScript = document.createElement('script')
-            // externalScript.setAttribute('src', '@/get_api.js')
-            // document.head.appendChild(externalScript)
+            axios.get('https://localhost:44363/api/GroupSuppliers')
+                .then(res =>{
+                    this.dataGroupSupplies = res.data.map((item)=>{
+                        return{
+                            'GroupSupplierCode':item.groupSupplierCode,
+                            'GroupSupplierName':item.groupSupplierName
+                        }
+                    })
+                }).catch(err =>{
+                    console.log(err);
+                })
 
-
-            // var url = 'https://localhost:44346/api/GroupSuppliers'
-            // this.dataGroupSupplies = API.GetData(url)
-
-            // var url = 'https://localhost:44346/api/Employees'
-            // this.dataEmployees = API.GetData(url)
-
+             axios.get('https://localhost:44363/api/employees')
+                .then(res =>{
+                    this.dataEmployees = res.data.map((item)=>{
+                        return{
+                            'EmployeeCode':item.employeeCode,
+                            'EmployeeName':item.employeeName
+                        }
+                    })
+                }).catch(err =>{
+                    console.log(err);
+                })
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
                     this.showFormAddGroupSupplier = true;
@@ -181,33 +196,29 @@ import MSSelect from '@/components/common/MSSelect'
                 this.showFormAddEmployee = false;
             })
             
-            // if(this.state == 'Edit'){ // form sửa
-            //     // lấy dữ liệu từ serve
-            //     axios({
-            //         methods:'GET',
-            //         url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
-            //     }).then(function(res){
-            //         console.log(res.data);
-            //     }).catch(function(err){
-            //         console.log(err);
-            //     })
-            // }
+            if(this.state == 'Edit'){ // form sửa
+                // lấy dữ liệu từ serve
+                axios({
+                    methods:'GET',
+                    url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
+                }).then(function(res){
+                    console.log(res.data);
+                }).catch(function(err){
+                    console.log(err);
+                })
+            }
         }
         ,methods:{
             btnSaveOnClick(){
-                var temp = document.getElementById('test');
-                console.log(temp);
+                console.log(this.obj);
             },
             btnCloseOnClick(){
                busData.$emit('closeDialogSupplier');
+            },
+            cusChange(){
+               busData.$emit('changeForm',this.obj.IsCustomer);
             }
 
-
-        },watch:{
-            isCus:function(){
-                busData.$emit('changeForm',this.isCus);
-            },
-           
         }
     }
 </script>

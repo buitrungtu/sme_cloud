@@ -37,7 +37,7 @@
                 </el-table-column>
 
                 <el-table-column
-                property="supplierId"
+                property="supplierCode"
                 label="MÃ NHÀ CUNG CẤP"
                 width="225">
                 </el-table-column>
@@ -132,7 +132,7 @@ import axios from 'axios';
             }
         },
         created(){
-            axios.get('https://localhost:44346/api/Suppliers')
+            axios.get('https://localhost:44363/api/suppliers')
                 .then(response => (this.data = response.data))
                 .catch(error => (console.log("Lỗi: "+error)))
         },

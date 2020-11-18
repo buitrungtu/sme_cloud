@@ -3,7 +3,7 @@
         <div class="w-3-4" style="display:flex">
             <div class="w-input">
                 <div class="row-input" >
-                    <ObjCBB label="Điều khoản thanh toán"/>
+                    <BaseCBB label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                 </div>
             </div>
              <div class="w-input">
@@ -25,26 +25,24 @@
                 <DebtAccountCBB label="Tài khoản công nợ phải trả" currentValue="331" type='pay'/>
             </div>
         </div>
-        
-       
     </div>
 </template>
 
 <script>
 import MSTextbox from '@/components/common/MSTextbox'
-import ObjCBB from '@/components/common/combobox/ObjCBB'
 import {busData} from '@/main.js'
 import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
+import BaseCBB from '@/components/common/BaseCBB'
 
     export default {
         components:{
             MSTextbox,
-            ObjCBB,
+            BaseCBB,
             DebtAccountCBB
         },
         data(){
             return{
-                isCus:false
+                
             }
         },
         created(){
