@@ -83,7 +83,6 @@
                                 Trả tiền <i class="el-icon-caret-bottom"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xem</el-dropdown-item>
                                     <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Sửa</el-dropdown-item>
                                     <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xóa</el-dropdown-item>
                                 </el-dropdown-menu>

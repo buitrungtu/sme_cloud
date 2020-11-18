@@ -128,7 +128,7 @@ import {busData} from '@/main.js';
     border: none;
     padding: 0px 10px;
     width: 100%;
-}
+} 
 .input-area{
     border: none;
     padding: 8px 10px;

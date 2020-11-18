@@ -2,7 +2,7 @@
     <div class="combobox">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
-            v-model="value"
+            v-model="content"
             filterable
             reserve-keyword
             placeholder=""
@@ -55,18 +55,18 @@ import {busData} from '@/main.js';
             addNewF9:Boolean,
             indexshow:Number, //tính từ 1,
             multiple:Boolean,
-            valueFix:Array,
+            value:Array,
         },
         data(){
             return{
                 options: [],
-                value:[],
+                content:[],
                 loading: false,
                 show:''
             }
         },
         created(){
-            this.value = this.valueFix;
+            this.content = this.value;
         },
         methods:{
             showDialog(){
@@ -74,8 +74,8 @@ import {busData} from '@/main.js';
             },
         },
         watch:{
-           value:function(){
-               this.$emit('valueCBBChanged',this.value);
+           content:function(){
+               this.$emit('valueCBBChanged',this.content);
            }
         }
     }

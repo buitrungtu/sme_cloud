@@ -13,37 +13,37 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Người liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSSelect :data="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
-                        <MSTextbox style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
+                        <MSSelect :value="obj.VocativeContact"  @valueSLChanged="obj.VocativeContact = $event" :data="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
+                        <MSTextbox :value="obj.FullNameConTact" @valueChanged="obj.FullNameConTact = $event" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox placeholder="Email"/> 
+                            <MSTextbox :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox placeholder="Số điện thoại"/>
+                                <MSTextbox :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" placeholder="Số điện thoại"/>
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;"  v-show="isCus">
-                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="!isCus">
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="isCus">
                         <label class="label-input">Người nhận hóa đơn điện tử</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox placeholder="Họ và tên"/> 
+                            <MSTextbox :value="obj.FullnameEInvoice" @valueChanged="obj.FullnameEInvoice = $event" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
+                            <MSTextbox :value="obj.EmailEInvoice" @valueChanged="obj.EmailEInvoice = $event"  placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox placeholder="Số điện thoại"/>
+                                <MSTextbox :value="obj.MobileEInvoice" @valueChanged="obj.MobileEInvoice = $event" placeholder="Số điện thoại"/>
                             </div>
                         </div>
                     </div>
@@ -52,20 +52,20 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Thông tin liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox style="padding-top:3px" placeholder="Email"/> 
+                            <MSTextbox :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" style="padding-top:3px" placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox style="padding-top:3px" placeholder="Điện thoại di động"/> 
+                                <MSTextbox :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" style="padding-top:3px" placeholder="Điện thoại di động"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox style="padding-top:3px" placeholder="Điện thoại cố định"/> 
+                                <MSTextbox :value="obj.FixMobileContact" @valueChanged="obj.FixMobileContact = $event" style="padding-top:3px" placeholder="Điện thoại cố định"/> 
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                 
@@ -73,16 +73,16 @@
                         <label class="label-input">Thông tin CMND/Thẻ căn cước</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2" >
-                                <MSTextbox style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
+                                <MSTextbox :value="obj.Identity" @valueChanged="obj.Identity = $event" style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div style="width:calc(50% + 2.5px)">
-                                <MSDatetime  placeholder="Ngày cấp"/> 
+                                <MSDatetime :value="obj.IdentityDate" @valueDTChanged="obj.IdentityDate = $event" placeholder="Ngày cấp"/> 
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSTextbox placeholder="Nơi cấp"/>
+                        <MSTextbox :value="obj.IdentityPlace" @valueChanged="obj.IdentityPlace = $event" placeholder="Nơi cấp"/>
                         </div>
                     </div>
                 </div>
@@ -91,23 +91,23 @@
                 <div class="w-3-4" style="display:flex">
                     <div class="w-input">
                         <div class="row-input" >
-                            <BaseCBB label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                            <BaseCBB  label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox label="Số ngày được nợ"/>
+                            <MSTextbox :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox label="Số nợ tối đa"/>
+                            <MSTextbox :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-input" v-show="isCus">
-                        <DebtAccountCBB label="Tài khoản công nợ phải thu" currentValue="131" type='collect'/>
+                        <DebtAccountCBB  label="Tài khoản công nợ phải thu" currentValue="131" type='collect'/>
                     </div>
                     <div class="w-input" >
                         <DebtAccountCBB label="Tài khoản công nợ phải trả" currentValue="331" type='pay'/>
@@ -192,10 +192,8 @@
                 </div>
             </div>
 
-
-
             <div class="note" v-show="thisTab == 4">
-                <textarea tabindex="1"></textarea>
+                <textarea v-model="obj.Note" tabindex="1"></textarea>
             </div>
         </div>
     </div>
@@ -211,7 +209,9 @@ import {busData} from '@/main.js'
 
     export default {
         props:{
-            isPer:Boolean
+            isPer:Boolean,
+            get:Boolean,
+            root:Object
         },
         components:{
             MSTextbox,
@@ -241,10 +241,14 @@ import {busData} from '@/main.js'
                 tableData: [{
                     
                 },],
-                addCount:0
+                addCount:0,
+
+                obj:{}
             }
         },
         created(){
+            this.obj = this.root;
+
             busData.$on('changeForm',(mode)=>{
                 this.isCus = mode;
             })
@@ -265,6 +269,11 @@ import {busData} from '@/main.js'
             removeAllRow(){
                 this.tableData = []
             },
+        },
+        watch:{
+            get:function(){
+                busData.$emit('DataFromTabOrder',this.obj)
+            }
         }
     }
 </script>

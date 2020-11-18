@@ -21,17 +21,15 @@
                     </div>
                 </div>
             </div>
-            <BankAccount v-show="thisTab == 1"/>
+            <!-- bank account -->
         </div>
     </div>
 </template>
 
 <script>
-import BankAccount from '@/components/content/cash/SupplierInfo/BankAccount'
 import MSTextbox from '@/components/common/MSTextbox'
     export default {
         components:{
-            BankAccount,
             MSTextbox
         },
         data(){

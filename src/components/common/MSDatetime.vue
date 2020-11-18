@@ -4,7 +4,7 @@
             {{this.label}}
         </div>
         <el-date-picker
-            v-model="value"
+            v-model="content"
             type="date"
             :placeholder="placeholder"
             format="dd/MM/yyyy"
@@ -18,21 +18,28 @@
     export default {
         props:{
             label:String,
-            placeholder:String
+            placeholder:String,
+            value:String
         },
         data(){
             return{
-                 value: '',
+                 content: '',
             }
         },
         created(){
+            this.content = this.value;
             if(!this.placeholder){
                 var today =  new Date();
                 var dd = String(today. getDate()).padStart(2, '0');
                 var mm = String(today. getMonth() + 1).padStart(2, '0');
                 var yyyy = today. getFullYear();
                 today = mm + '/' + dd + '/' + yyyy;
-                this.value = today
+                this.content = today
+            }
+        },
+        watch:{
+            content:function(){
+                this.$emit('valueDTChanged',this.content);
             }
         }
     }

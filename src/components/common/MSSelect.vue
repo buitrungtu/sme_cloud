@@ -38,6 +38,11 @@
         },
         methods:{
 
+        },
+        watch:{
+            content:function(){
+                this.$emit('valueSLChanged',this.content);
+            }
         }
     }
 </script>

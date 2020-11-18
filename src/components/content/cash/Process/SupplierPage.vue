@@ -49,7 +49,7 @@
             <GridSuppliers /> 
         </div>
         <div class="black-model" v-show="isShow"></div>
-        <AddSupplier v-if="isShow" :state="stateForm" :supplierID="suppID"/>
+        <AddSupplier />
     </div>
 </template>
 
@@ -65,21 +65,15 @@ import AddSupplier from '../AddSupplier'
         data(){
             return{
                 thisPage:'ReceivePayment',
-                isShow:false,
-                stateForm:'Add',
-                suppID:''
+                suppID:'',
+                isShow:false
             }
         },
         created(){
             busData.$emit('changeTab',1);
+
             busData.$on('closeDialogSupplier',()=>{
                 this.isShow=false;
-            })
-
-            busData.$on('editSupplier',(suppID)=>{
-                this.stateForm = 'Edit';
-                this.suppID = suppID;
-                this.isShow = true;
             })
         },
         methods:{
@@ -87,6 +81,7 @@ import AddSupplier from '../AddSupplier'
                 this.$router.push('/paymentvoucher');
             },
             showDialogAddSupplier(){
+                busData.$emit('showFormAddSupplier');
                 this.isShow = true;
             }
         }

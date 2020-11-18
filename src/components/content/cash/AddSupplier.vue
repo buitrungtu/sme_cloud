@@ -1,5 +1,5 @@
 <template>
-    <div class="dialog dialog-supplier">
+    <div class="dialog dialog-supplier" v-if="show">
        <header class="dialog-header">
            <div class="dialog-title">
                <div class="tilte-content" style="display:flex;align-items: center;">
@@ -47,10 +47,10 @@
                         </div>
                     </div>
                     <div class="row-input">
-                        <BaseCBB :valueFix="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                        <BaseCBB :value="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                     </div>
                     <div class="row-input">
-                        <BaseCBB :valueFix="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                        <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <SupplierTab :isPer="obj.IsPersonal"/> 
+            <SupplierTab :isPer="obj.IsPersonal" :get='save' :root="obj" @DataFromTabOrder="obj = $event"/> 
             
             <div class="dialog-footer">
                 <div class="divide"></div>
@@ -120,7 +120,6 @@ import axios from 'axios';
     export default {
         props:{
             state:String,
-            supplierID:String
         },
         components:{
             SupplierTab,
@@ -132,6 +131,7 @@ import axios from 'axios';
         },
         data(){
             return{
+                show:false,
                 picked:'1',
                 showFormAddGroupSupplier:false,
                 showFormAddEmployee:false,
@@ -153,12 +153,28 @@ import axios from 'axios';
                 //data của đối tượng
                 obj:{
                     IsPersonal:false,
-                    IsCustomer:false
+                    IsCustomer:false,
+                    SupplierCode:'NCC010'
                 },
-
+                
+                save:false
             }
         },
         created(){
+
+            busData.$on('showFormAddSupplier',()=>{
+                this.show = true;
+            })
+            busData.$on('editSupplier',(SuppID)=>{
+                axios({
+                    methods:'GET',
+                    url:'https://localhost:44363/api/suppliers/' + SuppID
+                }).then(res => {
+                    this.obj = res.data;
+                    this.show = true;
+                })
+            })
+            
             axios.get('https://localhost:44363/api/GroupSuppliers')
                 .then(res =>{
                     this.dataGroupSupplies = res.data.map((item)=>{
@@ -182,6 +198,7 @@ import axios from 'axios';
                 }).catch(err =>{
                     console.log(err);
                 })
+
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
                     this.showFormAddGroupSupplier = true;
@@ -210,10 +227,36 @@ import axios from 'axios';
         }
         ,methods:{
             btnSaveOnClick(){
+                this.save = true;
                 console.log(this.obj);
+                 for(var propName in this.obj){
+                    if(this.obj[propName] === undefined){
+                        delete this.obj[propName];
+                    }
+                }
+                let self = this;
+                //gọi api thêm
+                // axios.post('https://localhost:44363/api/suppliers',{data:JSON.stringify(self.obj)})
+                //     .then(res =>{
+                //         console.log(res);
+                //     }).catch(err=>{
+                //         console.log(err);
+                //     })
+                
+                axios({
+                    method:'POST',
+                    url:'https://localhost:44363/api/suppliers',
+                    data:JSON.stringify(self.obj),
+                    contentType: "application/json",
+                    dataType: "json",
+                }).then(res =>{
+                    console.log(res)
+                })
+                this.btnCloseOnClick();
             },
             btnCloseOnClick(){
                busData.$emit('closeDialogSupplier');
+               this.show = false;
             },
             cusChange(){
                busData.$emit('changeForm',this.obj.IsCustomer);
