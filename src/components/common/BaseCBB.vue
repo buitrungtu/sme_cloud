@@ -10,7 +10,7 @@
             :multiple="multiple"
         >
             <el-option :value="1" class="cb-header">
-                <span v-for="(thead,index) in header" :key="index" :style="{float: 'left', width:thead.width + 'px'}" class="ellipsis" >{{thead.label}}</span>
+                <span v-for="(thead,index) in header" :key="index" :style="{float: 'left', width: thead.width + 'px'}" class="ellipsis" >{{thead.label}}</span>
             </el-option>
             <div class="cbb-content">
                 <el-option
@@ -55,7 +55,8 @@ import {busData} from '@/main.js';
             addNewF9:Boolean,
             indexshow:Number, //tính từ 1,
             multiple:Boolean,
-            value:Array,
+            value:String,
+            values:Array
         },
         data(){
             return{

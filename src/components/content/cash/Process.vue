@@ -77,7 +77,7 @@ import {busData} from '@/main.js'
 .process{
     display: flex;
     justify-content: center;
-    height: calc(100vh - 114px);
+    height: calc(100vh - 135px);
     overflow: auto;
     align-items: center;
 }

@@ -1,110 +1,119 @@
 <template>
-    <div class="dialog dialog-supplier" v-if="show">
-       <header class="dialog-header">
-           <div class="dialog-title">
-               <div class="tilte-content" style="display:flex;align-items: center;">
-                   <div class="title">Thông tin nhà cung cấp</div>
-                   <div class="gr-radio">
-                       <el-radio v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
+    <div>
+        <div class="black-model" v-show="show"></div>
+        <div class="dialog dialog-supplier" v-if="show">
+        <header class="dialog-header">
+            <div class="dialog-title">
+                <div class="tilte-content" style="display:flex;align-items: center;">
+                    <div class="title">Thông tin nhà cung cấp</div>
+                    <div class="gr-radio">
+                        <el-radio v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
                         <el-radio v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
-                   </div>
-                   <div class="title-right">
+                    </div>
+                    <div class="title-right">
                         <el-checkbox v-model="obj.IsCustomer" @change="cusChange()">Là khách hàng</el-checkbox>
-                   </div>
-               </div>
-           </div>
-           <div class="dialog-close">
-               <div class="icon icon-help"></div>
-               <div @click="btnCloseOnClick()" class="icon icon-close"></div>
-           </div>
-       </header>
-       <div class="dialog-content">
-           <div class="dialog-body">
-            <div class="body-info" v-show="obj.IsPersonal == false">
-                <div class="w-1-2 body-left">
-                    <div class="row-input">
-                        <div class="w-2-5" style="padding:2.5px 12px 0px 0px;">
-                            <MSTextbox fildname :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
-                        </div>
-                        <div class="w-3-5">
-                            <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  v-bind:required="true"/>
-                        </div>
-                    </div>
-                    <div class="row-input">
-                        <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" v-bind:required="true" />
-                    </div>
-                    <div class="row-input">
-                        <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
-                    </div>
-                </div> 
-                <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                    <div class="row-input" style="margin-bottom:1.5px">
-                        <div class="w-2-5" style="padding-right: 12px;">
-                            <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
-                        </div>
-                        <div class="w-3-5">
-                            <MSTextbox :value="obj.Website" @valueChanged="obj.Website = $event" label="Website"/>
-                        </div>
-                    </div>
-                    <div class="row-input">
-                        <BaseCBB :value="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
-                    </div>
-                    <div class="row-input">
-                        <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                     </div>
                 </div>
             </div>
+            <div class="dialog-close">
+                <div class="icon icon-help"></div>
+                <div @click="btnCloseOnClick()" class="icon icon-close"></div>
+            </div>
+        </header>
+        <div class="dialog-content">
+            <div class="dialog-body">
+                <div class="body-info" v-show="obj.IsPersonal == false">
+                    <div class="w-1-2 body-left">
+                        <div class="row-input">
+                            <div class="w-2-5" style="padding-right:12px;">
+                                <MSTextbox :autofocus="true" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                            </div>
+                            <div class="w-3-5"> 
+                                <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" @isInvalid="checkRequire = $event"/>
+                            </div>
+                        </div>
+                        <div class="row-input">
+                            <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" @isInvalid="checkRequire = $event"/>
+                        </div>
+                        <div class="row-input">
+                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                        </div>
+                    </div> 
+                    <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
+                        <div class="row-input" style="margin-bottom:1.5px">
+                            <div class="w-2-5" style="padding-right: 12px;">
+                                <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
+                            </div>
+                            <div class="w-3-5">
+                                <MSTextbox :value="obj.Website" @valueChanged="obj.Website = $event" label="Website"/>
+                            </div>
+                        </div>
+                        <div class="row-input">
+                            <BaseCBB :values="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                        </div>
+                        <div class="row-input">
+                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="body-info" v-show="obj.IsPersonal == true">
-                <div class="w-1-2 body-left">
-                    <div class="row-input">
-                        <div class="w-3-5" style="padding-right: 12px;">
-                            <MSTextbox label="Mã nhà cung cấp" value="ĐIỆN LỰC ĐĂK LĂK1" v-bind:required="true"/>
+                <div class="body-info" v-show="obj.IsPersonal == true">
+                    <div class="w-1-2 body-left">
+                        <div class="row-input">
+                            <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
+                                 <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp" @isInvalid="checkRequire = $event"  v-bind:required="true"/>
+                            </div>
+                            <div class="w-2-5" style="padding-top:2px">
+                                <MSTextbox fildname :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                            </div>
                         </div>
-                        <div class="w-2-5" style="padding-top:2px">
-                            <MSTextbox label="Mã số thuế"/>
+                        <label class="label-input">Tên nhà cung cấp</label>
+                        <div class="row-input" style="padding-bottom: 4px;">
+                            <MSSelect :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSTextbox fildname :value="obj.Fullname" @valueChanged="obj.Fullname = $event" placeholder="Họ và tên" style="padding-top:2.5px"/>
+                        </div>
+                        <div class="row-input">
+                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div>
-                    <label class="label-input">Tên nhà cung cấp</label>
-                    <div class="row-input">
-                    <div class="row-input" style="padding-bottom: 4px;">
-                            <MSSelect :data="vocatives" style="width:116px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox style="width:calc(100% - 116px);padding-top:3px" placeholder="Họ và tên"/> 
+                    <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
+                       <div class="row-input">
+                            <BaseCBB :values="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
-                    </div>
-                    <div class="row-input">
-                        <MSTextbox v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu giấy, Hà Nội"/>
+                        <div class="row-input" style="padding-top:2.5px">
+                           <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                        </div>
                     </div>
                 </div>
-                <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                    <div class="row-input">
-                        <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 mission="AddGropSupplier"/>
-                    </div>
-                    <div class="row-input" style="padding-top:2.5px">
-                        <BaseCBB label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
-                    </div>
-                </div>
-            </div>
 
-            <SupplierTab :isPer="obj.IsPersonal" :get='save' :root="obj" @DataFromTabOrder="obj = $event"/> 
-            
-            <div class="dialog-footer">
-                <div class="divide"></div>
-                <div class="btn-footer">
-                    <div class="btn-left">
-                        <button @click="btnCloseOnClick()">Hủy</button>
-                    </div>
-                    <div class="btn-right">
-                        <button @click="btnSaveOnClick()"> Cất</button>
-                        <button class="save-and-add">Cất và thêm</button>
+                <SupplierTab :isPer="obj.IsPersonal" :get='save' :root="obj" :isCus="obj.IsCustomer" @DataFromTabOrder="obj = $event"/> 
+                
+                <div class="dialog-footer">
+                    <div class="divide"></div>
+                    <div class="btn-footer">
+                        <div class="btn-left">
+                            <button @click="btnCloseOnClick()">Hủy</button>
+                        </div>
+                        <div class="btn-right">
+                            <button @click="btnSaveOnClick()"> Cất</button>
+                            <button class="save-and-add">Cất và thêm</button>
+                        </div>
                     </div>
                 </div>
             </div>
-           </div>
-       </div>
-        <AddGroupSupplier :visible="showFormAddGroupSupplier"/>
-        <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
-        <AddEmployee :visible="showFormAddEmployee"/>
+        </div>
+            <AddGroupSupplier :visible="showFormAddGroupSupplier"/>
+            <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
+            <AddEmployee :visible="showFormAddEmployee"/>
+        </div>
+        <el-dialog
+            title="Warningggggg"
+            :visible.sync="showDialogError"
+            width="30%"
+            center
+        >
+            <span>Điền đầy đủ các trường bắt buộc đi bạn eii</span>
+        </el-dialog>
     </div>
 </template>
 
@@ -119,7 +128,6 @@ import MSSelect from '@/components/common/MSSelect'
 import axios from 'axios';
     export default {
         props:{
-            state:String,
         },
         components:{
             SupplierTab,
@@ -133,6 +141,8 @@ import axios from 'axios';
             return{
                 show:false,
                 picked:'1',
+                showDialogError:false,
+                checkRequire:false,
                 showFormAddGroupSupplier:false,
                 showFormAddEmployee:false,
                 headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
@@ -153,25 +163,29 @@ import axios from 'axios';
                 //data của đối tượng
                 obj:{
                     IsPersonal:false,
-                    IsCustomer:false,
-                    SupplierCode:'NCC010'
+                    IsCustomer:false
                 },
-                
-                save:false
+                save:false,
+                state:'Add',
+                supplierID:''                
+
             }
         },
         created(){
-
             busData.$on('showFormAddSupplier',()=>{
                 this.show = true;
             })
+
             busData.$on('editSupplier',(SuppID)=>{
+                console.log(SuppID);
                 axios({
-                    methods:'GET',
+                    method:'GET',
                     url:'https://localhost:44363/api/suppliers/' + SuppID
                 }).then(res => {
                     this.obj = res.data;
                     this.show = true;
+                    this.state ='Edit';
+                    this.supplierID = SuppID;
                 })
             })
             
@@ -179,8 +193,8 @@ import axios from 'axios';
                 .then(res =>{
                     this.dataGroupSupplies = res.data.map((item)=>{
                         return{
-                            'GroupSupplierCode':item.groupSupplierCode,
-                            'GroupSupplierName':item.groupSupplierName
+                            'GroupSupplierCode':item.GroupSupplierCode,
+                            'GroupSupplierName':item.GroupSupplierName
                         }
                     })
                 }).catch(err =>{
@@ -191,8 +205,8 @@ import axios from 'axios';
                 .then(res =>{
                     this.dataEmployees = res.data.map((item)=>{
                         return{
-                            'EmployeeCode':item.employeeCode,
-                            'EmployeeName':item.employeeName
+                            'EmployeeCode':item.EmployeeCode,
+                            'EmployeeName':item.EmployeeName
                         }
                     })
                 }).catch(err =>{
@@ -212,57 +226,67 @@ import axios from 'axios';
             busData.$on('closeDialogEmployee',()=>{
                 this.showFormAddEmployee = false;
             })
-            
-            if(this.state == 'Edit'){ // form sửa
-                // lấy dữ liệu từ serve
-                axios({
-                    methods:'GET',
-                    url:'https://localhost:44346/api/Suppliers/' + this.supplierID,
-                }).then(function(res){
-                    console.log(res.data);
-                }).catch(function(err){
-                    console.log(err);
-                })
-            }
-        }
-        ,methods:{
+        },
+        methods:{
             btnSaveOnClick(){
-                this.save = true;
-                console.log(this.obj);
-                 for(var propName in this.obj){
-                    if(this.obj[propName] === undefined){
-                        delete this.obj[propName];
+                if(this.checkRequire == true){
+                    this.save = true;
+                    for(var propName in this.obj){
+                        if(this.obj[propName] === undefined){
+                            delete this.obj[propName];
+                        }
                     }
+                    //gọi api
+                    if(this.state == 'Add'){
+                        axios({
+                            method:'post',
+                            url:'https://localhost:44363/api/suppliers',
+                            data:this.obj,
+                        }).then(res=>{
+                            if(res.status == 201){
+                                this.$emit('addData', this.obj);
+                                this.resetForm();
+                                console.log(this.obj)
+                            }
+                        }).catch(err =>{
+                            console.log(err)
+                        })
+                    }else{
+                        axios({
+                            method:'put',
+                            url:'https://localhost:44363/api/suppliers/' + this.supplierID,
+                            data:this.obj,
+                        }).then(res=>{
+                            if(res.status == 204){
+                                console.log('load lại data');
+                                this.resetForm();
+                            }
+                        }).catch(err =>{
+                            console.log(err)
+                        })
+                    }
+                    this.btnCloseOnClick();
+                }else{
+                   this.showDialogError = true;
                 }
-                let self = this;
-                //gọi api thêm
-                // axios.post('https://localhost:44363/api/suppliers',{data:JSON.stringify(self.obj)})
-                //     .then(res =>{
-                //         console.log(res);
-                //     }).catch(err=>{
-                //         console.log(err);
-                //     })
-                
-                axios({
-                    method:'POST',
-                    url:'https://localhost:44363/api/suppliers',
-                    data:JSON.stringify(self.obj),
-                    contentType: "application/json",
-                    dataType: "json",
-                }).then(res =>{
-                    console.log(res)
-                })
-                this.btnCloseOnClick();
             },
             btnCloseOnClick(){
-               busData.$emit('closeDialogSupplier');
                this.show = false;
             },
             cusChange(){
                busData.$emit('changeForm',this.obj.IsCustomer);
+            },
+            resetForm(){
+                this.state = 'Add';
+                this.supplierID = '';
+                this.obj= {
+                    IsPersonal:false,
+                    IsCustomer:false
+                }
             }
-
-        }
+          
+        },
+      
     }
 </script>
 

@@ -96,12 +96,12 @@
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" label="Số ngày được nợ"/>
+                            <MSTextbox :value="obj.DaysOfOwed+''" @valueChanged="obj.DaysOfOwed = $event" label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" label="Số nợ tối đa"/>
+                            <MSTextbox :value="obj.MaxDebt+''" @valueChanged="obj.MaxDebt = $event" label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,8 @@ import {busData} from '@/main.js'
         props:{
             isPer:Boolean,
             get:Boolean,
-            root:Object
+            root:Object,
+            isCus:Boolean
         },
         components:{
             MSTextbox,
@@ -223,7 +224,6 @@ import {busData} from '@/main.js'
         data(){
             return{
                 thisTab:0,
-                isCus:false,
                 options:[{value:'1',label:'Anh'},
                         {value:'2',label:'Chị'},
                         {value:'3',label:'Bạn'},

@@ -37,37 +37,37 @@
                 </el-table-column>
 
                 <el-table-column
-                property="supplierCode"
+                property="SupplierCode"
                 label="MÃ NHÀ CUNG CẤP"
                 width="225">
                 </el-table-column>
 
                 <el-table-column
-                property="supplierName"
+                property="SupplierName"
                 label="TÊN NHÀ CUNG CẤP"
                 width="400">
                 </el-table-column>
 
                 <el-table-column
-                property="address"
+                property="Address"
                 label="ĐỊA CHỈ"
                  width="300">
                 </el-table-column>
 
                  <el-table-column
-                property="debt"
+                property="Debt"
                 label="CÔNG NỢ"
                  width="170">
                 </el-table-column>
 
                  <el-table-column
-                property="taxCode"
+                property="TaxCode"
                 label="MÃ SỐ THUẾ"
                  width="170">
                 </el-table-column>
 
                  <el-table-column
-                property="mobile"
+                property="Mobile"
                 label="ĐIỆN THOẠI"
                  width="170">
                 </el-table-column>
@@ -83,8 +83,8 @@
                                 Trả tiền <i class="el-icon-caret-bottom"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Sửa</el-dropdown-item>
-                                    <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xóa</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
+                                    <el-dropdown-item @click.native.prevent="deleteRow(control.row.SupplierId)" >Xóa</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </div>
@@ -119,7 +119,6 @@
 <script>
 import {busData} from '@/main.js'
 import MSSelect from '@/components/common/MSSelect'
-import axios from 'axios';
     export default {
         components:{
             MSSelect,
@@ -136,9 +135,24 @@ import axios from 'axios';
                 .catch(error => (console.log("Lỗi: "+error)))
         },
         methods: {
-            selectdRow(SuppID){
+            editRow(SuppID){
                 busData.$emit('editSupplier',SuppID);
-            }
+            },
+            deleteRow(SuppID){
+                var self = this;
+                console.log('Đã vào đây');
+                axios({
+                    method:'DELETE',
+                    url:'https://localhost:44363/api/Suppliers/' + SuppID,
+                }).then(function(res){
+                    console.log(res);
+                    if(res.status == 200){
+                        self.$router.go(0);
+                    }       
+                }).catch(function(err){
+                    console.log(err);
+                })
+            },
         }
     }
 </script>

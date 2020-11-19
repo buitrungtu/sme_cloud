@@ -53,6 +53,7 @@ import {busData} from '@/main.js'
     padding-left: 0;
     position: relative;
     border-bottom: 2px solid #d4d7dc;
+    margin: 0;
 }
 .nav-tabs li{
     list-style: none;

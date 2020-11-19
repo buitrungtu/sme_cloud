@@ -131,7 +131,7 @@ import axios from 'axios'
             }
         },
         created(){
-             axios.get('https://localhost:44346/api/GroupSuppliers')
+             axios.get('https://localhost:44363/api/GroupSuppliers')
                 .then(response => (this.dataGroupSupplies = response.data))
                 .catch(error => (console.log("Lỗi: "+error)))
         },

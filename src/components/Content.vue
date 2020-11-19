@@ -23,7 +23,6 @@ import Header from './content/Header'
     width: calc(100% - 165px);
     height: 100vh;
     float: left;
-    background-color: #ccc;
 }
 .router-content{
     padding-left: 20px;

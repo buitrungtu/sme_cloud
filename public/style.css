@@ -1,24 +1,10 @@
 ﻿body {
     margin: 0;
     padding: 0;
-    font-family: 'MISA Fronts','MISA Fronts Bold', 'MISA Fronts fontello';
+    font-family: 'Open Sans', sans-serif;
     font-size: 13px !important;
 }
 
-@font-face {
-    font-family: MISA Fronts;
-    src: url("./font/Tahoma_Regular.woff");
-}
-
-@font-face {
-    font-family: MISA Fronts Bold;
-    src: url('./font/Tahoma_Bold.woff') format('woff');
-}
-
-@font-face {
-    font-family: MISA Fronts fontello;
-    src: url('./font/fontello.woff') format('woff');
-}
  /* grid  */
  .w-1-2{
     width: 50%!important;
@@ -142,8 +128,8 @@ input,button,textarea{
 .dialog{
     position: fixed;
     width: 900px;
-    height: 650px;
-    top: calc(50% - 325px);
+    height: 670px;
+    top: calc(50% - 335px);
     left: calc(50% - 450px);
     background-color: #fff;
     z-index: 999;
