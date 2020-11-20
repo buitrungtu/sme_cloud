@@ -10,7 +10,7 @@
             :multiple="multiple"
         >
             <el-option :value="1" class="cb-header">
-                <span v-for="(thead,index) in header" :key="index" :style="{float: 'left', width: thead.width + 'px'}" class="ellipsis" >{{thead.label}}</span>
+                <span v-for="(thead,index) in header" :key="index" :style="{width:thead[1]+'px',float: 'left'}" class="ellipsis" >{{thead.label}}</span>
             </el-option>
             <div class="cbb-content">
                 <el-option
@@ -19,7 +19,7 @@
                     :value="Object.values(item)[0]"
                     :label="Object.values(item)[indexshow-1]"
                     >
-                    <span :style="{float: 'left', width:header[i].width + 'px'}" class="ellipsis" 
+                    <span :style="{width:Object.values(header[i])[1] + 'px',float: 'left'}" class="ellipsis" 
                         v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}
                     </span>
                 </el-option>
@@ -40,7 +40,6 @@
 
 <script>
 import {busData} from '@/main.js';
-
     export default {
         props:{
             mission:String,
@@ -56,18 +55,21 @@ import {busData} from '@/main.js';
             indexshow:Number, //tính từ 1,
             multiple:Boolean,
             value:String,
-            values:Array
+            valueArr:Array
         },
         data(){
             return{
-                options: [],
                 content:[],
                 loading: false,
-                show:''
             }
         },
         created(){
-            this.content = this.value;
+            if(this.valueArr){
+                this.content = this.valueArr;
+            }
+            if(this.value){
+                this.content = this.value;
+            }
         },
         methods:{
             showDialog(){

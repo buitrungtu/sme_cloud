@@ -1,7 +1,6 @@
 import axios from 'axios';
-//import { reject, resolve } from 'core-js/fn/promise';
 class BaseAPI{
-    GetData(url){
+    Get(url){
         return new Promise((resolve,reject)=>{
             axios.get(url).then(res=>{
                 resolve(res)
@@ -10,7 +9,58 @@ class BaseAPI{
             })
         })
     }
-    save(){}
-    delete(){}
+
+    GetObj(url,id){
+        return new Promise((resolve,reject)=>{
+            axios({
+                method:'get',
+                url:url + '/' + id,
+            }).then(res=>{
+                resolve(res)
+            }).catch(err =>{
+                reject(err)
+            })
+        })
+    }
+
+    Post(url,obj){
+        return new Promise((resolve,reject)=>{
+            axios({
+                method:'post',
+                url:url,
+                data:obj,
+            }).then(res=>{
+                resolve(res)
+            }).catch(err =>{
+                reject(err)
+            })
+        })
+    }
+    Put(url,id,obj){
+        return new Promise((resolve,reject)=>{
+            axios({
+                method:'put',
+                url:url+'/'+id,
+                data:obj,
+            }).then(res=>{
+                resolve(res)
+            }).catch(err =>{
+                reject(err)
+            })
+        })
+    }
+    
+    Delete(url,id){
+        return new Promise((resolve,reject)=>{
+            axios({
+                method:'delete',
+                url:url + '/' + id,
+            }).then(res=>{
+                resolve(res)
+            }).catch(err =>{
+                reject(err)
+            })
+        })
+    }
 }
 export default new BaseAPI() 

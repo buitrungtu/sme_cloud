@@ -145,7 +145,6 @@
                 <div class="grid-footer">
                 <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
                     <div class="footer-right">
-                        <!-- <div class="recordOnPage"><MSSelect title="20 bản ghi trên 1 trang"/></div> -->
                         <div class="totalPage">
                             <div class="pre disable">Trước</div>
                             <div class="page-list">
@@ -163,14 +162,13 @@
         </div>
     </div> 
         </div>
-        <AddSupplier @stateChange="isShow == $event" @addData="data.push($event)"/>
+        <AddSupplier @stateChange="isShow == $event" @reloadData="reload = $event"/>
     </div>
 </template>
 
 <script>
 import {busData} from '@/main.js'
 import AddSupplier from '../AddSupplier'
-import axios from 'axios';
 import BaseAPI from '@/BaseAPI.js'
     export default {
         components:{
@@ -181,6 +179,7 @@ import BaseAPI from '@/BaseAPI.js'
                 thisPage:'ReceivePayment',
                 data: [
                 ],
+                reload:false
             }
         },
         created(){
@@ -190,12 +189,25 @@ import BaseAPI from '@/BaseAPI.js'
             this.GetDataSuplier();
         },
         methods:{
+            //API
             async GetDataSuplier(){
-                let res = await BaseAPI.GetData('https://localhost:44363/api/suppliers'); 
+                let res = await BaseAPI.Get('https://localhost:44363/api/suppliers'); 
                 if(res && res.data){
                     this.data = res.data;
                 }
             },
+            async DeleteSuplier(id){
+                let res = await BaseAPI.Delete('https://localhost:44363/api/suppliers',id); 
+                if(res && res.status){
+                    this.GetDataSuplier();
+                }
+            },
+
+            //Event vue
+            deleteRow(SuppID){
+                this.DeleteSuplier(SuppID);
+            },
+
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
             },
@@ -205,19 +217,17 @@ import BaseAPI from '@/BaseAPI.js'
             editRow(SuppID){
                 busData.$emit('editSupplier',SuppID);
             },
-            deleteRow(SuppID,index){
-                axios({
-                    method:'DELETE',
-                    url:'https://localhost:44363/api/Suppliers/' + SuppID,
-                }).then(function(res){
-                    console.log(res,index)
-                }).catch(function(err){
-                    console.log(err);
-                })
-            },
+            
             dbClickForEdit(row){
-                console.log(row.SupplierId);
                 busData.$emit('editSupplier',row.SupplierId);
+            }
+        },
+        watch:{
+            reload:function(){
+                if(this.reload == true){
+                    this.GetDataSuplier();
+                    this.reload = false;
+                }
             }
         }
     }

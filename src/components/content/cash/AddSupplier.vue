@@ -11,13 +11,13 @@
                         <el-radio v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
                     </div>
                     <div class="title-right">
-                        <el-checkbox v-model="obj.IsCustomer" @change="cusChange()">Là khách hàng</el-checkbox>
+                        <el-checkbox v-model="obj.IsCustomer">Là khách hàng</el-checkbox>
                     </div>
                 </div>
             </div>
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
-                <div @click="btnCloseOnClick()" class="icon icon-close"></div>
+                <div @click="show = false" class="icon icon-close"></div>
             </div>
         </header>
         <div class="dialog-content">
@@ -49,10 +49,10 @@
                             </div>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :values="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -70,18 +70,18 @@
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <MSSelect :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox fildname :value="obj.Fullname" @valueChanged="obj.Fullname = $event" placeholder="Họ và tên" style="padding-top:2.5px"/>
+                            <MSTextbox fildname :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px"/>
                         </div>
                         <div class="row-input">
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                       <div class="row-input">
-                            <BaseCBB :values="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                        <div class="row-input">
+                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
-                           <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headeEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-left">
-                            <button @click="btnCloseOnClick()">Hủy</button>
+                            <button @click="show = false">Hủy</button>
                         </div>
                         <div class="btn-right">
                             <button @click="btnSaveOnClick()"> Cất</button>
@@ -125,7 +125,8 @@ import AddEmployee from './AddEmployee'
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
-import axios from 'axios';
+import BaseAPI from '@/BaseAPI.js'
+
     export default {
         props:{
         },
@@ -140,14 +141,13 @@ import axios from 'axios';
         data(){
             return{
                 show:false,
-                picked:'1',
                 showDialogError:false,
                 checkRequire:false,
                 showFormAddGroupSupplier:false,
                 showFormAddEmployee:false,
-                headeGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
+                headerGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
                 dataGroupSupplies:[],
-                headeEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
+                headerEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
                 dataEmployees:[],
                 vocatives:[
                     {value:'1',label:'Anh'},
@@ -174,45 +174,15 @@ import axios from 'axios';
         created(){
             busData.$on('showFormAddSupplier',()=>{
                 this.show = true;
+                this.resetForm();
             })
 
             busData.$on('editSupplier',(SuppID)=>{
-                console.log(SuppID);
-                axios({
-                    method:'GET',
-                    url:'https://localhost:44363/api/suppliers/' + SuppID
-                }).then(res => {
-                    this.obj = res.data;
-                    this.show = true;
-                    this.state ='Edit';
-                    this.supplierID = SuppID;
-                })
+                this.supplierID = SuppID;
+                this.GetSupplier(this.supplierID);
+                this.state = 'Edit'
             })
             
-            axios.get('https://localhost:44363/api/GroupSuppliers')
-                .then(res =>{
-                    this.dataGroupSupplies = res.data.map((item)=>{
-                        return{
-                            'GroupSupplierCode':item.GroupSupplierCode,
-                            'GroupSupplierName':item.GroupSupplierName
-                        }
-                    })
-                }).catch(err =>{
-                    console.log(err);
-                })
-
-             axios.get('https://localhost:44363/api/employees')
-                .then(res =>{
-                    this.dataEmployees = res.data.map((item)=>{
-                        return{
-                            'EmployeeCode':item.EmployeeCode,
-                            'EmployeeName':item.EmployeeName
-                        }
-                    })
-                }).catch(err =>{
-                    console.log(err);
-                })
-
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
                     this.showFormAddGroupSupplier = true;
@@ -227,64 +197,102 @@ import axios from 'axios';
                 this.showFormAddEmployee = false;
             })
         },
+        activated(){
+            console.log("Vào activated");
+        },
+        deactivated(){
+            console.log("Vào deactiveted");
+            
+        },
+        mounted(){
+            this.GetGroupSupplies();
+            this.GetEmployees();
+        },
         methods:{
+
+            //API
+            async GetGroupSupplies(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/GroupSuppliers'); 
+                if(res && res.data){
+                    this.dataGroupSupplies =res.data.map((item)=>{
+                        return{
+                            'GroupSupplierCode':item.GroupSupplierCode,
+                            'GroupSupplierName':item.GroupSupplierName
+                        }
+                    })
+                }
+            },
+            async GetEmployees(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/employees'); 
+                if(res && res.data){
+                    this.dataEmployees = res.data.map((item)=>{
+                        return{
+                            'EmployeeCode':item.EmployeeCode,
+                            'EmployeeName':item.EmployeeName
+                        }
+                    })
+                }
+            },
+
+            async AddSupplier(){
+                let res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
+                if(res && res.data){
+                    this.$emit('reloadData',true);
+                }
+            },
+
+            async GetSupplier(id){
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',id); 
+                if(res && res.data){
+                    this.obj = res.data;
+                    this.show = true;
+                }
+            },
+
+            async SaveSupplier(){
+                let res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
+                if(res && res.data){
+                    this.$emit('reloadData',true);
+                }
+            },
+
+            //Event 
+
             btnSaveOnClick(){
                 if(this.checkRequire == true){
                     this.save = true;
-                    for(var propName in this.obj){
-                        if(this.obj[propName] === undefined){
-                            delete this.obj[propName];
-                        }
-                    }
+
+                    // for(var propName in this.obj){
+                    //     if(!this.obj[propName]){
+                    //         delete this.obj[propName];
+                    //     }
+                    // }
                     //gọi api
+                    console.log(this.obj);
                     if(this.state == 'Add'){
-                        axios({
-                            method:'post',
-                            url:'https://localhost:44363/api/suppliers',
-                            data:this.obj,
-                        }).then(res=>{
-                            if(res.status == 201){
-                                this.$emit('addData', this.obj);
-                                this.resetForm();
-                                console.log(this.obj)
-                            }
-                        }).catch(err =>{
-                            console.log(err)
-                        })
+                        this.AddSupplier();
+                        this.show = false;
+                        this.resetForm();
+
                     }else{
-                        axios({
-                            method:'put',
-                            url:'https://localhost:44363/api/suppliers/' + this.supplierID,
-                            data:this.obj,
-                        }).then(res=>{
-                            if(res.status == 204){
-                                console.log('load lại data');
-                                this.resetForm();
-                            }
-                        }).catch(err =>{
-                            console.log(err)
-                        })
+                        this.SaveSupplier();
+                        this.show = false;
+                        this.resetForm();
                     }
-                    this.btnCloseOnClick();
                 }else{
                    this.showDialogError = true;
                 }
             },
-            btnCloseOnClick(){
-               this.show = false;
-            },
-            cusChange(){
-               busData.$emit('changeForm',this.obj.IsCustomer);
-            },
             resetForm(){
-                this.state = 'Add';
-                this.supplierID = '';
-                this.obj= {
+                this.obj = {
                     IsPersonal:false,
                     IsCustomer:false
-                }
+                };
+                this.save=false;
+                this.state='Add';
+                this.supplierID='';
+                this.checkRequire = false
             }
-          
         },
       
     }

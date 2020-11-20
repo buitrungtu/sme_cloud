@@ -40,7 +40,7 @@
                            <MSTextbox label="Chức danh"/>
                        </div>
                         <div class="row-input" v-show="isCus || isSupplier">
-                           <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :required="true" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                           <!-- <BaseCBB label="Nhóm nhà cung cấp" :header="headeGroupSupplies" :required="true" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/> -->
                        </div>
                     </div>
                      <div class="w-1-2" style="padding:2.5px 2.3px 0px 0px">
@@ -106,8 +106,7 @@ import MSSelect from '@/components/common/MSSelect'
 import {busData} from '@/main.js'
 import UnitCBB from '@/components/common/combobox/UnitCBB'
 import AddUnit from '@/components/content/cash/AddUnit'
-import BaseCBB from '@/components/common/BaseCBB'
-import axios from 'axios'
+// import BaseCBB from '@/components/common/BaseCBB'
 
     export default {
         props:{
@@ -118,7 +117,7 @@ import axios from 'axios'
             MSDatetime,
             EmployeeTab,
             MSSelect,
-            BaseCBB,
+            // BaseCBB,
             UnitCBB,
             AddUnit
         },
@@ -131,9 +130,7 @@ import axios from 'axios'
             }
         },
         created(){
-             axios.get('https://localhost:44363/api/GroupSuppliers')
-                .then(response => (this.dataGroupSupplies = response.data))
-                .catch(error => (console.log("Lỗi: "+error)))
+            
         },
         methods:{
             btnCloseOnClick(){

@@ -13,8 +13,8 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Người liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSSelect :value="obj.VocativeContact"  @valueSLChanged="obj.VocativeContact = $event" :data="options" style="width:100px; margin-right:12px;"  placeholder="Xưng hô"/>
-                        <MSTextbox :value="obj.FullNameConTact" @valueChanged="obj.FullNameConTact = $event" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
+                        <MSSelect :value="obj.VocativeContact"  @valueSLChanged="obj.VocativeContact = $event" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
+                        <MSTextbox :value="obj.FullnameContact" @valueChanged="obj.FullnameContact = $event" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <MSTextbox :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" placeholder="Email"/> 
@@ -91,7 +91,7 @@
                 <div class="w-3-4" style="display:flex">
                     <div class="w-input">
                         <div class="row-input" >
-                            <BaseCBB  label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                            <BaseCBB :value="obj.TermsOfPayment" @valueCBBChanged="obj.TermsOfPayment = $event" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                         </div>
                     </div>
                     <div class="w-input">
@@ -115,23 +115,35 @@
                 </div>
             </div>
             <div class="bank-account" v-show="thisTab == 2">
-                <el-table :data="tableData" style="width: 100%" max-height="250">
-                    <el-table-column prop="address" label="SỐ TÀI KHOẢN" width="175">
-                        <MSTextbox />
+                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
+                   <el-table-column prop="BankAccount" label="Số tài khoản" width="190">
+                        <template slot-scope="scope">
+                            <el-input size="small"
+                                v-model="scope.row.BankAccount"></el-input>
+                        </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="TÊN NGÂN HÀNG" width="175">
-                        <MSTextbox />
+                    <el-table-column prop="BankName" label="Tên ngân hàng" width="190">
+                        <template slot-scope="scope">
+                            <el-input size="small"
+                                v-model="scope.row.BankName"></el-input>
+                        </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="CHI NHÁNH" width="172">
-                        <MSTextbox />
+                    <el-table-column prop="BankBranch" label="Chi nhánh" width="190">
+                        <template slot-scope="scope">
+                            <el-input size="small"
+                                v-model="scope.row.BankBranch"></el-input>
+                        </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="TỈNH/TP CỦA NGÂN HÀNG" width="250">
-                        <MSTextbox />
+                    <el-table-column prop="BankCity" label="Thành Phố" width="190">
+                        <template slot-scope="scope">
+                            <el-input size="small"
+                                v-model="scope.row.BankCity"></el-input>
+                        </template>
                     </el-table-column>
 
-                    <el-table-column fixed="right" label="" width="43">
+                    <el-table-column fixed="right" label="" width="50">
                         <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                            <el-button @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
                                 <div class="icon icon-delete"></div>
                             </el-button>
                         </template>
@@ -148,19 +160,19 @@
                 <div class="w-1-2" style="padding-right:26px">
                     <label class="label-input">Vị trí địa lý</label>
                     <div class="row-input">
-                        <div class="w-1-2" style="padding-right:12px">
-                            <MSSelect/>
+                        <div class="w-1-2" style="padding-right:12px" >
+                            <MSSelect value="1"  @valueSLChanged="obj.Nation = $event" :data="nations" placeholder="Quốc Gia"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect/>
+                            <MSSelect :value="obj.City"  @valueSLChanged="obj.City = $event" :data="cities" placeholder="Tỉnh/Thành phố"/>
                         </div>
                     </div>
                     <div class="row-input" >
                         <div class="w-1-2" style="padding-right:12px">
-                            <MSSelect/>
+                            <MSSelect :value="obj.District"  @valueSLChanged="obj.District = $event" :data="districts" placeholder="Quận/Huyện"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect/>
+                            <MSSelect :value="obj.Village"  @valueSLChanged="obj.Village = $event" :data="villages" placeholder="Xã/Phường"/>
                         </div>
                     </div>
                 </div>
@@ -169,7 +181,7 @@
                         <input type="checkbox">
                         <div class="radio-name">Giống địa chỉ nhà cung cấp</div>
                     </div>
-                    <el-table :data="tableData" style="width: 100%;" max-height="250">
+                    <el-table :data="tableOtherAddress" style="width: 100%;" max-height="250">
                         
                         <el-table-column prop="zip" label="Vị trí địa lý" width="300">
                             <MSTextbox/>
@@ -238,42 +250,84 @@ import {busData} from '@/main.js'
                         {TermsOfPayment:'DK02',TermsOfPaymentName:'Tên gì đó 2 '},
                         {TermsOfPayment:'DK03',TermsOfPaymentName:'Tên gì đó3 '}
                 ],
-                tableData: [{
+                rowBankAccount:0,
+                tableBankAccount:[{
+                    BankAccount:'',
+                    BankName:'',
+                    BankBranch:'',
+                    BankCity:''
+                }],
+                tableOtherAddress: [{
                     
-                },],
-                addCount:0,
+                }],
 
-                obj:{}
+                obj:{},
+
+                //Vị trí địa lý
+                nations:[{value:'1',label:'Việt Nam'}],
+                cities:[{value:'1',label:'Hà Nội'},
+                    {value:'2',label:'Đà Nẵng'},
+                    {value:'3',label:'Hồ Chí Minh'},
+                    {value:'4',label:'Gia Lai'},
+                    {value:'5',label:'Cần Thơ'}
+                ],
+                districts:[
+                    {value:'1',label:'Hoàn Kiếm'},
+                    {value:'2',label:'Đống Đa'},
+                    {value:'3',label:'Bắc Từ Liêm'},
+                    {value:'4',label:'Nam Từ Liêm'},
+                    {value:'5',label:'Tây Hồ'},
+                    {value:'6',label:'Hoàng Mai'},
+                    {value:'7',label:'Ba Đình'},
+                    {value:'8',label:'Thanh Xuân'},
+                    {value:'9',label:'Hai Bà Trưng'},
+                    {value:'10',label:'Cầu Giấy'},
+                ],
+                villages:[
+                    {value:'1',label:'Tây Tựu'},
+                    {value:'2',label:'Minh Khai'},
+                    {value:'3',label:'Cổ Nhuế'},
+                    {value:'4',label:'Thượng Cát'},
+                    {value:'5',label:'Giảng Võ'},
+                    {value:'6',label:'Liên Mạc'},
+                    {value:'7',label:'Xuân Đỉnh'},
+                    {value:'8',label:'Phúc Diễn'},
+                    {value:'9',label:'Đông Ngạc'},
+                    {value:'10',label:'Mễ Trì'},
+                ]
             }
         },
         created(){
             this.obj = this.root;
-
-            busData.$on('changeForm',(mode)=>{
-                this.isCus = mode;
-            })
+            if(this.obj.BankAccount){
+                this.tableBankAccount = JSON.parse(this.obj.BankAccount);
+            }
         },
         methods:{
             deleteRow(index) {
-                this.tableData.splice(index, 1);
-                if(this.addCount > 0)
-                -- this.addCount;
+                this.tableBankAccount.splice(index, 1);
             },
             addRow(){
                 let newRow  = {
-                    
+                    BankAccount:'',
+                    BankName:'',
+                    BankBranch:'',
+                    BankCity:''
                 };
-                this.tableData = [newRow,...this.tableData];
-                ++ this.addCount;
+                this.tableBankAccount.push(newRow);
+                console.log(this.tableBankAccount);
             },
             removeAllRow(){
-                this.tableData = []
+                this.tableBankAccount = []
             },
         },
         watch:{
             get:function(){
+                console.log(JSON.stringify(this.tableBankAccount));
+                this.obj.BankAccount = JSON.stringify(this.tableBankAccount);
                 busData.$emit('DataFromTabOrder',this.obj)
-            }
+            },
+            
         }
     }
 </script>
@@ -348,9 +402,9 @@ import {busData} from '@/main.js'
     width: calc(100% - 60px);
     background-color: #fff;
 }
-.btn-grid-act{
+.bank-account .btn-grid-act{
     padding-top: 10px;
-    padding-bottom: 32px;
+    padding-bottom: 15px;
 }
 .btn-grid-act button{
     padding: 2px 20px;
