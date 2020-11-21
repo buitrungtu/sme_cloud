@@ -126,7 +126,6 @@ import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
 import BaseAPI from '@/BaseAPI.js'
-
     export default {
         props:{
         },
@@ -159,7 +158,6 @@ import BaseAPI from '@/BaseAPI.js'
                     {value:'7',label:'Mr'},
                     {value:'8',label:'Mrs'},
                 ],
-
                 //data của đối tượng
                 obj:{
                     IsPersonal:false,
@@ -168,7 +166,6 @@ import BaseAPI from '@/BaseAPI.js'
                 save:false,
                 state:'Add',
                 supplierID:''                
-
             }
         },
         created(){
@@ -176,7 +173,7 @@ import BaseAPI from '@/BaseAPI.js'
                 this.show = true;
                 this.resetForm();
             })
-
+            
             busData.$on('editSupplier',(SuppID)=>{
                 this.supplierID = SuppID;
                 this.GetSupplier(this.supplierID);
@@ -197,19 +194,12 @@ import BaseAPI from '@/BaseAPI.js'
                 this.showFormAddEmployee = false;
             })
         },
-        activated(){
-            console.log("Vào activated");
-        },
-        deactivated(){
-            console.log("Vào deactiveted");
-            
-        },
+      
         mounted(){
             this.GetGroupSupplies();
             this.GetEmployees();
         },
         methods:{
-
             //API
             async GetGroupSupplies(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/GroupSuppliers'); 
@@ -233,14 +223,7 @@ import BaseAPI from '@/BaseAPI.js'
                     })
                 }
             },
-
-            async AddSupplier(){
-                let res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
-                if(res && res.data){
-                    this.$emit('reloadData',true);
-                }
-            },
-
+           
             async GetSupplier(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',id); 
                 if(res && res.data){
@@ -248,36 +231,28 @@ import BaseAPI from '@/BaseAPI.js'
                     this.show = true;
                 }
             },
-
-            async SaveSupplier(){
-                let res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
-                if(res && res.data){
-                    this.$emit('reloadData',true);
-                }
-            },
-
+          
             //Event 
-
-            btnSaveOnClick(){
+            async btnSaveOnClick(){
                 if(this.checkRequire == true){
                     this.save = true;
-
-                    // for(var propName in this.obj){
-                    //     if(!this.obj[propName]){
-                    //         delete this.obj[propName];
-                    //     }
-                    // }
                     //gọi api
                     console.log(this.obj);
                     if(this.state == 'Add'){
-                        this.AddSupplier();
-                        this.show = false;
-                        this.resetForm();
-
+                        let res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
+                        if(res && res.status){
+                            busData.$emit('reloadData');
+                            this.show = false;
+                            this.resetForm();
+                        }
                     }else{
-                        this.SaveSupplier();
-                        this.show = false;
-                        this.resetForm();
+                        let res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
+                        if(res && res.status){
+                            console.log('Đã vào đây');
+                            busData.$emit('reloadData');
+                            this.show = false;
+                            this.resetForm();
+                        }
                     }
                 }else{
                    this.showDialogError = true;
@@ -299,7 +274,6 @@ import BaseAPI from '@/BaseAPI.js'
 </script>
 
 <style scoped>
-
 .dialog.dialog-supplier{
     min-width: 900px;
     max-width: 900px;
@@ -310,7 +284,6 @@ import BaseAPI from '@/BaseAPI.js'
     background-color: #fff;
     opacity: 1;
 }
-
 .gr-radio{
     display:flex;padding-left: 1rem!important;padding-right: 1rem!important;
     justify-content: center;
@@ -335,12 +308,10 @@ import BaseAPI from '@/BaseAPI.js'
     border: 1px solid #2ca01c;
     background: #2ca01c;
 }
-
 .title-right input{
     width: 18px;
     height: 18px;
     margin-right: 10px;
     border: 1px solid #afafaf;
 }
-
 </style>

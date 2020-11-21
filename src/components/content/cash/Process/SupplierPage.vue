@@ -162,7 +162,7 @@
         </div>
     </div> 
         </div>
-        <AddSupplier @stateChange="isShow == $event" @reloadData="reload = $event"/>
+        <AddSupplier @stateChange="isShow == $event"/>
     </div>
 </template>
 
@@ -179,11 +179,15 @@ import BaseAPI from '@/BaseAPI.js'
                 thisPage:'ReceivePayment',
                 data: [
                 ],
-                reload:false
             }
         },
         created(){
             busData.$emit('changeTab',1);
+
+            busData.$on('reloadData',()=>{
+                console.log('Load lại');
+                this.GetDataSuplier();
+            })
         },
         mounted(){
             this.GetDataSuplier();
@@ -202,12 +206,10 @@ import BaseAPI from '@/BaseAPI.js'
                     this.GetDataSuplier();
                 }
             },
-
             //Event vue
             deleteRow(SuppID){
                 this.DeleteSuplier(SuppID);
             },
-
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
             },
@@ -222,14 +224,7 @@ import BaseAPI from '@/BaseAPI.js'
                 busData.$emit('editSupplier',row.SupplierId);
             }
         },
-        watch:{
-            reload:function(){
-                if(this.reload == true){
-                    this.GetDataSuplier();
-                    this.reload = false;
-                }
-            }
-        }
+     
     }
 </script>
 
@@ -269,7 +264,6 @@ import BaseAPI from '@/BaseAPI.js'
     display: flex;
     margin-right: 40px;
 }
-
 .button-add{
     display: flex;
     align-items: center;
@@ -308,7 +302,6 @@ import BaseAPI from '@/BaseAPI.js'
 .icon.icon-downlist{
     background-position: -845px -358px;
 }
-
 .receive-payment .body{
     padding: 0 30px 0 0;
     overflow: auto;
@@ -323,7 +316,6 @@ import BaseAPI from '@/BaseAPI.js'
 .view-item{
     width: 33%!important;
 }
-
 .view-item.revenue{
     background: #ff7f2c;
     padding: 6px 10px;
@@ -348,7 +340,6 @@ import BaseAPI from '@/BaseAPI.js'
 .title-money{
     font-size: 14px;
 }
-
 .nav-tab-right{
     display: flex;
     align-items: center;
@@ -383,7 +374,6 @@ import BaseAPI from '@/BaseAPI.js'
     padding: 13px 12px 0 12px;
     background-position: -243px -130px;
 }
-
 .grid-filter-right{
     display: flex;
     justify-content: center;
@@ -398,7 +388,6 @@ import BaseAPI from '@/BaseAPI.js'
     background-position: -88px -200px;
      margin: 0px 6px;
 }
-
 .collap-over{
     border: 2px solid #e2e9f2;
     background: #f2f5f8;
@@ -427,7 +416,6 @@ import BaseAPI from '@/BaseAPI.js'
     border-spacing: 0;
     min-width: 100%;
 }
-
 .out-right-gray{
     min-width: 30px;
     position: sticky;
@@ -488,7 +476,6 @@ import BaseAPI from '@/BaseAPI.js'
 tfoot{
     background-color: #f8f9fe !important;
 }
-
 .footer-fixed{
     position: fixed;
     bottom: 5px;

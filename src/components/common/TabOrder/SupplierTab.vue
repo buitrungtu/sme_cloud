@@ -218,7 +218,6 @@ import MSDatetime from '@/components/common/MSDatetime'
 import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
 import BaseCBB from '@/components/common/BaseCBB'
 import {busData} from '@/main.js'
-
     export default {
         props:{
             isPer:Boolean,
@@ -260,9 +259,7 @@ import {busData} from '@/main.js'
                 tableOtherAddress: [{
                     
                 }],
-
                 obj:{},
-
                 //Vị trí địa lý
                 nations:[{value:'1',label:'Việt Nam'}],
                 cities:[{value:'1',label:'Hà Nội'},

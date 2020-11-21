@@ -43,6 +43,7 @@ class BaseAPI{
                 url:url+'/'+id,
                 data:obj,
             }).then(res=>{
+                console.log(res);
                 resolve(res)
             }).catch(err =>{
                 reject(err)
