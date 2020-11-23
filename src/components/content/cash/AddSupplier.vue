@@ -29,11 +29,11 @@
                                 <MSTextbox :autofocus="true" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
-                                <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" @isInvalid="checkRequire = $event"/>
+                                <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" :trigger="errCode" :autofocus="errCode"/>
                             </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" @isInvalid="checkRequire = $event"/>
+                            <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" :trigger="errName" :autofocus="errName"/>
                         </div>
                         <div class="row-input">
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
@@ -61,7 +61,7 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
-                                 <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp" @isInvalid="checkRequire = $event"  v-bind:required="true"/>
+                                 <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" :trigger="errCode" :autofocus="errCode"/>
                             </div>
                             <div class="w-2-5" style="padding-top:2px">
                                 <MSTextbox fildname :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
@@ -70,7 +70,7 @@
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <MSSelect :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox fildname :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px"/>
+                            <MSTextbox fildname :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" :trigger="errName" :autofocus="errName"/>
                         </div>
                         <div class="row-input">
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
                         <div class="row-input">
-                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
                             <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
@@ -159,7 +159,10 @@ import BaseAPI from '@/BaseAPI.js'
                     IsCustomer:false
                 },
                 state:'Add',
-                supplierID:''                
+                supplierID:'',
+                triggerErr:[false,false],
+                errCode:false,
+                errName:false     
             }
         },
         created(){
@@ -235,9 +238,13 @@ import BaseAPI from '@/BaseAPI.js'
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
+                    this.errCode=true;
+
                 }else if(!this.obj.SupplierName){
                     err = 'Tên nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
+                    this.errName=true;
+
                 }else{
                     //gọi api
                      for(var propName in this.obj){

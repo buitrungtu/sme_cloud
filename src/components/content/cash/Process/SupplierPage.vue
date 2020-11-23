@@ -28,7 +28,7 @@
         <div class="body">
            <div class="overview">
                 <div class="view-item revenue">
-                    <div class="dummy-view"  style="padding: 0px 10px 8px 10px;">
+                    <div class="dummy-view"  style="padding: 0px 10px 3px 10px;">
                         <div class="toltal-money">
                             31.053.767.635,00
                         </div>
@@ -37,7 +37,7 @@
                     <div class="over-line"></div>
                 </div>
                 <div class="view-item deposit">
-                     <div class="dummy-view"  style="padding: 0px 10px 8px 10px;">
+                     <div class="dummy-view"  style="padding: 0px 10px 3px 10px;">
                           <div class="toltal-money">
                             10.925.312.281,00
                         </div>
@@ -52,118 +52,117 @@
                     <div class="title-money">Đã thanh toán (30 ngày gần đây)</div>
                 </div>
             </div>
-            <div class="grid-Supp">
-        <div class="grid-filter">
-            <div class="grid-filter-left">
-                <div class="icon icon-checkall"></div>
-                <div class="btn-filter action-all">
-                    <button>Thực hiện hàng loạt <div class="icon icon-filtdown"></div> </button>
+        <div class="grid-Supp">
+            <div class="grid-filter">
+                <div class="grid-filter-left">
+                    <div class="icon icon-checkall"></div>
+                    <div class="btn-filter action-all">
+                        <button>Thực hiện hàng loạt <div class="icon icon-filtdown"></div> </button>
+                    </div>
+                    <div class="btn-filter">
+                        <button>Lọc <div class="icon icon-filtdown"></div> </button>
+                    </div>
                 </div>
-                <div class="btn-filter">
-                    <button>Lọc <div class="icon icon-filtdown"></div> </button>
-                </div>
-            </div>
-            <div class="grid-filter-right">
-                <div class="header-search">
-                    <input type="text" class="txt-search" placeholder="Nhập từ khóa tìm kiếm">
-                    <div class="icon icon-search"></div>
-                </div>
-                <div class="icon icon-excel"></div>
-                <div class="icon icon-settinglist"></div>
-                <div class="collap-over">
-                    <div class="icon icon-collap"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid-content">
-           <el-table
-                ref="multipleTable"
-                :data="data"
-                style="width: 100%"
-                height="100%"
-                @cell-dblclick="dbClickForEdit"	
-            >
-
-                <el-table-column
-                type="selection"
-                width="50">
-                </el-table-column>
-
-                <el-table-column
-                property="SupplierCode"
-                label="MÃ NHÀ CUNG CẤP"
-                width="225">
-                </el-table-column>
-
-                <el-table-column
-                property="SupplierName"
-                label="TÊN NHÀ CUNG CẤP"
-                width="400">
-                </el-table-column>
-
-                <el-table-column
-                property="Address"
-                label="ĐỊA CHỈ"
-                 width="300">
-                </el-table-column>
-
-                 <el-table-column
-                property="Debt"
-                label="CÔNG NỢ"
-                 width="170">
-                </el-table-column>
-
-                 <el-table-column
-                property="TaxCode"
-                label="MÃ SỐ THUẾ"
-                 width="170">
-                </el-table-column>
-
-                 <el-table-column
-                property="Mobile"
-                label="ĐIỆN THOẠI"
-                 width="170">
-                </el-table-column>
-
-                 <el-table-column
-                    fixed="right"
-                    label="Chức năng"
-                    width="175">
-                    <template slot-scope="control">
-                        <div style="display:flex;align-items: center;justify-content: center;">
-                            <el-dropdown>
-                                <span class="el-dropdown-link">
-                                Trả tiền <i class="el-icon-caret-bottom"></i>
-                                </span>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
-                                    <el-dropdown-item @click.native.prevent="deleteRow(control.row.SupplierId)" >Xóa</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </div>
-                    </template>
-                    
-                </el-table-column>
-            </el-table>
-            <div class="footer-fixed">
-                <div class="grid-footer">
-                <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
-                    <div class="footer-right">
-                        <div class="totalPage">
-                            <div class="pre disable">Trước</div>
-                            <div class="page-list">
-                                <div class="page active">1</div>
-                                <div class="page">2</div>
-                                <div class="page">3</div>
-                                <div class="page"></div>
-                                <div class="page">4</div>
-                            </div>
-                            <div class="next">Sau</div>
-                        </div>
+                <div class="grid-filter-right">
+                    <div class="header-search">
+                        <input type="text" class="txt-search" placeholder="Nhập từ khóa tìm kiếm">
+                        <div class="icon icon-search"></div>
+                    </div>
+                    <div class="icon icon-excel"></div>
+                    <div class="icon icon-settinglist"></div>
+                    <div class="collap-over">
+                        <div class="icon icon-collap"></div>
                     </div>
                 </div>
             </div>
+
+            <div class="grid-content">
+            <el-table
+                    ref="multipleTable"
+                    :data="data"
+                    style="width: 100%"
+                    height="100%"
+                    @cell-dblclick="dbClickForEdit"	
+                >
+
+                    <el-table-column
+                    type="selection"
+                    width="50">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="SupplierCode"
+                    label="MÃ NHÀ CUNG CẤP"
+                    width="225">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="SupplierName"
+                    label="TÊN NHÀ CUNG CẤP"
+                    width="400">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="Address"
+                    label="ĐỊA CHỈ"
+                    width="300">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="Debt"
+                    label="CÔNG NỢ"
+                    width="170">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="TaxCode"
+                    label="MÃ SỐ THUẾ"
+                    width="170">
+                    </el-table-column>
+
+                    <el-table-column
+                    property="Mobile"
+                    label="ĐIỆN THOẠI"
+                    width="170">
+                    </el-table-column>
+
+                    <el-table-column
+                        fixed="right"
+                        label="CHỨC NĂNG"
+                        width="175">
+                        <template slot-scope="control">
+                            <div style="display:flex;align-items: center;justify-content: center;">
+                                <el-dropdown>
+                                    <span class="el-dropdown-link">
+                                    Trả tiền <i class="el-icon-caret-bottom"></i>
+                                    </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
+                                        <el-dropdown-item @click.native.prevent="deleteRow(control.row.SupplierId)" >Xóa</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="footer-fixed">
+                    <div class="grid-footer">
+                    <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
+                        <div class="footer-right">
+                            <div class="totalPage">
+                                <div class="pre disable">Trước</div>
+                                <div class="page-list">
+                                    <div class="page active">1</div>
+                                    <div class="page">2</div>
+                                    <div class="page">3</div>
+                                    <div class="page"></div>
+                                    <div class="page">4</div>
+                                </div>
+                                <div class="next">Sau</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div> 
         </div>
@@ -428,7 +427,7 @@ import BaseAPI from '@/BaseAPI.js'
 .grid-content{
     background: #fff;
     width: 100%;
-    height:calc(100% - 80px);
+    height:calc(100% - 70px);
 }
 .table-scroll{
     overflow-y: auto;

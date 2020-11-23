@@ -120,7 +120,7 @@ import {busData} from '@/main.js';
 .cb-action{
     display: flex;
     position: absolute;
-    top:20px;
+    top:23px;
     right: 32px;
     height: 30px;
     border-right: 1px solid #ccc;

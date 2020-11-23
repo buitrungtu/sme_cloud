@@ -39,7 +39,8 @@ import {busData} from '@/main.js';
             ID:String,
             readonly:Boolean,
             value:String,
-            autofocus:Boolean
+            autofocus:Boolean,
+            trigger:Boolean
         },
         created(){
             this.content = this.value;
@@ -47,9 +48,6 @@ import {busData} from '@/main.js';
                 busData.$on('completeName',(name)=>{
                     this.content = name;
                 })
-            }
-            if(this.required == true && this.content){
-                this.$emit('isInvalid',true);
             }
         },
         data(){
@@ -60,19 +58,16 @@ import {busData} from '@/main.js';
             }
         },
         methods:{
-           changeInput(event){
-               this.content = event.target.value;   
+           changeInput(){
                this.$emit('valueChanged',this.content);
            },
            checkRequired(){
-               this.isFocus=false;
+               this.isFocus = false;
                if(this.required == true){
                    if(!this.content){
                        this.triggerErr= true;
-                       this.$emit('isInvalid',false);
                    }else{
                        this.triggerErr= false;
-                       this.$emit('isInvalid',true);
                    }
                }
            }
@@ -108,6 +103,10 @@ import {busData} from '@/main.js';
                         this.content = "";
                     }
                 }
+            },
+            trigger:function(){
+                this.triggerErr = this.trigger;
+                this.$refs.input.focus();
             }
         },
         

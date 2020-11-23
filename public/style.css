@@ -290,10 +290,7 @@ input,button,textarea{
     background: #e0e0e0;
 }
 
-.el-table tr th.is-leaf{
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-}
+
 .toltal-money{
     color: #fff;
 }
@@ -318,4 +315,8 @@ input,button,textarea{
 }
 .el-dropdown-link{
     color: #0075c0;
+}
+
+.el-table tr th.is-leaf{
+    border-bottom: 1px solid #e0e0e0;
 }
