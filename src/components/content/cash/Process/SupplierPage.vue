@@ -26,20 +26,26 @@
             </div>
         </div>
         <div class="body">
-            <div class="overview">
+           <div class="overview">
                 <div class="view-item revenue">
-                    <div class="toltal-money">
-                        31.053.767.635,00
+                    <div class="dummy-view"  style="padding: 0px 10px 8px 10px;">
+                        <div class="toltal-money">
+                            31.053.767.635,00
+                        </div>
+                        <div class="title-money">Nợ quá hạn</div>
                     </div>
-                    <div class="title-money">Nợ quá hạn</div>
+                    <div class="over-line"></div>
                 </div>
                 <div class="view-item deposit">
-                    <div class="toltal-money">
-                        10.925.312.281,00
-                    </div>
-                    <div class="title-money">Tổng nợ phải trả</div>
+                     <div class="dummy-view"  style="padding: 0px 10px 8px 10px;">
+                          <div class="toltal-money">
+                            10.925.312.281,00
+                        </div>
+                        <div class="title-money">Tổng nợ phải trả</div>
+                     </div>
+                     <div class="over-line"></div>
                 </div>
-                <div class="view-item remain">
+                <div class="view-item remain" style="padding: 0px 10px 8px 10px;">
                     <div class="toltal-money">
                         26.760.000,00
                     </div>
@@ -139,7 +145,6 @@
                     </template>
                     
                 </el-table-column>
-
             </el-table>
             <div class="footer-fixed">
                 <div class="grid-footer">
@@ -191,6 +196,7 @@ import BaseAPI from '@/BaseAPI.js'
         },
         mounted(){
             this.GetDataSuplier();
+            document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
             //API
@@ -222,6 +228,13 @@ import BaseAPI from '@/BaseAPI.js'
             
             dbClickForEdit(row){
                 busData.$emit('editSupplier',row.SupplierId);
+            },
+
+            //Xử lý phím tắt
+            keyupHandler(event){
+                if (event.ctrlKey && event.code  === 'F9') {
+                    busData.$emit('showFormAddSupplier');
+                }
             }
         },
      
@@ -250,7 +263,6 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .back{
     display: flex;
-    margin-top: 5px;
     align-items: center;
     color: #0075c0;
     cursor: pointer;
@@ -279,6 +291,9 @@ import BaseAPI from '@/BaseAPI.js'
     box-sizing: border-box;
     outline: none;
     position: relative;
+}
+.button-add button:hover{
+    background: #35bf22;
 }
 .button-add .split{
     left: 0px;
@@ -310,27 +325,30 @@ import BaseAPI from '@/BaseAPI.js'
 .overview{
     display: flex;
     margin-bottom: 24px;
-    height: 67px;
+    height: 71px;
     color: #fff;
 }
 .view-item{
     width: 33%!important;
 }
-.view-item.revenue{
+.revenue{
     background: #ff7f2c;
-    padding: 6px 10px;
     overflow: hidden;
+    margin-top: 6px;
 }
-.view-item.deposit{
+.deposit{
     background: rgb(184, 188, 195);
     margin-left: 0.5%;
     margin-right: 0.5%;
-    padding: 6px 10px;
+    margin-top: 6px;
     overflow: hidden;
+}
+.view-item.revenue:hover,.view-item.deposit:hover{
+    margin-top: 0px;
 }
 .view-item.remain{
     background: #74cb2f;
-    padding: 6px 10px;
+    margin-top: 6px;
     overflow: hidden;
 }
 .toltal-money{
@@ -401,6 +419,11 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .collap-over .icon.icon-collap{
     background-position: -120px -353px;
+}
+.over-line{
+    padding-top: 6px;
+    background: #707070;
+    opacity: .5;
 }
 .grid-content{
     background: #fff;

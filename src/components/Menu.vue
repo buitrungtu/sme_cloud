@@ -28,7 +28,7 @@
 
 <style scoped>
 .menu{
-    width: 165px;
+    width: 164px;
     height: 100vh;
     background-color: #393a3d;
     float: left;

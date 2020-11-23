@@ -21,7 +21,7 @@
             label:String,
             required:Boolean,
             placeholder:String,
-            value:String,
+            value:[String,Number],
             disable:Boolean
         },
         components:{
@@ -34,7 +34,9 @@
             }
         },
         created(){
-            this.content= this.value;
+            if(this.value){
+                this.content= this.value + '';
+            }
         },
         methods:{
 

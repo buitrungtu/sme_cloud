@@ -48,7 +48,7 @@ import {busData} from '@/main.js'
 }
 .nav-tabs{
     width: 100%;
-    height: 60px;
+    height: 62px;
     display: flex;
     padding-left: 0;
     position: relative;
@@ -58,7 +58,7 @@ import {busData} from '@/main.js'
 .nav-tabs li{
     list-style: none;
     height: 23px;
-    padding: 32px 20px 4px 20px;
+    padding: 32px 20px 6px 20px;
     border-bottom: 4px solid transparent;
     cursor: pointer;
 }

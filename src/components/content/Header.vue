@@ -10,7 +10,7 @@
             </div>
             <div class="header-current">
                 <div class="icon-current"></div>
-                <div class="current-text">Demo Thông Tư 200</div>
+                <div class="current-text">Demo Thông tư 200</div>
             </div>
         </div>
         <div class="header-right">
@@ -62,8 +62,10 @@
     padding:0px 10px;
 }
 .company-name{
-    font-weight: bold;
+    font-weight: 600;
     line-height: 25px;
+    font-size: 14px;
+    color: #212121;
 }
 .icon.icon-down{
     background-position: -75px -360px;
@@ -76,12 +78,12 @@
     padding: 0 12px;
     cursor: pointer;
     align-items: center;
-    height: 30px;
+    height: 28px;
     margin-left: 15px;
 }
 .icon-current{
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: #4ea344;
     border-radius: 50%;
     border: 1px solid #fff;
@@ -127,10 +129,10 @@
 }
 .account-info .user-name{
     text-align: center;
-    color: rgb(33, 33, 33);
-    font-size: 15px;
+    color: #212121;
+    font-size: 14px;
     margin-right: 8px;
-    font-weight: bold;
+    font-weight: 600;
 }
 .account-info .icon.icon-down{
     background-position: -1073px -27px;

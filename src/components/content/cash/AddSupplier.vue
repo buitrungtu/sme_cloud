@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <SupplierTab :isPer="obj.IsPersonal" :get='save' :root="obj" :isCus="obj.IsCustomer" @DataFromTabOrder="obj = $event"/> 
+                <SupplierTab :isPer="obj.IsPersonal" :root="obj" :isCus="obj.IsCustomer" /> 
                 
                 <div class="dialog-footer">
                     <div class="divide"></div>
@@ -106,14 +106,7 @@
             <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
             <AddEmployee :visible="showFormAddEmployee"/>
         </div>
-        <el-dialog
-            title="Warningggggg"
-            :visible.sync="showDialogError"
-            width="30%"
-            center
-        >
-            <span>Điền đầy đủ các trường bắt buộc đi bạn eii</span>
-        </el-dialog>
+        <DialogError />
     </div>
 </template>
 
@@ -125,6 +118,7 @@ import AddEmployee from './AddEmployee'
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
+import DialogError from '@/components/content/cash/Process/DialogError'
 import BaseAPI from '@/BaseAPI.js'
     export default {
         props:{
@@ -135,7 +129,8 @@ import BaseAPI from '@/BaseAPI.js'
             AddEmployee,
             MSTextbox,
             BaseCBB,
-            MSSelect
+            MSSelect,
+            DialogError
         },
         data(){
             return{
@@ -163,7 +158,6 @@ import BaseAPI from '@/BaseAPI.js'
                     IsPersonal:false,
                     IsCustomer:false
                 },
-                save:false,
                 state:'Add',
                 supplierID:''                
             }
@@ -198,6 +192,7 @@ import BaseAPI from '@/BaseAPI.js'
         mounted(){
             this.GetGroupSupplies();
             this.GetEmployees();
+            document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
             //API
@@ -234,28 +229,55 @@ import BaseAPI from '@/BaseAPI.js'
           
             //Event 
             async btnSaveOnClick(){
-                if(this.checkRequire == true){
-                    this.save = true;
+                var err = ''
+
+                //Check Require
+                if(!this.obj.SupplierCode){
+                    err = 'Mã nhà cung cấp không được bỏ trống';
+                    busData.$emit('showDialogError',err);
+                }else if(!this.obj.SupplierName){
+                    err = 'Tên nhà cung cấp không được bỏ trống';
+                    busData.$emit('showDialogError',err);
+                }else{
                     //gọi api
-                    console.log(this.obj);
+                     for(var propName in this.obj){
+                        if(this.obj[propName] === undefined){
+                            delete this.obj[propName];
+                        }
+                    }
                     if(this.state == 'Add'){
+                        //Xử lý dữ liệu
+                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
+                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
+                            return item.Address;
+                        });
+
+                        //Gọi API
                         let res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
                         if(res && res.status){
-                            busData.$emit('reloadData');
-                            this.show = false;
-                            this.resetForm();
+                            if(typeof(res.data) === "string"){
+                                busData.$emit('showDialogError',res.data);
+                            }else{
+                                busData.$emit('reloadData');
+                                this.show = false;
+                                this.resetForm();
+                            }
                         }
                     }else{
+                        //Xử lý dữ liệu
+                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
+                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
+                            return item.Address;
+                        });
+
+                        //Gọi API
                         let res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
                         if(res && res.status){
-                            console.log('Đã vào đây');
                             busData.$emit('reloadData');
                             this.show = false;
                             this.resetForm();
                         }
                     }
-                }else{
-                   this.showDialogError = true;
                 }
             },
             resetForm(){
@@ -263,10 +285,19 @@ import BaseAPI from '@/BaseAPI.js'
                     IsPersonal:false,
                     IsCustomer:false
                 };
-                this.save=false;
                 this.state='Add';
                 this.supplierID='';
                 this.checkRequire = false
+            },
+           
+             //Xử lý phím tắt
+            keyupHandler(event){
+                if(event.code === 'Escape') {
+                    this.show = false;
+                }
+                else if(event.ctrlKey && event.key==='s'){
+                    this.btnSaveOnClick();
+                }
             }
         },
       

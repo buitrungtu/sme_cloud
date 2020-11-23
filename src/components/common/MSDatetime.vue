@@ -6,9 +6,11 @@
         <el-date-picker
             v-model="content"
             type="date"
-            :placeholder="placeholder"
+            :placeholder="valplace"
             format="dd/MM/yyyy"
-            clear-icon="" 
+            value-format="dd/MM/yyyy"
+            clear-icon=""
+            :change="valueChanged(value)" 
         >
         </el-date-picker>
     </div>
@@ -23,23 +25,37 @@
         },
         data(){
             return{
-                 content: '',
+                content: '',
+                valplace: '',
             }
         },
         created(){
-            this.content = this.value;
+            if(this.value){
+                let temp = this.value.substring(0,10);
+                temp = temp.split('-').reverse().join('/');
+                this.content = temp;
+            }
             if(!this.placeholder){
                 var today =  new Date();
                 var dd = String(today. getDate()).padStart(2, '0');
                 var mm = String(today. getMonth() + 1).padStart(2, '0');
-                var yyyy = today. getFullYear();
+                var yyyy = today.getFullYear();
                 today = mm + '/' + dd + '/' + yyyy;
-                this.content = today
+                this.valplace = today
+            }else{
+                this.valplace = this.placeholder
             }
         },
-        watch:{
-            content:function(){
-                this.$emit('valueDTChanged',this.content);
+        methods:{
+            formatDate(date){
+                if(date){
+                    var ez = date.split("/");
+                    return ez[1]+'/'+ez[0]+'/'+ez[2];
+                }
+                return null
+            },
+            valueChanged(){
+                this.$emit('valueDTChanged',this.formatDate(this.content));
             }
         }
     }

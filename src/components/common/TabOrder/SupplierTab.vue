@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSTextbox :value="obj.IdentityPlace" @valueChanged="obj.IdentityPlace = $event" placeholder="Nơi cấp"/>
+                            <MSTextbox :value="obj.IdentityPlace" @valueChanged="obj.IdentityPlace = $event" placeholder="Nơi cấp"/>
                         </div>
                     </div>
                 </div>
@@ -116,25 +116,25 @@
             </div>
             <div class="bank-account" v-show="thisTab == 2">
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
-                   <el-table-column prop="BankAccount" label="Số tài khoản" width="190">
+                   <el-table-column prop="BankAccount" label="SỐ TÀI KHOẢN" width="190">
                         <template slot-scope="scope">
                             <el-input size="small"
                                 v-model="scope.row.BankAccount"></el-input>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BankName" label="Tên ngân hàng" width="190">
+                    <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
                             <el-input size="small"
                                 v-model="scope.row.BankName"></el-input>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BankBranch" label="Chi nhánh" width="190">
+                    <el-table-column prop="BankBranch" label="CHI NHÁNH" width="190">
                         <template slot-scope="scope">
                             <el-input size="small"
                                 v-model="scope.row.BankBranch"></el-input>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="BankCity" label="Thành Phố" width="190">
+                    <el-table-column prop="BankCity" label="TỈNH/TP CỦA NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
                             <el-input size="small"
                                 v-model="scope.row.BankCity"></el-input>
@@ -178,18 +178,19 @@
                 </div>
                 <div class="w-1-2" style="position: relative;">
                     <div class="title-right">
-                        <input type="checkbox">
-                        <div class="radio-name">Giống địa chỉ nhà cung cấp</div>
+                        <el-checkbox v-model="obj.IsSameAddressSupplier">Giống địa chỉ nhà cung cấp</el-checkbox>
                     </div>
-                    <el-table :data="tableOtherAddress" style="width: 100%;" max-height="250">
-                        
-                        <el-table-column prop="zip" label="Vị trí địa lý" width="300">
-                            <MSTextbox/>
-                        </el-table-column>
 
-                        <el-table-column fixed="right" label="" width="43">
+                    <el-table :data="tableDeliveryAddress" style="width: 100%;" max-height="140">
+                       <el-table-column prop="Address" width="300" label="Địa chỉ giao hàng">
                             <template slot-scope="scope">
-                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                                <el-input size="small"
+                                    v-model="scope.row.Address"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column fixed="right" label="" width="50">
+                            <template slot-scope="scope">
+                                <el-button @click.native.prevent="deleteRowAddress(scope.$index, scope.row)" type="text" size="small">
                                     <div class="icon icon-delete"></div>
                                 </el-button>
                             </template>
@@ -197,8 +198,8 @@
                     </el-table>
                     <div class="grid-footer">
                     <div class="btn-grid-act">
-                        <button @click="addRow()">Thêm dòng</button>
-                        <button @click="removeAllRow()">Xóa hết dòng</button>
+                        <button @click="addRowAddress()">Thêm dòng</button>
+                        <button @click="removeAllRowAddress()">Xóa hết dòng</button>
                     </div>
                 </div>
                 </div>
@@ -217,11 +218,9 @@ import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
 import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
 import BaseCBB from '@/components/common/BaseCBB'
-import {busData} from '@/main.js'
     export default {
         props:{
             isPer:Boolean,
-            get:Boolean,
             root:Object,
             isCus:Boolean
         },
@@ -256,10 +255,12 @@ import {busData} from '@/main.js'
                     BankBranch:'',
                     BankCity:''
                 }],
-                tableOtherAddress: [{
-                    
-                }],
-                obj:{},
+                tableDeliveryAddress:[
+                    {Address:''}
+                ],
+                obj:{
+                    IsSameAddressSupplier:false
+                },
                 //Vị trí địa lý
                 nations:[{value:'1',label:'Việt Nam'}],
                 cities:[{value:'1',label:'Hà Nội'},
@@ -295,10 +296,22 @@ import {busData} from '@/main.js'
             }
         },
         created(){
-            this.obj = this.root;
+            this.obj = this.root;  
+        },
+        beforeMount(){
             if(this.obj.BankAccount){
                 this.tableBankAccount = JSON.parse(this.obj.BankAccount);
             }
+            this.obj.BankAccount = this.tableBankAccount;
+
+            if(this.obj.DeliveryAddress){
+                this.tableDeliveryAddress = this.obj.DeliveryAddress.map((item)=>{
+                    return{
+                        'Address':item
+                    }
+                });
+            }
+            this.obj.DeliveryAddress = this.tableDeliveryAddress;
         },
         methods:{
             deleteRow(index) {
@@ -312,19 +325,23 @@ import {busData} from '@/main.js'
                     BankCity:''
                 };
                 this.tableBankAccount.push(newRow);
-                console.log(this.tableBankAccount);
             },
             removeAllRow(){
-                this.tableBankAccount = []
+                this.tableBankAccount = [];
             },
-        },
-        watch:{
-            get:function(){
-                console.log(JSON.stringify(this.tableBankAccount));
-                this.obj.BankAccount = JSON.stringify(this.tableBankAccount);
-                busData.$emit('DataFromTabOrder',this.obj)
+            //------------------------------------------------
+            deleteRowAddress(index) {
+                this.tableDeliveryAddress.splice(index, 1);
             },
-            
+            addRowAddress(){
+                let newRow  = {
+                    Address:''
+                };
+                this.tableDeliveryAddress.push(newRow);
+            },
+            removeAllRowAddress(){
+                this.tableDeliveryAddress = [];
+            },
         }
     }
 </script>
@@ -426,7 +443,7 @@ import {busData} from '@/main.js'
 .title-right{
     position: absolute;
     top: 2px;
-    left: 10px;
+    left: 35px;
     height: 32px;
     z-index: 4;
 }

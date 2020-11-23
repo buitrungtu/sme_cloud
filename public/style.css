@@ -3,6 +3,8 @@
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     font-size: 13px !important;
+    line-height: 1.5;
+    letter-spacing: .01rem;
 }
 
  /* grid  */
