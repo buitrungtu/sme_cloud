@@ -16,7 +16,7 @@
                     <div class="w-1-2" style="padding-right: 12px;">
                         <MSTextbox label="Tên tài khoản" v-bind:required="true"/>
                     </div>
-                    <div class="w-1-2" style="padding-top: 2px;">
+                    <div class="w-1-2" >
                         <MSTextbox label="Tên tiếng anh"/>
                     </div>
                 </div>

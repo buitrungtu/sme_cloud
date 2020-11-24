@@ -26,7 +26,7 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :autofocus="true" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                                <MSTextbox :autofocus="focusTaxCode" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
                                 <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" :trigger="errCode" :autofocus="errCode"/>
@@ -39,8 +39,8 @@
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div> 
-                    <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
-                        <div class="row-input" style="margin-bottom:1.5px">
+                    <div class="w-1-2" style="padding-right:2.3px">
+                        <div class="row-input">
                             <div class="w-2-5" style="padding-right: 12px;">
                                 <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
                             </div>
@@ -91,13 +91,15 @@
                 <div class="dialog-footer">
                     <div class="divide"></div>
                     <div class="btn-footer">
-                        <div class="btn-left">
-                            <button @click="show = false">Hủy</button>
-                        </div>
                         <div class="btn-right">
-                            <button @click="btnSaveOnClick()"> Cất</button>
-                            <button class="save-and-add">Cất và thêm</button>
+                            <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
+                            <button @click="btnSaveOnClick()" > Cất</button>
+                            <button class="save-and-add" @click="btnAddAndSaveOnClick()">Cất và thêm</button>
                         </div>
+                        <div class="btn-left">
+                             <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
+                            <button @click="show = false">Hủy</button>
+                        </div>  
                     </div>
                 </div>
             </div>
@@ -162,7 +164,8 @@ import BaseAPI from '@/BaseAPI.js'
                 supplierID:'',
                 triggerErr:[false,false],
                 errCode:false,
-                errName:false     
+                errName:false,
+                focusTaxCode:true     
             }
         },
         created(){
@@ -171,11 +174,7 @@ import BaseAPI from '@/BaseAPI.js'
                 this.resetForm();
             })
             
-            busData.$on('editSupplier',(SuppID)=>{
-                this.supplierID = SuppID;
-                this.GetSupplier(this.supplierID);
-                this.state = 'Edit'
-            })
+           
             
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
@@ -193,6 +192,11 @@ import BaseAPI from '@/BaseAPI.js'
         },
       
         mounted(){
+             busData.$on('editSupplier',(SuppID)=>{
+                console.log(SuppID)
+                this.supplierID = SuppID;
+                this.GetSupplier(this.supplierID);
+            })
             this.GetGroupSupplies();
             this.GetEmployees();
             document.addEventListener('keyup', this.keyupHandler)
@@ -225,15 +229,22 @@ import BaseAPI from '@/BaseAPI.js'
             async GetSupplier(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',id); 
                 if(res && res.data){
+                    console.log(2);
                     this.obj = res.data;
-                    this.show = true;
+                    console.log(this.obj);
+                    if(this.obj.SupplierCode){
+                        this.state = 'Edit'
+                        this.show = true;
+                    }else{
+                        console.log(this.obj);
+                    }
+
                 }
             },
           
             //Event 
             async btnSaveOnClick(){
                 var err = ''
-
                 //Check Require
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
@@ -244,45 +255,72 @@ import BaseAPI from '@/BaseAPI.js'
                     err = 'Tên nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
                     this.errName=true;
-
                 }else{
-                    //gọi api
-                     for(var propName in this.obj){
+                    for(var propName in this.obj){
                         if(this.obj[propName] === undefined){
                             delete this.obj[propName];
                         }
                     }
+                    //Xử lý dữ liệu
+                    this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
+                    this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
+                        return item.Address;
+                    });
+                    var res;
                     if(this.state == 'Add'){
-                        //Xử lý dữ liệu
-                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
-                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
-                            return item.Address;
-                        });
-
-                        //Gọi API
-                        let res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
-                        if(res && res.status){
-                            if(typeof(res.data) === "string"){
-                                busData.$emit('showDialogError',res.data);
-                            }else{
-                                busData.$emit('reloadData');
-                                this.show = false;
-                                this.resetForm();
-                            }
-                        }
-                    }else{
-                        //Xử lý dữ liệu
-                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
-                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
-                            return item.Address;
-                        });
-
-                        //Gọi API
-                        let res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
-                        if(res && res.status){
+                        res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
+                    }else{ //EDIT
+                        res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
+                    }
+                    if(res){
+                        debugger;
+                        if(res.data.Success == false){
+                            busData.$emit('showDialogError',res.data.Message);
+                        }else{
                             busData.$emit('reloadData');
                             this.show = false;
                             this.resetForm();
+                        }
+                    }
+                }
+            },
+            async btnAddAndSaveOnClick(){
+                var err = ''
+                //Check Require
+                if(!this.obj.SupplierCode){
+                    err = 'Mã nhà cung cấp không được bỏ trống';
+                    busData.$emit('showDialogError',err);
+                    this.errCode=true;
+
+                }else if(!this.obj.SupplierName){
+                    err = 'Tên nhà cung cấp không được bỏ trống';
+                    busData.$emit('showDialogError',err);
+                    this.errName=true;
+                }else{
+                    for(var propName in this.obj){
+                        if(this.obj[propName] === undefined){
+                            delete this.obj[propName];
+                        }
+                    }
+                    //Xử lý dữ liệu
+                    this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
+                    this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
+                        return item.Address;
+                    });
+                    var res;
+                    if(this.state == 'Add'){
+                        res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
+                    }else{ //EDIT
+                        res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
+                    }
+                    if(res && res.status){
+                        console.log(res);
+                        if(typeof(res.data) === "string" && res.data != ""){
+                            busData.$emit('showDialogError',res.data);
+                        }else{
+                            this.resetForm();
+                            
+                            busData.$emit('reloadData');
                         }
                     }
                 }
@@ -299,13 +337,27 @@ import BaseAPI from '@/BaseAPI.js'
            
              //Xử lý phím tắt
             keyupHandler(event){
+                if (event.ctrlKey || event.metaKey) {
+                    var c = event.which || event.keyCode; // get key code
+                    switch(c){
+                        case 83: //block Ctrl+S
+                            event.preventDefault();    
+                            break; 
+                        case 82: //block Ctrl+R
+                            event.preventDefault();   
+                            break;   
+                    }
+                }
                 if(event.code === 'Escape') {
                     this.show = false;
                 }
                 else if(event.ctrlKey && event.key==='s'){
+                    event.preventDefault();
+                    event.stopPropagation();
                     this.btnSaveOnClick();
                 }
-            }
+            },
+          
         },
       
     }
@@ -351,5 +403,8 @@ import BaseAPI from '@/BaseAPI.js'
     height: 18px;
     margin-right: 10px;
     border: 1px solid #afafaf;
+}
+.dialog-footer button:focus:not(.save-and-add){
+    background: #d2d3d6;
 }
 </style>

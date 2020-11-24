@@ -93,7 +93,7 @@
                     <el-table-column
                     property="SupplierCode"
                     label="MÃ NHÀ CUNG CẤP"
-                    width="225">
+                    width="220">
                     </el-table-column>
 
                     <el-table-column
@@ -111,25 +111,25 @@
                     <el-table-column
                     property="Debt"
                     label="CÔNG NỢ"
-                    width="170">
+                    width="175">
                     </el-table-column>
 
                     <el-table-column
                     property="TaxCode"
                     label="MÃ SỐ THUẾ"
-                    width="170">
+                    width="175">
                     </el-table-column>
 
                     <el-table-column
                     property="Mobile"
                     label="ĐIỆN THOẠI"
-                    width="170">
+                    width="175">
                     </el-table-column>
 
                     <el-table-column
                         fixed="right"
                         label="CHỨC NĂNG"
-                        width="175">
+                        width="210">
                         <template slot-scope="control">
                             <div style="display:flex;align-items: center;justify-content: center;">
                                 <el-dropdown>
@@ -147,18 +147,17 @@
                 </el-table>
                 <div class="footer-fixed">
                     <div class="grid-footer">
-                    <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
+                    <div class="footer-left">Tổng số: <span style="font-weight:700">{{totalRecord}}</span> bản ghi</div>
                         <div class="footer-right">
+                            <div class="recordOnPage"><MSSelect :value="recordOnPage" @valueSLChanged="recordOnPage = $event" :data="recordPages"/></div>
                             <div class="totalPage">
-                                <div class="pre disable">Trước</div>
+                                <div class="pre" :class="{disable:pageNow == 1}" @click="prePage()">Trước</div>
                                 <div class="page-list">
-                                    <div class="page active">1</div>
-                                    <div class="page">2</div>
-                                    <div class="page">3</div>
-                                    <div class="page"></div>
-                                    <div class="page">4</div>
+                                    <div class="page" v-for="index in totalPage" :key="index" :class="{active: pageNow == index}" @click="gotoPage(index)">
+                                        {{index}}
+                                    </div>
                                 </div>
-                                <div class="next">Sau</div>
+                                <div class="next" :class="{disable:pageNow == totalPage}" @click="nextPage()">Sau</div>
                             </div>
                         </div>
                     </div>
@@ -174,15 +173,30 @@
 import {busData} from '@/main.js'
 import AddSupplier from '../AddSupplier'
 import BaseAPI from '@/BaseAPI.js'
+import MSSelect from '@/components/common/MSSelect'
     export default {
         components:{
             AddSupplier,
+            MSSelect
         },
         data(){
             return{
                 thisPage:'ReceivePayment',
                 data: [
                 ],
+                recordPages:[{value:'10',label:'10 bản ghi trên 1 trang'},
+                    {value:'20',label:'20 bản ghi trên 1 trang'},
+                    {value:'30',label:'50 bản ghi trên 1 trang'},
+                    {value:'40',label:'100 bản ghi trên 1 trang'},
+                ],
+
+
+                //Paging
+                totalRecord:0,
+                totalPage:0,
+                pageNow:1,
+                recordOnPage:'20',
+
             }
         },
         created(){
@@ -190,25 +204,29 @@ import BaseAPI from '@/BaseAPI.js'
 
             busData.$on('reloadData',()=>{
                 console.log('Load lại');
-                this.GetDataSuplier();
+                this.GetDataSuplier(this.pageNow,this.recordOnPage);
             })
         },
         mounted(){
-            this.GetDataSuplier();
+            this.GetDataSuplier(this.pageNow,this.recordOnPage);
             document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
             //API
-            async GetDataSuplier(){
-                let res = await BaseAPI.Get('https://localhost:44363/api/suppliers'); 
-                if(res && res.data){
-                    this.data = res.data;
+            async GetDataSuplier(page,record){
+                let res = await BaseAPI.GetByPaging('https://localhost:44363/api/suppliers',page,record); 
+                if(res){
+                    console.log(res.data.Data);
+                    this.data = res.data.Data;
+                    this.totalRecord = res.data.TotalRecord;
+                    this.totalPage = res.data.TotalPage;
+                    this.pageNow = page
                 }
             },
             async DeleteSuplier(id){
                 let res = await BaseAPI.Delete('https://localhost:44363/api/suppliers',id); 
                 if(res && res.status){
-                    this.GetDataSuplier();
+                    this.GetDataSuplier(this.pageNow,this.recordOnPage);
                 }
             },
             //Event vue
@@ -234,8 +252,26 @@ import BaseAPI from '@/BaseAPI.js'
                 if (event.ctrlKey && event.code  === 'F9') {
                     busData.$emit('showFormAddSupplier');
                 }
+            },
+            //Phan trang
+            gotoPage(page){
+                this.GetDataSuplier(page,this.recordOnPage);
+            },
+            prePage(){
+                if(this.pageNow > 1){
+                    this.GetDataSuplier(this.pageNow-1,this.recordOnPage);
+                }
+            },
+            nextPage(){
+                if(this.pageNow < this.totalPage){
+                    this.GetDataSuplier(this.pageNow+1,this.recordOnPage);
+                }
             }
-        },
+        },watch:{
+            recordOnPage:function(){
+                this.GetDataSuplier(this.pageNow,this.recordOnPage);
+            }
+        }
      
     }
 </script>
@@ -250,11 +286,11 @@ import BaseAPI from '@/BaseAPI.js'
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    padding-top: 15px;
-    margin-bottom: 15px;
+    padding-top: 10px;
+    margin-bottom: 16px;
 }
 .top .title{
-    padding-left: 10px;
+    padding-top: 22px;
     font-size: 24px;
     font-weight: 700;
     color: #212121;
@@ -266,14 +302,14 @@ import BaseAPI from '@/BaseAPI.js'
     color: #0075c0;
     cursor: pointer;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
 }
 .icon.icon-back{
     background-position: -224px -356px;
 }
 .top-btn{
     display: flex;
-    margin-right: 40px;
+    margin-right: 30px;
 }
 .button-add{
     display: flex;
@@ -543,6 +579,7 @@ tfoot{
     text-align: center;
 }
 .pre,.next{
+    cursor: pointer;
     margin: 0px 20px;
 }
 .disable{

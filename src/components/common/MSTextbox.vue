@@ -40,15 +40,19 @@ import {busData} from '@/main.js';
             readonly:Boolean,
             value:String,
             autofocus:Boolean,
-            trigger:Boolean
+            trigger:Boolean,
+            type:String
         },
         created(){
-            this.content = this.value;
+            if(this.value){
+                this.content = this.value;
+            }
             if(this.ID == 'ObjName'){
                 busData.$on('completeName',(name)=>{
                     this.content = name;
                 })
             }
+            
         },
         data(){
             return{
@@ -74,7 +78,7 @@ import {busData} from '@/main.js';
         },
         mounted(){
             if(this.autofocus == true){
-                this.$refs.input.focus()
+                this.$refs.input.focus();
             }
         },
         computed:{
@@ -85,29 +89,32 @@ import {busData} from '@/main.js';
             content:function(){
                 if(this.number){
                     var reg = /^[0-9.]*$/;
-                    if(reg.test(this.content)){
-                        try {
-                            var x = this.content;
-                            x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
-                            x = x.split("").reverse().join(""); // đảo chuỗi
-                            x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm
-                                return e + ".";
-                            });
-                            x = x.split("").reverse().join("");// đảo lại chuỗi
-                            x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
-                            this.content = x;
-                        } catch{
-                            console.log('Lỗi chỗ format tiền nè bạn ơi');
+                    if(this.type == 'money'){
+                        if(reg.test(this.content)){
+                            try {
+                                var x = this.content;
+                                x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
+                                x = x.split("").reverse().join(""); // đảo chuỗi
+                                x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm
+                                    return e + ".";
+                                });
+                                x = x.split("").reverse().join("");// đảo lại chuỗi
+                                x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
+                                this.content = x;
+                            } catch{
+                                console.log('Lỗi chỗ format tiền nè bạn ơi');
+                            }
+                        }else{
+                            this.content = "";
                         }
-                    }else{
-                        this.content = "";
                     }
+                    
                 }
             },
             trigger:function(){
                 this.triggerErr = this.trigger;
                 this.$refs.input.focus();
-            }
+            },
         },
         
     }
@@ -155,6 +162,10 @@ import {busData} from '@/main.js';
     border: none;
     padding: 8px 10px;
     width: 100%;
+    font-size: 13px;
+    color: #000;
+    resize: none;
+    font-weight: 400;
 }
 .focus{
     border-color: #2ca01c;

@@ -206,6 +206,7 @@ input,button,textarea{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: row-reverse;
 }
 .btn-footer button{
     height: 36px;
@@ -250,10 +251,10 @@ input,button,textarea{
     display: inline-block;
     display: flex;
     border: 2px solid;
-    padding: 0 16px!important;
+    padding: 0 9px!important;
     border-radius: 30px;
     color: #212121;
-    height: 34px;
+    height: 32px;
     position: relative;
 } 
 .btn-filter button{
@@ -319,4 +320,9 @@ input,button,textarea{
 
 .el-table tr th.is-leaf{
     border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr td{
+    font-weight: 400;
+    color: #212121;
 }

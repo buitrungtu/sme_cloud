@@ -10,6 +10,20 @@ class BaseAPI{
         })
     }
 
+    GetByPaging(url,page,record){
+        return new Promise((resolve,reject)=>{
+            axios({
+                method:'get',
+                url:url + '?page='+page+'&record='+record,
+            }).then(res=>{
+                resolve(res)
+            }).catch(err =>{
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
+
     GetObj(url,id){
         return new Promise((resolve,reject)=>{
             axios({

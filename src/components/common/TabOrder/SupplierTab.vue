@@ -96,12 +96,12 @@
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.DaysOfOwed+''" @valueChanged="obj.DaysOfOwed = $event" label="Số ngày được nợ"/>
+                            <MSTextbox :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" :number="true" label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.MaxDebt+''" @valueChanged="obj.MaxDebt = $event" label="Số nợ tối đa"/>
+                            <MSTextbox :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" :number="true" label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
