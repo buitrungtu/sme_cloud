@@ -52,7 +52,6 @@ import {busData} from '@/main.js';
                     this.content = name;
                 })
             }
-            
         },
         data(){
             return{
@@ -74,11 +73,14 @@ import {busData} from '@/main.js';
                        this.triggerErr= false;
                    }
                }
+           },
+           focusInput(){
+               this.$refs.input.focus();
            }
         },
         mounted(){
             if(this.autofocus == true){
-                this.$refs.input.focus();
+                this.focusInput();
             }
         },
         computed:{

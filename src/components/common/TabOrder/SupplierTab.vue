@@ -3,7 +3,7 @@
         <ul class="ul-header">
             <li class="li-header" v-bind:class="{active:thisTab==0}" @click="thisTab=0">Liên hệ</li>
             <li class="li-header" v-bind:class="{active:thisTab==1}" @click="thisTab=1">Điều khoản thanh toán</li>
-            <li class="li-header" v-bind:class="{active:thisTab==2}" @click="thisTab=2">Tài khoản ngân hàng</li>
+            <li class="li-header" v-bind:class="{active:thisTab==2}" @click="tabBankAccountOnClick()">Tài khoản ngân hàng</li>
             <li class="li-header" v-bind:class="{active:thisTab==3}" @click="thisTab=3">Địa chỉ khác</li>
             <li class="li-header" v-bind:class="{active:thisTab==4}" @click="thisTab=4">Ghi chú</li>
         </ul>
@@ -118,8 +118,7 @@
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
                    <el-table-column prop="BankAccount" label="SỐ TÀI KHOẢN" width="190">
                         <template slot-scope="scope">
-                            <el-input size="small"
-                                v-model="scope.row.BankAccount"></el-input>
+                            <MSTextbox  ref="BankAccount" :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event"/>
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
@@ -314,10 +313,18 @@ import BaseCBB from '@/components/common/BaseCBB'
             this.obj.DeliveryAddress = this.tableDeliveryAddress;
         },
         methods:{
+            tabBankAccountOnClick(){
+                this.thisTab = 2;
+                this.$refs.BankAccount.focusInput();
+            },
+            focusInput(){
+                this.$refs.BankAccount.focus();
+            },
             deleteRow(index) {
                 this.tableBankAccount.splice(index, 1);
             },
             addRow(){
+                console.log(this.tableBankAccount);
                 let newRow  = {
                     BankAccount:'',
                     BankName:'',

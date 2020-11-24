@@ -8,7 +8,7 @@
             </div>
             <div class="error-line"></div>
             <div class="error-btn">
-                <button @click="show = false">Đóng</button>
+                <button @click="errorCloseOnClick()">Đóng</button>
             </div>
         </div>
     </div>
@@ -28,6 +28,11 @@ import {busData} from '@/main.js'
                 this.errorMess = err;
                 this.show = true;
             })
+        },methods:{
+            errorCloseOnClick(){
+                this.show = false;
+                this.$emit('dialogErrorClose');
+            }
         }
     }
 </script>

@@ -29,11 +29,11 @@
                                 <MSTextbox :autofocus="focusTaxCode" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
-                                <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" :trigger="errCode" :autofocus="errCode"/>
+                                <MSTextbox ref="SupplierCode1" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" />
                             </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" :trigger="errName" :autofocus="errName"/>
+                            <MSTextbox ref="SupplierName1" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" />
                         </div>
                         <div class="row-input">
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
@@ -41,7 +41,7 @@
                     </div> 
                     <div class="w-1-2" style="padding-right:2.3px">
                         <div class="row-input">
-                            <div class="w-2-5" style="padding-right: 12px;">
+                            <div class="w-2-5" style="padding-right:12px;">
                                 <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
                             </div>
                             <div class="w-3-5">
@@ -61,16 +61,16 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
-                                 <MSTextbox :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" :trigger="errCode" :autofocus="errCode"/>
+                                <MSTextbox ref="SupplierCode2" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" />
                             </div>
                             <div class="w-2-5" style="padding-top:2px">
-                                <MSTextbox fildname :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                                <MSTextbox :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
                             </div>
                         </div>
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <MSSelect :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox fildname :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" :trigger="errName" :autofocus="errName"/>
+                            <MSTextbox ref="SupplierName2" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" />
                         </div>
                         <div class="row-input">
                             <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
@@ -108,7 +108,7 @@
             <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
             <AddEmployee :visible="showFormAddEmployee"/>
         </div>
-        <DialogError />
+        <DialogError @dialogErrorClose="focusError()"/>
     </div>
 </template>
 
@@ -163,8 +163,6 @@ import BaseAPI from '@/BaseAPI.js'
                 state:'Add',
                 supplierID:'',
                 triggerErr:[false,false],
-                errCode:false,
-                errName:false,
                 focusTaxCode:true     
             }
         },
@@ -241,7 +239,23 @@ import BaseAPI from '@/BaseAPI.js'
 
                 }
             },
-          
+
+            //Xử lý sự kiện focus vào các ô nhập liệu lỗi
+            focusError(){
+                if(!this.obj.SupplierCode){
+                    if(!this.obj.IsPersonal){
+                        this.$refs.SupplierCode1.focusInput();
+                    }else{
+                        this.$refs.SupplierCode2.focusInput();
+                    }
+                } else if(!this.obj.SupplierName){
+                     if(!this.obj.IsPersonal){
+                        this.$refs.SupplierName1.focusInput();
+                    }else{
+                        this.$refs.SupplierName2.focusInput();
+                    }
+                }    
+            },
             //Event 
             async btnSaveOnClick(){
                 var err = ''
@@ -249,12 +263,10 @@ import BaseAPI from '@/BaseAPI.js'
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
-                    this.errCode=true;
-
                 }else if(!this.obj.SupplierName){
                     err = 'Tên nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
-                    this.errName=true;
+                    
                 }else{
                     for(var propName in this.obj){
                         if(this.obj[propName] === undefined){
