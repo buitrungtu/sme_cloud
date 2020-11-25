@@ -77,8 +77,8 @@ import BaseCBB from '@/components/common/BaseCBB'
 <style  scoped>
 .dialog-group-supplier{
     width: 600px;
-    height: 400px;
-    top: calc(50% - 200px);
+    height: 430px;
+    top: calc(50% - 215px);
     left: calc(50% - 300px);
     z-index: 9;
 }

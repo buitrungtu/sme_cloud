@@ -39,7 +39,7 @@
                         :data="data"
                         style="width: 100%"
                         height="100%"
-                        row-key="accountId"
+                        row-key="AccountId"
                         v-bind:default-expand-all="collapse"
 
                         @selection-change="handleSelectionChange"
@@ -49,6 +49,7 @@
                             prop="AccountCode"
                             label="SỐ TÀI KHOẢN"
                             width="150"
+                            ref="test"
                             >
                         </el-table-column>
 
@@ -59,25 +60,25 @@
                         </el-table-column>
 
                         <el-table-column
-                            prop="natureName"
+                            prop="Propertie"
                             label="TÍNH CHẤT"
                             width="150">
                         </el-table-column>
 
                         <el-table-column
-                            prop="accountNameEn"
+                            prop="AccountNameEnglish"
                             label="TÊN TIẾNG ANH"
                             width="300">
                         </el-table-column>
 
                         <el-table-column
-                            prop="explain"
+                            prop="Explain"
                             label="DIỄN GIẢI"
                             width="300">
                         </el-table-column>
 
                         <el-table-column
-                            prop="status"
+                            prop="Status"
                             label="TRẠNG THÁI"
                             width="150">
                         </el-table-column>
@@ -134,24 +135,25 @@ import axios from 'axios';
             }
         },
         created(){
+            console.log(this.$refs.test);
             busData.$emit('changeTab',1);
             let tempdata = [];
             let seft = this;
             axios({
                 methods:'GET',
-                url:'https://localhost:44346/api/accounts'
+                url:'https://localhost:44363/api/accounts'
             }).then(function(res){
                 tempdata = res.data;
                 for(let i =0 ;i<tempdata.length;i++){
                     tempdata[i].children = [];
-                    tempdata[i].status == "true"?tempdata[i].status = 'Đang sử dụng':'Ngưng sử dụng';
+                    tempdata[i].Status == "true"?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
 
                     if(!tempdata[i].parent){
                         tempdata[i].parent = 0;
                     }
                     let sureNot = false;
                     for(let j=i+1;j<tempdata.length;j++){
-                        if(tempdata[i].accountId == tempdata[j].root){
+                        if(tempdata[i].AccountCode == tempdata[j].AccountCodeRoot){
                             tempdata[i].children.push(tempdata[j]);
                             tempdata[j].parent = 1;
                         }else{

@@ -13,37 +13,37 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Người liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSSelect :value="obj.VocativeContact"  @valueSLChanged="obj.VocativeContact = $event" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
-                        <MSTextbox :value="obj.FullnameContact" @valueChanged="obj.FullnameContact = $event" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
+                        <MSSelect :disable="isShow" :value="obj.VocativeContact"  @valueSLChanged="obj.VocativeContact = $event" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
+                        <MSTextbox :disable="isShow" :value="obj.FullnameContact" @valueChanged="obj.FullnameContact = $event" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" placeholder="Email"/> 
+                            <MSTextbox :disable="isShow" :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" placeholder="Số điện thoại"/>
+                                <MSTextbox :disable="isShow"  :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" placeholder="Số điện thoại"/>
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;"  v-show="isCus">
-                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disable="isShow" :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="!isCus">
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disable="isShow"  :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="isCus">
                         <label class="label-input">Người nhận hóa đơn điện tử</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.FullnameEInvoice" @valueChanged="obj.FullnameEInvoice = $event" placeholder="Họ và tên"/> 
+                            <MSTextbox :disable="isShow"  :value="obj.FullnameEInvoice" @valueChanged="obj.FullnameEInvoice = $event" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.EmailEInvoice" @valueChanged="obj.EmailEInvoice = $event"  placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
+                            <MSTextbox :disable="isShow" :value="obj.EmailEInvoice" @valueChanged="obj.EmailEInvoice = $event"  placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :value="obj.MobileEInvoice" @valueChanged="obj.MobileEInvoice = $event" placeholder="Số điện thoại"/>
+                                <MSTextbox :disable="isShow" :value="obj.MobileEInvoice" @valueChanged="obj.MobileEInvoice = $event" placeholder="Số điện thoại"/>
                             </div>
                         </div>
                     </div>
@@ -52,20 +52,20 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Thông tin liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" style="padding-top:3px" placeholder="Email"/> 
+                            <MSTextbox :disable="isShow" :value="obj.EmailContact" @valueChanged="obj.EmailContact = $event" style="padding-top:3px" placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" style="padding-top:3px" placeholder="Điện thoại di động"/> 
+                                <MSTextbox :disable="isShow" :value="obj.MobileContact" @valueChanged="obj.MobileContact = $event" style="padding-top:3px" placeholder="Điện thoại di động"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :value="obj.FixMobileContact" @valueChanged="obj.FixMobileContact = $event" style="padding-top:3px" placeholder="Điện thoại cố định"/> 
+                                <MSTextbox :disable="isShow" :value="obj.FixMobileContact" @valueChanged="obj.FixMobileContact = $event" style="padding-top:3px" placeholder="Điện thoại cố định"/> 
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disable="isShow" :value="obj.LegalRepresent" @valueChanged="obj.LegalRepresent = $event" label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                 
@@ -73,7 +73,7 @@
                         <label class="label-input">Thông tin CMND/Thẻ căn cước</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2" >
-                                <MSTextbox :value="obj.Identity" @valueChanged="obj.Identity = $event" style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
+                                <MSTextbox :disable="isShow" :value="obj.Identity" @valueChanged="obj.Identity = $event" style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :value="obj.IdentityPlace" @valueChanged="obj.IdentityPlace = $event" placeholder="Nơi cấp"/>
+                            <MSTextbox :disable="isShow" :value="obj.IdentityPlace" @valueChanged="obj.IdentityPlace = $event" placeholder="Nơi cấp"/>
                         </div>
                     </div>
                 </div>
@@ -91,17 +91,17 @@
                 <div class="w-3-4" style="display:flex">
                     <div class="w-input">
                         <div class="row-input" >
-                            <BaseCBB :value="obj.TermsOfPayment" @valueCBBChanged="obj.TermsOfPayment = $event" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                            <BaseCBB :disable="isShow" :value="obj.TermsOfPayment" @valueCBBChanged="obj.TermsOfPayment = $event" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" :number="true" label="Số ngày được nợ"/>
+                            <MSTextbox :disable="isShow" :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" :number="true" label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" :number="true" label="Số nợ tối đa"/>
+                            <MSTextbox :disable="isShow" :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" :number="true" label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
@@ -117,32 +117,29 @@
             <div class="bank-account" v-show="thisTab == 2">
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
                    <el-table-column prop="BankAccount" label="SỐ TÀI KHOẢN" width="190">
-                        <template slot-scope="scope">
-                            <MSTextbox  ref="BankAccount" :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event"/>
+                         <template slot-scope="scope">
+                             <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <el-input size="small"
-                                v-model="scope.row.BankName"></el-input>
+                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankName" @valueChanged="scope.row.BankName = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankBranch" label="CHI NHÁNH" width="190">
                         <template slot-scope="scope">
-                            <el-input size="small"
-                                v-model="scope.row.BankBranch"></el-input>
+                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankBranch" @valueChanged="scope.row.BankBranch = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankCity" label="TỈNH/TP CỦA NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <el-input size="small"
-                                v-model="scope.row.BankCity"></el-input>
+                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankCity" @valueChanged="scope.row.BankCity = $event" />
                         </template>
                     </el-table-column>
 
                     <el-table-column fixed="right" label="" width="50">
                         <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
+                            <el-button :disabled="isShow" @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
                                 <div class="icon icon-delete"></div>
                             </el-button>
                         </template>
@@ -150,8 +147,8 @@
                 </el-table>
                 <div class="grid-footer">
                     <div class="btn-grid-act">
-                        <button @click="addRow()">Thêm dòng</button>
-                        <button @click="removeAllRow()">Xóa hết dòng</button>
+                        <button :disabled="isShow" @click="addRow()">Thêm dòng</button>
+                        <button :disabled="isShow" @click="removeAllRow()">Xóa hết dòng</button>
                     </div>
                 </div>
             </div>
@@ -160,18 +157,18 @@
                     <label class="label-input">Vị trí địa lý</label>
                     <div class="row-input">
                         <div class="w-1-2" style="padding-right:12px" >
-                            <MSSelect value="1"  @valueSLChanged="obj.Nation = $event" :data="nations" placeholder="Quốc Gia"/>
+                            <MSSelect :disable="isShow"  value="1"  @valueSLChanged="obj.Nation = $event" :data="nations" placeholder="Quốc Gia"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :value="obj.City"  @valueSLChanged="obj.City = $event" :data="cities" placeholder="Tỉnh/Thành phố"/>
+                            <MSSelect :disable="isShow" :value="obj.City"  @valueSLChanged="obj.City = $event" :data="cities" placeholder="Tỉnh/Thành phố"/>
                         </div>
                     </div>
                     <div class="row-input" >
                         <div class="w-1-2" style="padding-right:12px">
-                            <MSSelect :value="obj.District"  @valueSLChanged="obj.District = $event" :data="districts" placeholder="Quận/Huyện"/>
+                            <MSSelect :disable="isShow" :value="obj.District"  @valueSLChanged="obj.District = $event" :data="districts" placeholder="Quận/Huyện"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :value="obj.Village"  @valueSLChanged="obj.Village = $event" :data="villages" placeholder="Xã/Phường"/>
+                            <MSSelect :disable="isShow" :value="obj.Village"  @valueSLChanged="obj.Village = $event" :data="villages" placeholder="Xã/Phường"/>
                         </div>
                     </div>
                 </div>
@@ -183,13 +180,12 @@
                     <el-table :data="tableDeliveryAddress" style="width: 100%;" max-height="140">
                        <el-table-column prop="Address" width="300" label="Địa chỉ giao hàng">
                             <template slot-scope="scope">
-                                <el-input size="small"
-                                    v-model="scope.row.Address"></el-input>
+                                <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.Address" @valueChanged="scope.row.Address = $event" />
                             </template>
                         </el-table-column>
                         <el-table-column fixed="right" label="" width="50">
                             <template slot-scope="scope">
-                                <el-button @click.native.prevent="deleteRowAddress(scope.$index, scope.row)" type="text" size="small">
+                                <el-button :disabled="isShow" @click.native.prevent="deleteRowAddress(scope.$index, scope.row)" type="text" size="small">
                                     <div class="icon icon-delete"></div>
                                 </el-button>
                             </template>
@@ -197,15 +193,15 @@
                     </el-table>
                     <div class="grid-footer">
                     <div class="btn-grid-act">
-                        <button @click="addRowAddress()">Thêm dòng</button>
-                        <button @click="removeAllRowAddress()">Xóa hết dòng</button>
+                        <button :disabled="isShow" @click="addRowAddress()">Thêm dòng</button>
+                        <button :disabled="isShow" @click="removeAllRowAddress()">Xóa hết dòng</button>
                     </div>
                 </div>
                 </div>
             </div>
 
             <div class="note" v-show="thisTab == 4">
-                <textarea v-model="obj.Note" tabindex="1"></textarea>
+                <textarea :disabled="isShow" v-model="obj.Note" tabindex="1"></textarea>
             </div>
         </div>
     </div>
@@ -221,7 +217,8 @@ import BaseCBB from '@/components/common/BaseCBB'
         props:{
             isPer:Boolean,
             root:Object,
-            isCus:Boolean
+            isCus:Boolean,
+            isShow:Boolean
         },
         components:{
             MSTextbox,
@@ -315,16 +312,14 @@ import BaseCBB from '@/components/common/BaseCBB'
         methods:{
             tabBankAccountOnClick(){
                 this.thisTab = 2;
-                this.$refs.BankAccount.focusInput();
+                debugger;
+                this.$refs.BankAccount.focusInput()
             },
-            focusInput(){
-                this.$refs.BankAccount.focus();
-            },
+            
             deleteRow(index) {
                 this.tableBankAccount.splice(index, 1);
             },
             addRow(){
-                console.log(this.tableBankAccount);
                 let newRow  = {
                     BankAccount:'',
                     BankName:'',
@@ -417,7 +412,7 @@ import BaseCBB from '@/components/common/BaseCBB'
     width: 100%;
 }
 .icon.icon-delete{
-    background-position: -464px -312px;
+    background-position: -460px -312px;
 }
 .grid-footer{
     width: calc(100% - 60px);
@@ -463,9 +458,7 @@ import BaseCBB from '@/components/common/BaseCBB'
 .bank-account{
     width: 100%;
 }
-.icon.icon-delete{
-    background-position: -464px -312px;
-}
+
 .grid-footer{
     width: calc(100% - 60px);
     background-color: #fff;

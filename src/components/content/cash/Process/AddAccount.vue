@@ -4,8 +4,16 @@
             title="Thêm tài khoản"
             :visible.sync="drawer"
             direction="rtl"
-            size="50%"
+            :wrapperClosable="false"
+            :show-close="false"
+            size="800px"
             >
+            <div class="dialog-close">
+                <div class="icon icon-help"></div>
+                <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
+                    <div @click="drawer = false" class="icon icon-close"></div>
+                </el-tooltip>
+            </div>
             <div class="content">
                 <div class="row-input">
                     <div class="w-1-4">
@@ -221,12 +229,12 @@ import axios from 'axios'
             
             axios({
                 methods:'GET',
-                url:'https://localhost:44346/api/accounts'
+                url:'https://localhost:44363/api/accounts'
             }).then(function(res){
                 for(let i =0;i<res.data.length;i++){
                     let obj = {};
-                    obj.AccountID = res.data[i].accountId;
-                    obj.AccountName = res.data[i].accountName;
+                    obj.AccountCode = res.data[i].AccountCode;
+                    obj.AccountName = res.data[i].AccountName;
                     seft.ListAccount.push(obj);
                 }
             })
@@ -254,6 +262,7 @@ import axios from 'axios'
 </script>
 
 <style scoped>
+
 .content{
     width: 100%;
     height: calc(100% - 100px);
@@ -268,5 +277,10 @@ import axios from 'axios'
 .flex{
     display: flex;
     align-items: center;
+}
+.add-unit .dialog-close{
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 </style>

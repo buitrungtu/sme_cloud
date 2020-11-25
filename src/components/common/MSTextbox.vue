@@ -6,13 +6,13 @@
                 type="text" :style="TextAlign" 
                 class="cb-input" v-bind:readonly="readonly" 
                 @focus="isFocus=true" @blur="checkRequired()" v-bind:placeholder="placeholder"
-                 v-model="content" @input="changeInput">
+                 v-model="content" @input="changeInput" :disabled="disable">
         </div>
         <div class="cb-content-2" v-bind:class="{focus:isFocus}" v-show="textarea">
             <textarea  v-bind:style="TextAlign" class="input-area" 
                 v-bind:readonly="readonly" @focus="isFocus=true"
                  @blur="isFocus=false" v-bind:placeholder="placeholder" 
-                 v-model="content" @input="changeInput"></textarea>
+                 v-model="content" @input="changeInput" :disabled="disable"></textarea>
         </div>
     </div> 
 </template>
@@ -38,10 +38,11 @@ import {busData} from '@/main.js';
             },
             ID:String,
             readonly:Boolean,
-            value:String,
+            value:[String,Number],
             autofocus:Boolean,
             trigger:Boolean,
-            type:String
+            type:String,
+            disable:Boolean
         },
         created(){
             if(this.value){

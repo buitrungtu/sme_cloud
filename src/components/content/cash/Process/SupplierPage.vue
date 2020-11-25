@@ -409,7 +409,7 @@ import MSSelect from '@/components/common/MSSelect'
     z-index: 4;
 }
 .grid-Supp{
-    height:calc(100% - 131px);
+    height:calc(100% - 110px);
 }
 .grid-filter{
     display: flex;

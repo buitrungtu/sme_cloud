@@ -7,17 +7,19 @@
                 <div class="tilte-content" style="display:flex;align-items: center;">
                     <div class="title">Thông tin nhà cung cấp</div>
                     <div class="gr-radio">
-                        <el-radio v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
-                        <el-radio v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
+                        <el-radio :disabled="isShow"  v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
+                        <el-radio :disabled="isShow" v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
                     </div>
                     <div class="title-right">
-                        <el-checkbox v-model="obj.IsCustomer">Là khách hàng</el-checkbox>
+                        <el-checkbox :disabled="isShow" v-model="obj.IsCustomer">Là khách hàng</el-checkbox>
                     </div>
                 </div>
             </div>
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
-                <div @click="show = false" class="icon icon-close"></div>
+                <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
+                    <div @click="show = false" class="icon icon-close"></div>
+                </el-tooltip>
             </div>
         </header>
         <div class="dialog-content">
@@ -26,33 +28,33 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :autofocus="focusTaxCode" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                                <MSTextbox :autofocus="focusTaxCode" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" :disable="isShow" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
-                                <MSTextbox ref="SupplierCode1" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"  :required="true" />
+                                <MSTextbox ref="SupplierCode1" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
                             </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox ref="SupplierName1" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" label="Tên nhà cung cấp" :required="true" />
+                            <MSTextbox ref="SupplierName1" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" :disable="isShow" label="Tên nhà cung cấp" :required="true" />
                         </div>
                         <div class="row-input">
-                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" :disable="isShow" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div> 
                     <div class="w-1-2" style="padding-right:2.3px">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại"/>
+                                <MSTextbox  :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại" :disable="isShow"/>
                             </div>
                             <div class="w-3-5">
-                                <MSTextbox :value="obj.Website" @valueChanged="obj.Website = $event" label="Website"/>
+                                <MSTextbox  :value="obj.Website" @valueChanged="obj.Website = $event" label="Website" :disable="isShow"/>
                             </div>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :disable="isShow" :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="isShow" :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -61,43 +63,59 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
-                                <MSTextbox ref="SupplierCode2" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" />
+                                <MSTextbox :disable="isShow" ref="SupplierCode2" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" />
                             </div>
                             <div class="w-2-5" style="padding-top:2px">
-                                <MSTextbox :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                                <MSTextbox :disable="isShow" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
                             </div>
                         </div>
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSSelect :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox ref="SupplierName2" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" />
+                            <MSSelect :disable="isShow" :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSTextbox :disable="isShow" ref="SupplierName2" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" />
                         </div>
                         <div class="row-input">
-                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                            <MSTextbox :disable="isShow" :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
                         <div class="row-input">
-                            <BaseCBB :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
+                            <BaseCBB :disable="isShow" :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
-                            <BaseCBB :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="isShow" :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
 
-                <SupplierTab :isPer="obj.IsPersonal" :root="obj" :isCus="obj.IsCustomer" /> 
+                <SupplierTab :isPer="obj.IsPersonal" :root="obj" :isCus="obj.IsCustomer" :isShow="isShow"/> 
                 
-                <div class="dialog-footer">
+                <div class="dialog-footer" v-show="!isShow">
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-right">
-                            <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
-                            <button @click="btnSaveOnClick()" > Cất</button>
-                            <button class="save-and-add" @click="btnAddAndSaveOnClick()">Cất và thêm</button>
+                            <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
+                                <button @click="btnSaveOnClick()" > Cất</button>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và thêm (Ctrl + Shift + S)" placement="top-start">
+                                <button class="save-and-add" @click="btnAddAndSaveOnClick()">Cất và thêm</button>
+                             </el-tooltip>
                         </div>
                         <div class="btn-left">
-                             <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
+                            <button @click="show = false">Hủy</button>
+                        </div>  
+                    </div>
+                </div>
+                 <div class="dialog-footer" v-show="isShow">
+                    <div class="divide"></div>
+                    <div class="btn-footer">
+                        <div class="btn-right">
+                            <el-tooltip class="item" effect="dark" content="Bottom Center prompts info" placement="bottom">
+                                <button class="save-and-add" @click="isShow = false">Sửa</button>
+                            </el-tooltip>
+                        </div>
+                        <div class="btn-left">
+                            <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
                             <button @click="show = false">Hủy</button>
                         </div>  
                     </div>
@@ -108,7 +126,7 @@
             <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
             <AddEmployee :visible="showFormAddEmployee"/>
         </div>
-        <DialogError @dialogErrorClose="focusError()"/>
+        <DialogError @dialogErrorClose="focusError($event)"/>
     </div>
 </template>
 
@@ -163,7 +181,8 @@ import BaseAPI from '@/BaseAPI.js'
                 state:'Add',
                 supplierID:'',
                 triggerErr:[false,false],
-                focusTaxCode:true     
+                focusTaxCode:true,
+                isShow:false     
             }
         },
         created(){
@@ -171,8 +190,6 @@ import BaseAPI from '@/BaseAPI.js'
                 this.show = true;
                 this.resetForm();
             })
-            
-           
             
             busData.$on('showDialog',(mission)=>{
                 if(mission == 'AddGropSupplier'){
@@ -190,8 +207,7 @@ import BaseAPI from '@/BaseAPI.js'
         },
       
         mounted(){
-             busData.$on('editSupplier',(SuppID)=>{
-                console.log(SuppID)
+            busData.$on('editSupplier',(SuppID)=>{
                 this.supplierID = SuppID;
                 this.GetSupplier(this.supplierID);
             })
@@ -227,28 +243,22 @@ import BaseAPI from '@/BaseAPI.js'
             async GetSupplier(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',id); 
                 if(res && res.data){
-                    console.log(2);
                     this.obj = res.data;
-                    console.log(this.obj);
-                    if(this.obj.SupplierCode){
-                        this.state = 'Edit'
-                        this.show = true;
-                    }else{
-                        console.log(this.obj);
-                    }
-
+                    this.state = 'Edit'
+                    this.show = true;
+                    this.isShow = true;
                 }
             },
 
             //Xử lý sự kiện focus vào các ô nhập liệu lỗi
-            focusError(){
-                if(!this.obj.SupplierCode){
+            focusError(errCode){
+                if(errCode == 1){
                     if(!this.obj.IsPersonal){
                         this.$refs.SupplierCode1.focusInput();
                     }else{
                         this.$refs.SupplierCode2.focusInput();
                     }
-                } else if(!this.obj.SupplierName){
+                } else if(errCode == 2){
                      if(!this.obj.IsPersonal){
                         this.$refs.SupplierName1.focusInput();
                     }else{
@@ -262,10 +272,10 @@ import BaseAPI from '@/BaseAPI.js'
                 //Check Require
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
-                    busData.$emit('showDialogError',err);
+                    busData.$emit('showDialogError',err,1);
                 }else if(!this.obj.SupplierName){
                     err = 'Tên nhà cung cấp không được bỏ trống';
-                    busData.$emit('showDialogError',err);
+                    busData.$emit('showDialogError',err,2);
                     
                 }else{
                     for(var propName in this.obj){
@@ -287,7 +297,7 @@ import BaseAPI from '@/BaseAPI.js'
                     if(res){
                         debugger;
                         if(res.data.Success == false){
-                            busData.$emit('showDialogError',res.data.Message);
+                            busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
                         }else{
                             busData.$emit('reloadData');
                             this.show = false;
@@ -326,13 +336,13 @@ import BaseAPI from '@/BaseAPI.js'
                         res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
                     }
                     if(res && res.status){
-                        console.log(res);
                         if(typeof(res.data) === "string" && res.data != ""){
                             busData.$emit('showDialogError',res.data);
                         }else{
+                            this.show = false;
                             this.resetForm();
-                            
                             busData.$emit('reloadData');
+                            this.show = true;
                         }
                     }
                 }
@@ -344,7 +354,8 @@ import BaseAPI from '@/BaseAPI.js'
                 };
                 this.state='Add';
                 this.supplierID='';
-                this.checkRequire = false
+                this.checkRequire = false;
+                this.isShow=false
             },
            
              //Xử lý phím tắt
@@ -367,6 +378,9 @@ import BaseAPI from '@/BaseAPI.js'
                     event.preventDefault();
                     event.stopPropagation();
                     this.btnSaveOnClick();
+                }else if(event.ctrlKey && event.key === 'Shift' && event.key==='s'){
+                    console.log('dsadsadsa');
+                    //this.btnAddAndSaveOnClick();
                 }
             },
           
@@ -418,5 +432,13 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .dialog-footer button:focus:not(.save-and-add){
     background: #d2d3d6;
+}
+  
+.item {
+    margin:0px 4px;
+}
+.bottom {
+    clear: both;
+    text-align: center;
 }
 </style>

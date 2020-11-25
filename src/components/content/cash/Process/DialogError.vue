@@ -20,18 +20,21 @@ import {busData} from '@/main.js'
         data(){
             return{
                 show:false,
-                errorMess:''
+                errorMess:'',
+                errCode:0
             }
         },
         created(){
-            busData.$on('showDialogError',(err)=>{
+            busData.$on('showDialogError',(err,errCode)=>{
                 this.errorMess = err;
+                this.errCode = errCode
                 this.show = true;
+                
             })
         },methods:{
             errorCloseOnClick(){
                 this.show = false;
-                this.$emit('dialogErrorClose');
+                this.$emit('dialogErrorClose',this.errCode);
             }
         }
     }
