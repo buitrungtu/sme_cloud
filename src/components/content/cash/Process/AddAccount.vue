@@ -17,7 +17,7 @@
             <div class="content">
                 <div class="row-input">
                     <div class="w-1-4">
-                        <MSTextbox label="Số tài khoản" :value="AccountID" @valueChanged="AccountID = $event" v-bind:required="true"/>
+                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
                     </div>
                 </div>
                 <div class="row-input">
@@ -33,7 +33,7 @@
                         <div class="w-1-2" style="padding:1.5px 12px 0px 0px;">
                             <BaseCBB label="Tài khoản tổng hợp" :header="thead" :data="ListAccount" :plus="false" :indexshow="1"/>
                         </div>
-                        <div class="w-1-2">
+                        <div class="w-1-2" style="padding-top:4px">
                             <MSSelect label="Tính chất" :required="true" :data="ListType" />
                         </div>
                     </div>
@@ -44,33 +44,34 @@
                  <div class="row-input">
                     <el-checkbox >Có hạch toán ngoại tệ</el-checkbox>
                  </div>
-                 <el-collapse @change="handleChange">
+                 <el-collapse>
                     <el-collapse-item title="Theo dõi chi tiết theo">
                          <div class="row-input">
                              <div class="w-1-2 flex">
                                  <div class="w-5-6 flex">
                                      <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[0]" >Đối tượng</el-checkbox>
+                                         <el-checkbox v-model="trackingDetails[0].check" >Đối tượng</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :data="ListSupp" :disable="!disables[0]"/>
+                                         <MSSelect :value="trackingDetails[0].detail"  @valueSLChanged="trackingDetails[0].detail = $event" :data="ListSupp" :disable="!trackingDetails[0].check"/>
                                      </div>
                                  </div>
                              </div>
                             <div class="w-1-2 flex">
                                 <div class="w-5-6 flex">
-                                    <el-checkbox>Tài khoản ngân hàng</el-checkbox>
+                                    <el-checkbox v-model="trackingDetails[1].check">Tài khoản ngân hàng</el-checkbox>
                                 </div>     
                              </div>
                          </div>
-                         <div class="row-input">
+
+                        <div class="row-input" v-for="(n,i) in rangeFor" :key="i">
                              <div class="w-1-2 flex">
                                  <div class="w-5-6 flex">
                                      <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[1]">Đối tượng THCP</el-checkbox>
+                                         <el-checkbox v-model="trackingDetails[n].check">{{trackingDetails[n].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[1]"/>
+                                         <MSSelect :value="trackingDetails[n].detail"  @valueSLChanged="trackingDetails[n].detail = $event" :data="rules" :disable="!trackingDetails[n].check"/>
                                      </div>
                                  </div>
                              </div>
@@ -78,82 +79,10 @@
                                 <div class="w-5-6 flex">
                                    <div class="w-5-6 flex">
                                      <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[2]">Công trình</el-checkbox>
+                                         <el-checkbox v-model="trackingDetails[n+1].check">{{trackingDetails[n+1].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[2]"/>
-                                     </div>
-                                 </div>
-                                </div>     
-                             </div>
-                         </div>
-                         <div class="row-input">
-                             <div class="w-1-2 flex">
-                                 <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[3]">Đơn đặt hàng</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[3]"/>
-                                     </div>
-                                 </div>
-                             </div>
-                            <div class="w-1-2 flex">
-                                <div class="w-5-6 flex">
-                                   <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[4]">Hợp đồng bán</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[4]"/>
-                                     </div>
-                                 </div>
-                                </div>     
-                             </div>
-                         </div>
-                         <div class="row-input">
-                             <div class="w-1-2 flex">
-                                 <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[5]">Hợp đồng mua</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[5]"/>
-                                     </div>
-                                 </div>
-                             </div>
-                            <div class="w-1-2 flex">
-                                <div class="w-5-6 flex">
-                                   <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[6]">Khoản mục CP</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[6]"/>
-                                     </div>
-                                 </div>
-                                </div>     
-                             </div>
-                         </div>
-                         <div class="row-input">
-                             <div class="w-1-2 flex">
-                                 <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[7]">Đơn vị</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[7]"/>
-                                     </div>
-                                 </div>
-                             </div>
-                            <div class="w-1-2 flex">
-                                <div class="w-5-6 flex">
-                                   <div class="w-5-6 flex">
-                                     <div class="w-1-2 flex">
-                                         <el-checkbox v-model="disables[8]">Mã thống kê</el-checkbox>
-                                     </div>
-                                     <div class="w-1-2">
-                                         <MSSelect :data="rules" :disable="!disables[8]"/>
+                                         <MSSelect :value="trackingDetails[n+1].detail"  @valueSLChanged="trackingDetails[n+1].detail = $event" :data="rules" :disable="!trackingDetails[n+1].check"/>
                                      </div>
                                  </div>
                                 </div>     
@@ -186,7 +115,7 @@ import {busData} from '@/main.js';
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
-import axios from 'axios'
+import BaseAPI from '@/BaseAPI.js'
     export default {
         components:{
             MSTextbox,
@@ -215,40 +144,51 @@ import axios from 'axios'
                     {value:'1',label:'Chỉ cảnh báo'},
                     {value:'2',label:'Bắt buộc nhập'},
                 ],
-                disables:[false,false,false,false,false,false,false,false,false],
+                rangeFor:[2,4,6,8],
+                isShow:false,
+                trackingDetails:[ // để đúng thứ tự trái -> phải
+                    {check:false,detail:1,name:'Object',show:'Đối tượng'},
+                    {check:false,detail:1,name:'BankAccount',show:'Tài khoản ngân hàng'},
+
+                    {check:false,detail:1,name:'ObjectGatherCost',show:'Đối tượng THCP'},
+                    {check:false,detail:1,name:'Construct',show:'Công trình'},
+
+                    {check:false,detail:1,name:'Order',show:'Đơn đặt hàng'},
+                    {check:false,detail:1,name:'PurchaseSell',show:'Hợp đồng bán'},
+
+                    {check:false,detail:1,name:'PurchaseBuy',show:'Hợp đồng mua'},
+                    {check:false,detail:1,name:'ExpenseItem',show:'Khoản mục CP'},
+
+                    {check:false,detail:1,name:'Unit',show:'Đơn vị'},
+                    {check:false,detail:1,name:'StatisticalCode',show:'Mã thống kê'},
+                ],
+                obj:{
+
+                }
             };
         },
         created(){
-
-            let seft = this;
-
+            console.log(this.trackingDetails)
 
             busData.$on('showDialogAddAccount',()=>{
                 this.drawer = true;
             })
-            
-            axios({
-                methods:'GET',
-                url:'https://localhost:44363/api/accounts'
-            }).then(function(res){
-                for(let i =0;i<res.data.length;i++){
-                    let obj = {};
-                    obj.AccountCode = res.data[i].AccountCode;
-                    obj.AccountName = res.data[i].AccountName;
-                    seft.ListAccount.push(obj);
-                }
-            })
-
-
-
-
-
+        },
+        mounted(){
 
         },
         methods:{
-            handleChange(val) {
-                console.log(val);
-             },
+            async getAccounts(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
+                if(res && res.data){
+                    for(let i =0;i<res.data.length;i++){
+                        let obj = {};
+                        obj.AccountCode = res.data[i].AccountCode;
+                        obj.AccountName = res.data[i].AccountName;
+                        this.ListAccount.push(obj);
+                    }   
+                }
+            },
             btnCloseOnClick(){
                 this.drawer=false
             }
@@ -282,5 +222,8 @@ import axios from 'axios'
     position: absolute;
     top: 0;
     right: 0;
+}
+.row-input{
+    padding-bottom:8px;
 }
 </style>

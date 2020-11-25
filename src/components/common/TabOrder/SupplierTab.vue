@@ -116,7 +116,7 @@
             </div>
             <div class="bank-account" v-show="thisTab == 2">
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
-                   <el-table-column prop="BankAccount" label="SỐ TÀI KHOẢN" width="190">
+                   <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
                              <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event" />
                         </template>
@@ -312,8 +312,7 @@ import BaseCBB from '@/components/common/BaseCBB'
         methods:{
             tabBankAccountOnClick(){
                 this.thisTab = 2;
-                debugger;
-                this.$refs.BankAccount.focusInput()
+                this.$refs.BankAccount.$el.querySelector('input').focus();
             },
             
             deleteRow(index) {
@@ -344,7 +343,8 @@ import BaseCBB from '@/components/common/BaseCBB'
             removeAllRowAddress(){
                 this.tableDeliveryAddress = [];
             },
-        }
+        },
+        
     }
 </script>
 

@@ -120,7 +120,7 @@
 <script>
 import {busData} from '@/main.js'
 import AddAccount from './AddAccount'
-import axios from 'axios';
+import BaseAPI from '@/BaseAPI.js'
 
     export default {
         components:{
@@ -135,42 +135,39 @@ import axios from 'axios';
             }
         },
         created(){
-            console.log(this.$refs.test);
             busData.$emit('changeTab',1);
-            let tempdata = [];
-            let seft = this;
-            axios({
-                methods:'GET',
-                url:'https://localhost:44363/api/accounts'
-            }).then(function(res){
-                tempdata = res.data;
-                for(let i =0 ;i<tempdata.length;i++){
-                    tempdata[i].children = [];
-                    tempdata[i].Status == "true"?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
-
-                    if(!tempdata[i].parent){
-                        tempdata[i].parent = 0;
-                    }
-                    let sureNot = false;
-                    for(let j=i+1;j<tempdata.length;j++){
-                        if(tempdata[i].AccountCode == tempdata[j].AccountCodeRoot){
-                            tempdata[i].children.push(tempdata[j]);
-                            tempdata[j].parent = 1;
-                        }else{
-                            sureNot == true;
-                        }
-                    }
-                    if(sureNot == true) continue;
-                }
-                let result =  tempdata.filter(function(item){
-                    return item.children.length >= 1 && item.parent == 0;
-                })
-                seft.data = result;
-            }).catch(function(err){
-                console.log(err);
-            })
         },
         methods:{
+            async getAccounts(){
+                let tempdata = [];
+
+                let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
+                if(res && res.data){
+                    tempdata = res.data;
+                    for(let i =0 ;i<tempdata.length;i++){
+                        tempdata[i].children = [];
+                        tempdata[i].Status == "true"?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
+
+                        if(!tempdata[i].parent){
+                            tempdata[i].parent = 0;
+                        }
+                        let sureNot = false;
+                        for(let j=i+1;j<tempdata.length;j++){
+                            if(tempdata[i].AccountCode == tempdata[j].AccountCodeRoot){
+                                tempdata[i].children.push(tempdata[j]);
+                                tempdata[j].parent = 1;
+                            }else{
+                                sureNot == true;
+                            }
+                        }
+                        if(sureNot == true) continue;
+                    }
+                    let result =  tempdata.filter(function(item){
+                        return item.children.length >= 1 && item.parent == 0;
+                    })
+                    this.data = result;
+                }
+            },
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
             },
