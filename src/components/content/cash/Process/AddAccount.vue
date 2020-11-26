@@ -1,18 +1,22 @@
 <template>
     <div class="add-unit">
+         
         <el-drawer
             title="Thêm tài khoản"
             :visible.sync="drawer"
             direction="rtl"
             :wrapperClosable="false"
             :show-close="false"
-            size="800px"
+            :size="formSize"
             >
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
                 <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
                     <div @click="drawer = false" class="icon icon-close"></div>
                 </el-tooltip>
+            </div>
+            <div class="btn-fullsreen" :class="{true:formSize != '800px'}" @click="resizeForm()">
+                <div class="icon icon-fullsreen"></div>
             </div>
             <div class="content">
                 <div class="row-input">
@@ -22,7 +26,7 @@
                 </div>
                 <div class="row-input">
                     <div class="w-1-2" style="padding-right: 12px;">
-                        <MSTextbox label="Tên tài khoản" :value="obj.AccountName" @valueChanged="obj.AccountName = $event" :disable="isShow" v-bind:required="true"/>
+                        <MSTextbox  ref="AccountName" label="Tên tài khoản" :value="obj.AccountName" @valueChanged="obj.AccountName = $event" :disable="isShow" :required="true"/>
                     </div>
                     <div class="w-1-2" >
                         <MSTextbox label="Tên tiếng anh" :value="obj.AccountNameEnglish" @valueChanged="obj.AccountNameEnglish = $event" :disable="isShow"/>
@@ -34,7 +38,7 @@
                             <BaseCBB label="Tài khoản tổng hợp" :value="obj.AccountCodeRoot" @valueCBBChanged="obj.AccountCodeRoot = $event" :disable="isShow" :header="accountHead" :data="ListAccounts" :plus="false" :indexshow="1"/>
                         </div>
                         <div class="w-1-2" style="padding-top:4px">
-                            <MSSelect :disable="isShow" :value="obj.Propertie"  @valueSLChanged="obj.Propertie = $event" label="Tính chất" :data="ListType" />
+                            <MSSelect :disable="isShow" :value="obj.Propertie"  @valueSLChanged="obj.Propertie = $event" label="Tính chất" :data="ListType" :required="true"/>
                         </div>
                     </div>
                 </div>
@@ -44,8 +48,13 @@
                  <div class="row-input">
                     <el-checkbox v-model="obj.IsForeignCurrencyAccounting">Có hạch toán ngoại tệ</el-checkbox>
                  </div>
-                 <el-collapse>
-                    <el-collapse-item title="Theo dõi chi tiết theo">
+                 <el-collapse @change="followClick = !followClick">
+                    <el-collapse-item>
+                        <template  slot="title">
+                            <i class="icon icon-arrow-down-black" v-show="!followClick"></i>
+                            <i class="icon icon-arrow-right-black" v-show="followClick"></i>
+                            <div class="title-collapse">Theo dõi chi tiết theo</div>
+                        </template>
                          <div class="row-input">
                              <div class="w-1-2 flex">
                                  <div class="w-5-6 flex">
@@ -96,17 +105,17 @@
             <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
-                       <div class="btn-left">
-                           <button @click="btnCloseOnClick()">Hủy</button>
-                       </div>
                        <div class="btn-right">
                            <button @click="btnSaveOnClick()">Cất</button>
                            <button class="save-and-add">Cất và thêm</button>
                        </div>
+                       <div class="btn-left">
+                           <button @click="btnCloseOnClick()">Hủy</button>
+                       </div>
                    </div>
                </div>
         </el-drawer>
-        
+        <DialogError @dialogErrorClose="focusError($event)"/>
     </div>
 </template>
 
@@ -124,6 +133,8 @@ import BaseAPI from '@/BaseAPI.js'
         },
          data() {
             return {
+                formSize:'800px',
+                followClick:false,
                 AccountID:"",
                 drawer: false,
                 accountHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
@@ -191,22 +202,44 @@ import BaseAPI from '@/BaseAPI.js'
                 this.drawer=false
             },
             async btnSaveOnClick(){
-                for(let i=0;i<this.trackingDetails.length;i++){
-                    if(this.trackingDetails[i].check){
-                        this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].detail;
+                let err;
+                if(!this.obj.AccountCode){
+                    err = 'Số tài khoản không được bỏ trống';
+                    busData.$emit('showDialogError',err,1);
+                }else if(!this.obj.AccountName){
+                    err = 'Tên tài khoản không được bỏ trống';
+                    busData.$emit('showDialogError',err,2);
+                }else{
+                    for(let i=0;i<this.trackingDetails.length;i++){
+                        if(this.trackingDetails[i].check){
+                            this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].detail;
+                        }
                     }
+                    let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
+                    if(res){
+                        console.log(res);
+                    }
+                }   
+                
+            },
+            focusError(errCode){
+                if(errCode == 1){
+                    this.$refs.AccountCode.focusInput();
+                } else if(errCode == 2){
+                    this.$refs.AccountName.focusInput();
+                }    
+            },
+            resizeForm(){
+                if(this.formSize == '800px'){
+                    this.formSize = 'calc(100% - 6px)';
+                }else{
+                    this.formSize = '800px';
                 }
-                console.log(this.obj)
-                let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
-                if(res){
-                    console.log(res);
-                }
-            }
+            },
+          
         },
         watch:{
-            AccountID:function(){
-                console.log(this.AccountID);
-            }
+          
         }
     }
 </script>
@@ -235,5 +268,40 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .row-input{
     padding-bottom:8px;
+}
+.btn-fullsreen{
+    width: 12px;
+    height: 50px;
+    background: #fff;
+    border: 1px solid #d4d7dc;
+    border-radius: 8px;
+    position: absolute;
+    align-items: center;
+    left: -6px;
+    top: 43%;
+    z-index: 2015;
+    display: flex;
+    cursor: pointer;
+}
+.btn-fullsreen.true{
+    transform: rotateY(180deg);
+}
+.icon.icon-fullsreen{
+    background-position: -35px -360px;
+    width: 9px;
+    height: 14px;
+}
+.icon.icon-arrow-down-black{
+    background-position: -320px -355px;
+    
+}
+.icon.icon-arrow-right-black{
+    background-position: -316px -355px;
+    transform:rotate(90deg);
+}
+.title-collapse{
+    font-size: 16px;
+    font-weight: 400;
+    color: #212121;
 }
 </style>

@@ -298,7 +298,7 @@ input,button,textarea{
 .title-money{
     color: #fff;
 }
-.black-model,.black-model-2,.black-model-3{
+.black-model,.black-model-2,.black-model-error{
     position: fixed;
      top: 0;
      left: 0;
@@ -310,6 +310,10 @@ input,button,textarea{
  }
  .black-model-2{
      z-index: 6;
+ }
+
+ .black-model-error{
+    z-index: 2999;
  }
  .icon.icon-down{
     background-position: -896px -359px;

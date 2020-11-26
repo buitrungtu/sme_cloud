@@ -138,7 +138,6 @@ import AddEmployee from './AddEmployee'
 import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
-import DialogError from '@/components/content/cash/Process/DialogError'
 import BaseAPI from '@/BaseAPI.js'
     export default {
         props:{
@@ -150,7 +149,6 @@ import BaseAPI from '@/BaseAPI.js'
             MSTextbox,
             BaseCBB,
             MSSelect,
-            DialogError
         },
         data(){
             return{

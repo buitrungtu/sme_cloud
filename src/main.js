@@ -13,7 +13,9 @@ import DialogError from '@/components/content/cash/Process/DialogError'
 Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
 Vue.use(ElSelectTree);
-Vue.use(DialogError)
+
+
+Vue.component('DialogError',DialogError)
 
 const router = new VueRouter({
   routes

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="black-model-2" v-show="show"></div> 
+        <div class="black-model-error" v-show="show"></div> 
         <div class="dialog dialog-error" v-if="show">
             <div class="content">
                 <div class="icon icon-error"></div>
@@ -45,7 +45,7 @@ import {busData} from '@/main.js'
     width: 444px;
     max-height: 150px;
     transition: all .2s;
-    z-index: 7;
+    z-index: 3000;
     background-color: #fff;
     position: fixed;
     top: calc(50% - 100px);

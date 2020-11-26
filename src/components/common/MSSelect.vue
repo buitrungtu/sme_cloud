@@ -36,6 +36,10 @@
         created(){
             if(this.value){
                 this.content= this.value + '';
+            }else{
+                if(this.required){
+                    this.content = this.data[0].value;
+                }
             }
         },
         methods:{
