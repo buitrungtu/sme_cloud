@@ -3,6 +3,8 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import {routes} from './router'
 import ElementUI from 'element-ui';
+import ElSelectTree from 'el-select-tree';
+
 import locale from 'element-ui/lib/locale/lang/vi'
 import DialogError from '@/components/content/cash/Process/DialogError'
 
@@ -10,6 +12,7 @@ import DialogError from '@/components/content/cash/Process/DialogError'
 
 Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
+Vue.use(ElSelectTree);
 Vue.use(DialogError)
 
 const router = new VueRouter({

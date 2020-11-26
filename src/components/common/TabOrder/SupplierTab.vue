@@ -115,25 +115,25 @@
                 </div>
             </div>
             <div class="bank-account" v-show="thisTab == 2">
-                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
+                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px" ref="test">
                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
-                             <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event" />
+                             <MSTextbox :disable="isShow"    :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankName" @valueChanged="scope.row.BankName = $event" />
+                            <MSTextbox :disable="isShow"  :value="scope.row.BankName" @valueChanged="scope.row.BankName = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankBranch" label="CHI NHÁNH" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankBranch" @valueChanged="scope.row.BankBranch = $event" />
+                            <MSTextbox :disable="isShow"  :value="scope.row.BankBranch" @valueChanged="scope.row.BankBranch = $event" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankCity" label="TỈNH/TP CỦA NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.BankCity" @valueChanged="scope.row.BankCity = $event" />
+                            <MSTextbox :disable="isShow"  :value="scope.row.BankCity" @valueChanged="scope.row.BankCity = $event" />
                         </template>
                     </el-table-column>
 
@@ -180,7 +180,7 @@
                     <el-table :data="tableDeliveryAddress" style="width: 100%;" max-height="140">
                        <el-table-column prop="Address" width="300" label="Địa chỉ giao hàng">
                             <template slot-scope="scope">
-                                <MSTextbox :disable="isShow" ref="BankAccount" :value="scope.row.Address" @valueChanged="scope.row.Address = $event" />
+                                <MSTextbox :disable="isShow" :value="scope.row.Address" @valueChanged="scope.row.Address = $event" />
                             </template>
                         </el-table-column>
                         <el-table-column fixed="right" label="" width="50">
@@ -288,7 +288,7 @@ import BaseCBB from '@/components/common/BaseCBB'
                     {value:'8',label:'Phúc Diễn'},
                     {value:'9',label:'Đông Ngạc'},
                     {value:'10',label:'Mễ Trì'},
-                ]
+                ],
             }
         },
         created(){
@@ -312,7 +312,8 @@ import BaseCBB from '@/components/common/BaseCBB'
         methods:{
             tabBankAccountOnClick(){
                 this.thisTab = 2;
-                this.$refs.BankAccount.$el.querySelector('input').focus();
+                //this.$refs.BankAccount.focusInput();
+                console.log(this.$refs.test)
             },
             
             deleteRow(index) {

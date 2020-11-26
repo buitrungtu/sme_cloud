@@ -40,8 +40,7 @@
                         style="width: 100%"
                         height="100%"
                         row-key="AccountId"
-                        v-bind:default-expand-all="collapse"
-
+                        :default-expand-all="collapse"
                         @selection-change="handleSelectionChange"
                     >
 
@@ -129,7 +128,7 @@ import BaseAPI from '@/BaseAPI.js'
         data(){
             return{
                 thisPage:'ReceivePayment',
-                collapse:false,
+                collapse:true,
                 data:[],
                 multipleSelection: []
             }
@@ -137,13 +136,16 @@ import BaseAPI from '@/BaseAPI.js'
         created(){
             busData.$emit('changeTab',1);
         },
+        mounted(){
+            this.getAccounts();
+        },
         methods:{
             async getAccounts(){
                 let tempdata = [];
-
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
                     tempdata = res.data;
+                    console.log(res.data)
                     for(let i =0 ;i<tempdata.length;i++){
                         tempdata[i].children = [];
                         tempdata[i].Status == "true"?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
@@ -162,8 +164,9 @@ import BaseAPI from '@/BaseAPI.js'
                         }
                         if(sureNot == true) continue;
                     }
+                    console.log(tempdata)
                     let result =  tempdata.filter(function(item){
-                        return item.children.length >= 1 && item.parent == 0;
+                        return item.children.length >= 0 && item.parent == 0;
                     })
                     this.data = result;
                 }

@@ -17,32 +17,32 @@
             <div class="content">
                 <div class="row-input">
                     <div class="w-1-4">
-                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
+                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-1-2" style="padding-right: 12px;">
-                        <MSTextbox label="Tên tài khoản" v-bind:required="true"/>
+                        <MSTextbox label="Tên tài khoản" :value="obj.AccountName" @valueChanged="obj.AccountName = $event" :disable="isShow" v-bind:required="true"/>
                     </div>
                     <div class="w-1-2" >
-                        <MSTextbox label="Tên tiếng anh"/>
+                        <MSTextbox label="Tên tiếng anh" :value="obj.AccountNameEnglish" @valueChanged="obj.AccountNameEnglish = $event" :disable="isShow"/>
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-1-2" style="display:flex;align-items:center">
                         <div class="w-1-2" style="padding:1.5px 12px 0px 0px;">
-                            <BaseCBB label="Tài khoản tổng hợp" :header="thead" :data="ListAccount" :plus="false" :indexshow="1"/>
+                            <BaseCBB label="Tài khoản tổng hợp" :value="obj.AccountCodeRoot" @valueCBBChanged="obj.AccountCodeRoot = $event" :disable="isShow" :header="accountHead" :data="ListAccounts" :plus="false" :indexshow="1"/>
                         </div>
                         <div class="w-1-2" style="padding-top:4px">
-                            <MSSelect label="Tính chất" :required="true" :data="ListType" />
+                            <MSSelect :disable="isShow" :value="obj.Propertie"  @valueSLChanged="obj.Propertie = $event" label="Tính chất" :data="ListType" />
                         </div>
                     </div>
                 </div>
                  <div class="row-input">
-                    <MSTextbox label="Diễn giải" :textarea="true"/>
+                    <MSTextbox label="Diễn giải" :textarea="true"  :value="obj.Explain" @valueChanged="obj.Explain = $event" :disable="isShow"/>
                  </div>
                  <div class="row-input">
-                    <el-checkbox >Có hạch toán ngoại tệ</el-checkbox>
+                    <el-checkbox v-model="obj.IsForeignCurrencyAccounting">Có hạch toán ngoại tệ</el-checkbox>
                  </div>
                  <el-collapse>
                     <el-collapse-item title="Theo dõi chi tiết theo">
@@ -100,7 +100,7 @@
                            <button @click="btnCloseOnClick()">Hủy</button>
                        </div>
                        <div class="btn-right">
-                           <button>Cất</button>
+                           <button @click="btnSaveOnClick()">Cất</button>
                            <button class="save-and-add">Cất và thêm</button>
                        </div>
                    </div>
@@ -126,8 +126,8 @@ import BaseAPI from '@/BaseAPI.js'
             return {
                 AccountID:"",
                 drawer: false,
-                thead:[{width:'100',label:'Số tài khoản'},{width:'200',label:'Tên tài khoản'}],
-                ListAccount:[
+                accountHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
+                ListAccounts:[
                 ],
                 ListType:[
                     {value:'1',label:'Dư Nợ'},
@@ -148,7 +148,7 @@ import BaseAPI from '@/BaseAPI.js'
                 isShow:false,
                 trackingDetails:[ // để đúng thứ tự trái -> phải
                     {check:false,detail:1,name:'Object',show:'Đối tượng'},
-                    {check:false,detail:1,name:'BankAccount',show:'Tài khoản ngân hàng'},
+                    {check:false,detail:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
 
                     {check:false,detail:1,name:'ObjectGatherCost',show:'Đối tượng THCP'},
                     {check:false,detail:1,name:'Construct',show:'Công trình'},
@@ -164,33 +164,43 @@ import BaseAPI from '@/BaseAPI.js'
                 ],
                 obj:{
 
-                }
+                },
             };
         },
         created(){
-            console.log(this.trackingDetails)
-
             busData.$on('showDialogAddAccount',()=>{
                 this.drawer = true;
             })
         },
         mounted(){
-
+            this.getAccounts();
         },
         methods:{
             async getAccounts(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
-                    for(let i =0;i<res.data.length;i++){
-                        let obj = {};
-                        obj.AccountCode = res.data[i].AccountCode;
-                        obj.AccountName = res.data[i].AccountName;
-                        this.ListAccount.push(obj);
-                    }   
+                    this.ListAccounts = res.data.map((item)=>{
+                        return{
+                            'AccountCode':item.AccountCode,
+                            'AccountName':item.AccountName,
+                        }
+                    })
                 }
             },
             btnCloseOnClick(){
                 this.drawer=false
+            },
+            async btnSaveOnClick(){
+                for(let i=0;i<this.trackingDetails.length;i++){
+                    if(this.trackingDetails[i].check){
+                        this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].detail;
+                    }
+                }
+                console.log(this.obj)
+                let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
+                if(res){
+                    console.log(res);
+                }
             }
         },
         watch:{
