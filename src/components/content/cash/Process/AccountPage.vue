@@ -42,6 +42,7 @@
                         row-key="AccountId"
                         :default-expand-all="collapse"
                         @selection-change="handleSelectionChange"
+                        @cell-dblclick="dbClickForEdit"
                     >
 
                         <el-table-column
@@ -89,14 +90,16 @@
                             width="150">
                             <template slot-scope="control">
                                 <div style="display:flex;align-items: center;justify-content: center;">
-                                    <el-dropdown>
+                                    <button class="btn-edit" @click="btnEditOnClick(control.row.AccountId)">Sửa</button>
+                                    <el-dropdown trigger="click">
                                         <span class="el-dropdown-link">
-                                        Sửa <i class="el-icon-caret-bottom"></i>
+                                            <i class="el-icon-caret-bottom"></i>
                                         </span>
+
                                         <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Nhân bản</el-dropdown-item>
-                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Xóa</el-dropdown-item>
-                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.supplierId)" >Ngưng sử dụng</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.AccountId)" >Nhân bản</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="deleteAccount(control.row.AccountId)" >Xóa</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.AccountId)" >Ngưng sử dụng</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
                                 </div>
@@ -112,7 +115,7 @@
                 </div>
             </div>
         </div>
-        <AddAccount />
+        <AddAccount @reloadData="reloadData()"/>
     </div>
 </template>
 
@@ -130,7 +133,8 @@ import BaseAPI from '@/BaseAPI.js'
                 thisPage:'ReceivePayment',
                 collapse:true,
                 data:[],
-                multipleSelection: []
+                multipleSelection: [],
+                reload:false,
             }
         },
         created(){
@@ -148,7 +152,7 @@ import BaseAPI from '@/BaseAPI.js'
                     console.log(res.data)
                     for(let i =0 ;i<tempdata.length;i++){
                         tempdata[i].children = [];
-                        tempdata[i].Status == "true"?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
+                        tempdata[i].Status == true?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
 
                         if(!tempdata[i].parent){
                             tempdata[i].parent = 0;
@@ -164,12 +168,29 @@ import BaseAPI from '@/BaseAPI.js'
                         }
                         if(sureNot == true) continue;
                     }
-                    console.log(tempdata)
                     let result =  tempdata.filter(function(item){
                         return item.children.length >= 0 && item.parent == 0;
                     })
                     this.data = result;
                 }
+            },
+            async btnEditOnClick(id){
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
+                if(res && res.data){
+                    busData.$emit('editAccount',res.data);
+                }
+            },
+            dbClickForEdit(row){
+                this.btnEditOnClick(row.AccountId);
+            },
+            async deleteAccount(id){
+                let res = await BaseAPI.Delete('https://localhost:44363/api/accounts',id); 
+                if(res && res.data){
+                    this.reloadData();
+                }
+            },
+            reloadData(){
+                this.getAccounts();
             },
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
@@ -191,12 +212,12 @@ import BaseAPI from '@/BaseAPI.js'
             },
             collapseAll(){
                 this.collapse = !this.collapse;
-                console.log( this.collapse);
+                console.log(this.collapse)
             },
             selectdRow(accountID){
                 console.log(accountID);
             }
-        }
+        },
     }
 </script>
 
@@ -513,5 +534,20 @@ tfoot{
 .disable{
     cursor: default!important;
     color: #9e9e9e;
+}
+.btn-edit{
+    padding: 6px 0 6px 16px!important;
+    color: #0075c0;
+    transition: all .2s ease;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+    margin-right: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 13px;
 }
 </style>

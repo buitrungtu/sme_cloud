@@ -287,7 +287,6 @@ input,button,textarea{
     background: #fff;
 }
 .el-table__body-wrapper::-webkit-scrollbar-thumb{
-    width: 5px;
     background: #e0e0e0;
 }
 
@@ -320,6 +319,7 @@ input,button,textarea{
 }
 .el-dropdown-link{
     color: #0075c0;
+    cursor: pointer;
 }
 
 .el-table tr th.is-leaf{

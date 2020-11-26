@@ -1,10 +1,9 @@
 <template>
     <div class="add-unit">
-         
         <el-drawer
-            title="Thêm tài khoản"
-            :visible.sync="drawer"
-            direction="rtl"
+             title="Thêm tài khoản"
+            :visible="drawer"
+             direction="rtl"
             :wrapperClosable="false"
             :show-close="false"
             :size="formSize"
@@ -12,16 +11,16 @@
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
                 <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
-                    <div @click="drawer = false" class="icon icon-close"></div>
+                    <div @click="btnCloseOnClick()" class="icon icon-close"></div>
                 </el-tooltip>
             </div>
             <div class="btn-fullsreen" :class="{true:formSize != '800px'}" @click="resizeForm()">
                 <div class="icon icon-fullsreen"></div>
             </div>
-            <div class="content">
+            <div class="content" v-if="drawer">
                 <div class="row-input">
                     <div class="w-1-4">
-                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
+                        <MSTextbox ref="AccountCode" :autofocus="true" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
                     </div>
                 </div>
                 <div class="row-input">
@@ -48,8 +47,8 @@
                  <div class="row-input">
                     <el-checkbox v-model="obj.IsForeignCurrencyAccounting">Có hạch toán ngoại tệ</el-checkbox>
                  </div>
-                 <el-collapse @change="followClick = !followClick">
-                    <el-collapse-item>
+                 <el-collapse @change="followClick = !followClick" v-model="dummy">
+                    <el-collapse-item name="1">
                         <template  slot="title">
                             <i class="icon icon-arrow-down-black" v-show="!followClick"></i>
                             <i class="icon icon-arrow-right-black" v-show="followClick"></i>
@@ -62,7 +61,7 @@
                                          <el-checkbox v-model="trackingDetails[0].check" >Đối tượng</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[0].detail"  @valueSLChanged="trackingDetails[0].detail = $event" :data="ListSupp" :disable="!trackingDetails[0].check"/>
+                                         <MSSelect :value="trackingDetails[0].value"  @valueSLChanged="trackingDetails[0].value = $event" :data="ListSupp" :disable="!trackingDetails[0].check"/>
                                      </div>
                                  </div>
                              </div>
@@ -80,7 +79,7 @@
                                          <el-checkbox v-model="trackingDetails[n].check">{{trackingDetails[n].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[n].detail"  @valueSLChanged="trackingDetails[n].detail = $event" :data="rules" :disable="!trackingDetails[n].check"/>
+                                         <MSSelect :value="trackingDetails[n].value"  @valueSLChanged="trackingDetails[n].value = $event" :data="rules" :disable="!trackingDetails[n].check"/>
                                      </div>
                                  </div>
                              </div>
@@ -91,7 +90,7 @@
                                          <el-checkbox v-model="trackingDetails[n+1].check">{{trackingDetails[n+1].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[n+1].detail"  @valueSLChanged="trackingDetails[n+1].detail = $event" :data="rules" :disable="!trackingDetails[n+1].check"/>
+                                         <MSSelect :value="trackingDetails[n+1].value"  @valueSLChanged="trackingDetails[n+1].value = $event" :data="rules" :disable="!trackingDetails[n+1].check"/>
                                      </div>
                                  </div>
                                 </div>     
@@ -99,15 +98,14 @@
                          </div>
                     </el-collapse-item>
                  </el-collapse>
-                 
             </div>
            
             <div class="dialog-footer">
                    <div class="divide"></div>
                    <div class="btn-footer">
                        <div class="btn-right">
-                           <button @click="btnSaveOnClick()">Cất</button>
-                           <button class="save-and-add">Cất và thêm</button>
+                           <button @click="btnSaveOnClick(false)" >Cất</button>
+                           <button @click="btnSaveOnClick(true)" class="save-and-add">Cất và thêm</button>
                        </div>
                        <div class="btn-left">
                            <button @click="btnCloseOnClick()">Hủy</button>
@@ -137,6 +135,7 @@ import BaseAPI from '@/BaseAPI.js'
                 followClick:false,
                 AccountID:"",
                 drawer: false,
+                dummy:['1'],
                 accountHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
                 ListAccounts:[
                 ],
@@ -158,35 +157,60 @@ import BaseAPI from '@/BaseAPI.js'
                 rangeFor:[2,4,6,8],
                 isShow:false,
                 trackingDetails:[ // để đúng thứ tự trái -> phải
-                    {check:false,detail:1,name:'Object',show:'Đối tượng'},
-                    {check:false,detail:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
+                    {check:false,value:1,name:'Object',show:'Đối tượng'},
+                    {check:false,value:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
 
-                    {check:false,detail:1,name:'ObjectGatherCost',show:'Đối tượng THCP'},
-                    {check:false,detail:1,name:'Construct',show:'Công trình'},
+                    {check:false,value:1,name:'ObjectGatherCost',show:'Đối tượng THCP'},
+                    {check:false,value:1,name:'Construct',show:'Công trình'},
 
-                    {check:false,detail:1,name:'Order',show:'Đơn đặt hàng'},
-                    {check:false,detail:1,name:'PurchaseSell',show:'Hợp đồng bán'},
+                    {check:false,value:1,name:'Order',show:'Đơn đặt hàng'},
+                    {check:false,value:1,name:'PurchaseSell',show:'Hợp đồng bán'},
 
-                    {check:false,detail:1,name:'PurchaseBuy',show:'Hợp đồng mua'},
-                    {check:false,detail:1,name:'ExpenseItem',show:'Khoản mục CP'},
+                    {check:false,value:1,name:'PurchaseBuy',show:'Hợp đồng mua'},
+                    {check:false,value:1,name:'ExpenseItem',show:'Khoản mục CP'},
 
-                    {check:false,detail:1,name:'Unit',show:'Đơn vị'},
-                    {check:false,detail:1,name:'StatisticalCode',show:'Mã thống kê'},
+                    {check:false,value:1,name:'Unit',show:'Đơn vị'},
+                    {check:false,value:1,name:'StatisticalCode',show:'Mã thống kê'},
                 ],
-                obj:{
 
+                formMode:'Add',
+                obj:{
+                    BankAccount:false, 
+                    IsForeignCurrencyAccounting:false,
+                    Status:true
                 },
+                initialData:{
+                    BankAccount:false, 
+                    IsForeignCurrencyAccounting:false,
+                    Status:true
+                }
             };
         },
         created(){
             busData.$on('showDialogAddAccount',()=>{
                 this.drawer = true;
             })
+
+            busData.$on('editAccount',(data)=>{
+                this.obj = data;
+                console.log(this.obj);
+                for(let i=0;i<this.trackingDetails.length;i++){
+                    if(this.obj[this.trackingDetails[i].name]){
+                        this.trackingDetails[i].check = true;
+                        this.trackingDetails[i].value = this.obj[this.trackingDetails[i].name];
+                    }
+                }
+                this.drawer = true;
+                this.formMode = 'Edit'
+            })
         },
         mounted(){
             this.getAccounts();
         },
         methods:{
+            resetForm(){
+                Object.assign(this.$data, this.$options.data())
+            },
             async getAccounts(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
@@ -199,9 +223,10 @@ import BaseAPI from '@/BaseAPI.js'
                 }
             },
             btnCloseOnClick(){
-                this.drawer=false
+                this.drawer=false;
+                this.resetForm();
             },
-            async btnSaveOnClick(){
+            async btnSaveOnClick(isSaveAndAdd){
                 let err;
                 if(!this.obj.AccountCode){
                     err = 'Số tài khoản không được bỏ trống';
@@ -210,18 +235,34 @@ import BaseAPI from '@/BaseAPI.js'
                     err = 'Tên tài khoản không được bỏ trống';
                     busData.$emit('showDialogError',err,2);
                 }else{
+                    //gom dữ liệu phần chi tiết theo dõi
                     for(let i=0;i<this.trackingDetails.length;i++){
                         if(this.trackingDetails[i].check){
-                            this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].detail;
+                            this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].value;
                         }
                     }
-                    let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
-                    if(res){
-                        console.log(res);
+                    //gọi api
+                    if(this.formMode == 'Add'){
+                        let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
+                        if(res){
+                            this.resetForm();
+                            this.$emit('reloadData');
+                        }
+                    }else{
+                        let res = await BaseAPI.Put('https://localhost:44363/api/accounts',this.obj.AccountId,this.obj);
+                        if(res){
+                            this.resetForm();
+                            this.$emit('reloadData');
+                        }
+                    }
+                    this.drawer=false;
+                    this.getAccounts();
+                    if(isSaveAndAdd){
+                        this.$parent.showDialogAddAccount();
                     }
                 }   
-                
             },
+           
             focusError(errCode){
                 if(errCode == 1){
                     this.$refs.AccountCode.focusInput();
@@ -236,11 +277,7 @@ import BaseAPI from '@/BaseAPI.js'
                     this.formSize = '800px';
                 }
             },
-          
         },
-        watch:{
-          
-        }
     }
 </script>
 

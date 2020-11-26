@@ -28,7 +28,7 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :autofocus="focusTaxCode" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" :disable="isShow" label="Mã số thuế"/>
+                                <MSTextbox :autofocus="true" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" :disable="isShow" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
                                 <MSTextbox ref="SupplierCode1" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
@@ -179,7 +179,6 @@ import BaseAPI from '@/BaseAPI.js'
                 state:'Add',
                 supplierID:'',
                 triggerErr:[false,false],
-                focusTaxCode:true,
                 isShow:false     
             }
         },
@@ -346,14 +345,7 @@ import BaseAPI from '@/BaseAPI.js'
                 }
             },
             resetForm(){
-                this.obj = {
-                    IsPersonal:false,
-                    IsCustomer:false
-                };
-                this.state='Add';
-                this.supplierID='';
-                this.checkRequire = false;
-                this.isShow=false
+                Object.assign(this.$data, this.$options.data())
             },
            
              //Xử lý phím tắt
