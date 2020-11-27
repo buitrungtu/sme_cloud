@@ -18,7 +18,7 @@
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
                 <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
-                    <div @click="show = false" class="icon icon-close"></div>
+                    <div @click="btnCloseOnClick()" class="icon icon-close"></div>
                 </el-tooltip>
             </div>
         </header>
@@ -28,17 +28,17 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :autofocus="true" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" :disable="isShow" label="Mã số thuế"/>
+                                <MSTextbox :autofocus="true" v-model="obj.TaxCode"  :disable="isShow" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
-                                <MSTextbox ref="SupplierCode1" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
+                                <MSTextbox ref="SupplierCode1" v-model="obj.SupplierCode" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
                             </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox ref="SupplierName1" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" :disable="isShow" label="Tên nhà cung cấp" :required="true" />
+                            <MSTextbox ref="SupplierName1" v-model="obj.SupplierName" :disable="isShow" label="Tên nhà cung cấp" :required="true" />
                         </div>
                         <div class="row-input">
-                            <MSTextbox :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" :disable="isShow" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                            <MSTextbox v-model ="obj.Address"  v-bind:textarea="true" label="Địa chỉ" :disable="isShow" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
                         </div>
                     </div> 
                     <div class="w-1-2" style="padding-right:2.3px">
@@ -110,7 +110,7 @@
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-right">
-                            <el-tooltip class="item" effect="dark" content="Bottom Center prompts info" placement="bottom">
+                            <el-tooltip class="item" effect="dark" content="Sửa (Ctrl + Shift + G)" placement="bottom">
                                 <button class="save-and-add" @click="isShow = false">Sửa</button>
                             </el-tooltip>
                         </div>
@@ -157,7 +157,7 @@ import BaseAPI from '@/BaseAPI.js'
                 checkRequire:false,
                 showFormAddGroupSupplier:false,
                 showFormAddEmployee:false,
-                headerGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'150'},{label:'Tên nhóm KH,NCC',width:'200'}],
+                headerGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'125'},{label:'Tên nhóm KH,NCC',width:'180'}],
                 dataGroupSupplies:[],
                 headerEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
                 dataEmployees:[],
@@ -185,7 +185,6 @@ import BaseAPI from '@/BaseAPI.js'
         created(){
             busData.$on('showFormAddSupplier',()=>{
                 this.show = true;
-                this.resetForm();
             })
             
             busData.$on('showDialog',(mission)=>{
@@ -208,8 +207,10 @@ import BaseAPI from '@/BaseAPI.js'
                 this.supplierID = SuppID;
                 this.GetSupplier(this.supplierID);
             })
+
             this.GetGroupSupplies();
             this.GetEmployees();
+
             document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
@@ -217,12 +218,13 @@ import BaseAPI from '@/BaseAPI.js'
             async GetGroupSupplies(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/GroupSuppliers'); 
                 if(res && res.data){
-                    this.dataGroupSupplies =res.data.map((item)=>{
+                    this.dataGroupSupplies = res.data.map((item)=>{
                         return{
                             'GroupSupplierCode':item.GroupSupplierCode,
                             'GroupSupplierName':item.GroupSupplierName
                         }
                     })
+                    console.log(this.dataGroupSupplies)
                 }
             },
             async GetEmployees(){
@@ -234,6 +236,7 @@ import BaseAPI from '@/BaseAPI.js'
                             'EmployeeName':item.EmployeeName
                         }
                     })
+                    console.log(this.dataEmployees)
                 }
             },
            
@@ -251,6 +254,7 @@ import BaseAPI from '@/BaseAPI.js'
             focusError(errCode){
                 if(errCode == 1){
                     if(!this.obj.IsPersonal){
+                        
                         this.$refs.SupplierCode1.focusInput();
                     }else{
                         this.$refs.SupplierCode2.focusInput();
@@ -265,47 +269,52 @@ import BaseAPI from '@/BaseAPI.js'
             },
             //Event 
             async btnSaveOnClick(){
-                var err = ''
+                let err = '';
                 //Check Require
+                console.log(this.obj.SupplierCode);
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err,1);
                 }else if(!this.obj.SupplierName){
                     err = 'Tên nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err,2);
-                    
                 }else{
-                    for(var propName in this.obj){
+                    for(let propName in this.obj){
                         if(this.obj[propName] === undefined){
                             delete this.obj[propName];
                         }
                     }
                     //Xử lý dữ liệu
-                    this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
-                    this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
-                        return item.Address;
-                    });
-                    var res;
+                    debugger;
+                    if(this.obj.BankAccount){
+                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
+                    }
+                    if(this.obj.DeliveryAddress){
+                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
+                            return item.Address;
+                        });
+                    }
+
+                    let res;
                     if(this.state == 'Add'){
                         res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
                     }else{ //EDIT
                         res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
                     }
                     if(res){
-                        debugger;
                         if(res.data.Success == false){
                             busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
                         }else{
                             busData.$emit('reloadData');
-                            this.show = false;
-                            this.resetForm();
+                            this.btnCloseOnClick();
                         }
                     }
                 }
             },
             async btnAddAndSaveOnClick(){
-                var err = ''
+                let err = '';
                 //Check Require
+                console.log(this.obj.SupplierCode);
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err);
@@ -316,7 +325,7 @@ import BaseAPI from '@/BaseAPI.js'
                     busData.$emit('showDialogError',err);
                     this.errName=true;
                 }else{
-                    for(var propName in this.obj){
+                    for(let propName in this.obj){
                         if(this.obj[propName] === undefined){
                             delete this.obj[propName];
                         }
@@ -326,7 +335,8 @@ import BaseAPI from '@/BaseAPI.js'
                     this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
                         return item.Address;
                     });
-                    var res;
+                    console.log(this.obj);
+                    let res;
                     if(this.state == 'Add'){
                         res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
                     }else{ //EDIT
@@ -345,9 +355,14 @@ import BaseAPI from '@/BaseAPI.js'
                 }
             },
             resetForm(){
-                Object.assign(this.$data, this.$options.data())
+                Object.assign(this.$data, this.$options.data());
+                this.GetGroupSupplies();
+                this.GetEmployees();
             },
-           
+            btnCloseOnClick(){
+                Object.assign(this.$data, this.$options.data());
+                this.show = false;
+            },
              //Xử lý phím tắt
             keyupHandler(event){
                 if (event.ctrlKey || event.metaKey) {
@@ -362,27 +377,27 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 }
                 if(event.code === 'Escape') {
-                    this.show = false;
+                    this.btnCloseOnClick();
                 }
                 else if(event.ctrlKey && event.key==='s'){
                     event.preventDefault();
                     event.stopPropagation();
                     this.btnSaveOnClick();
                 }else if(event.ctrlKey && event.key === 'Shift' && event.key==='s'){
-                    console.log('dsadsadsa');
+                    console.log('Ctrl + Shift + s');
                     //this.btnAddAndSaveOnClick();
+                }else if(event.ctrlKey && event.key === 'Shift' && event.key==='g'){
+                     console.log('Ctrl + Shift + g');
                 }
             },
           
         },
-      
     }
 </script>
 
 <style scoped>
 .dialog.dialog-supplier{
     min-width: 900px;
-    max-width: 900px;
     transition: all .2s;
     z-index: 5;
     display: flex;

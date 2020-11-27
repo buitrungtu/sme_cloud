@@ -4,15 +4,11 @@
         <div class="cb-content" :class="{focus:isFocus,triggerErr:triggerErr}" v-show="!textarea" >
             <input ref="input"
                 type="text" :style="TextAlign" 
-                class="cb-input" v-bind:readonly="readonly" 
-                @focus="isFocus=true" @blur="checkRequired()" v-bind:placeholder="placeholder"
-                 v-model="content" @input="changeInput" :disabled="disable">
-        </div>
-        <div class="cb-content-2" v-bind:class="{focus:isFocus}" v-show="textarea">
-            <textarea  v-bind:style="TextAlign" class="input-area" 
-                v-bind:readonly="readonly" @focus="isFocus=true"
-                 @blur="isFocus=false" v-bind:placeholder="placeholder" 
-                 v-model="content" @input="changeInput" :disabled="disable"></textarea>
+                class="cb-input"
+                @focus="isFocus=true" @blur="checkRequired()"
+                v-bind="$attrs"
+                v-on:input="$emit('input', $event.target.value)"
+                v-model="content" >
         </div>
     </div> 
 </template>
@@ -27,7 +23,6 @@ import {busData} from '@/main.js';
                 default:''
             },
             required:Boolean,
-            placeholder:String,
             textAlign:{
                 type:String,
                 default:'left'
@@ -37,17 +32,15 @@ import {busData} from '@/main.js';
                 default:false
             },
             ID:String,
-            readonly:Boolean,
-            value:[String,Number],
+            value: {
+                type: String,
+                default: ''
+            },
             autofocus:Boolean,
             trigger:Boolean,
             type:String,
-            disable:Boolean
         },
         created(){
-            if(this.value){
-                this.content = this.value;
-            }
             if(this.ID == 'ObjName'){
                 busData.$on('completeName',(name)=>{
                     this.content = name;
@@ -57,7 +50,7 @@ import {busData} from '@/main.js';
         data(){
             return{
                 isFocus:false,
-                content : "",
+                content : this.value,
                 triggerErr:false
             }
         },
@@ -92,9 +85,11 @@ import {busData} from '@/main.js';
             content:function(){
                 if(this.number){
                     var reg = /^[0-9.]*$/;
-                    if(this.type == 'money'){
-                        if(reg.test(this.content)){
-                            try {
+                   if(!reg.test(this.content)){
+                       this.content = "";
+                   }else{
+                       if(this.type == 'money'){
+                           try {
                                 var x = this.content;
                                 x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
                                 x = x.split("").reverse().join(""); // đảo chuỗi
@@ -107,11 +102,8 @@ import {busData} from '@/main.js';
                             } catch{
                                 console.log('Lỗi chỗ format tiền nè bạn ơi');
                             }
-                        }else{
-                            this.content = "";
-                        }
-                    }
-                    
+                       }
+                   }
                 }
             },
             trigger:function(){

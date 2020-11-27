@@ -174,7 +174,7 @@ import axios from 'axios';
     cursor: pointer;
 }
 .grid-Supp{
-    height:calc(100% - 131px);
+    height:calc(100% - 110px);
 }
 .grid-filter{
     display: flex;

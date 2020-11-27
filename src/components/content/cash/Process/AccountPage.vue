@@ -41,7 +41,6 @@
                         height="100%"
                         row-key="AccountId"
                         :default-expand-all="collapse"
-                        @selection-change="handleSelectionChange"
                         @cell-dblclick="dbClickForEdit"
                     >
 
@@ -97,9 +96,9 @@
                                         </span>
 
                                         <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.AccountId)" >Nhân bản</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="duplicateAccount(control.row.AccountId)" >Nhân bản</el-dropdown-item>
                                             <el-dropdown-item @click.native.prevent="deleteAccount(control.row.AccountId)" >Xóa</el-dropdown-item>
-                                            <el-dropdown-item @click.native.prevent="selectdRow(control.row.AccountId)" >Ngưng sử dụng</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="stopUse(control.row.AccountId)" >Ngưng sử dụng</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
                                 </div>
@@ -109,7 +108,7 @@
                     </el-table>
                     <div class="footer-fixed">
                         <div class="grid-footer">
-                            <div class="footer-left">Tổng số: <span style="font-weight:700">77</span> bản ghi</div>
+                            <div class="footer-left">Tổng số: <span style="font-weight:700">{{totalRecord}}</span> bản ghi</div>
                         </div>
                     </div>
                 </div>
@@ -135,6 +134,8 @@ import BaseAPI from '@/BaseAPI.js'
                 data:[],
                 multipleSelection: [],
                 reload:false,
+                totalRecord:0,
+                refresh:true
             }
         },
         created(){
@@ -149,6 +150,7 @@ import BaseAPI from '@/BaseAPI.js'
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
                     tempdata = res.data;
+                    this.totalRecord = res.data.length;
                     console.log(res.data)
                     for(let i =0 ;i<tempdata.length;i++){
                         tempdata[i].children = [];
@@ -171,7 +173,11 @@ import BaseAPI from '@/BaseAPI.js'
                     let result =  tempdata.filter(function(item){
                         return item.children.length >= 0 && item.parent == 0;
                     })
-                    this.data = result;
+                    this.data = result.sort((a,b)=>{
+                        if(a.AccountCode > b.AccountCode)   return 1;
+                        else if(a.AccountCode < b.AccountCode)  return -1;
+                        return 0
+                    });
                 }
             },
             async btnEditOnClick(id){
@@ -179,6 +185,22 @@ import BaseAPI from '@/BaseAPI.js'
                 if(res && res.data){
                     busData.$emit('editAccount',res.data);
                 }
+            },
+            async duplicateAccount(id){
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
+                if(res && res.data){
+                    busData.$emit('duplicateAccount',res.data);
+                }
+            },
+            async stopUse(id){
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
+                if(res && res.data){
+                    res.data.status = false;
+                    let res = await BaseAPI.Put('https://localhost:44363/api/accounts',id,res.data);
+                    if(res){
+                        this.reloadData();
+                    }
+                } 
             },
             dbClickForEdit(row){
                 this.btnEditOnClick(row.AccountId);
@@ -207,16 +229,11 @@ import BaseAPI from '@/BaseAPI.js'
                     this.$refs.multipleTable.clearSelection();
                 }
             },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
+           
             collapseAll(){
                 this.collapse = !this.collapse;
-                console.log(this.collapse)
             },
-            selectdRow(accountID){
-                console.log(accountID);
-            }
+           
         },
     }
 </script>

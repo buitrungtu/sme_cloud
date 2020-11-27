@@ -16,8 +16,8 @@
                 <div class="btn-filter">
                     <button>Tiện ích <div class="icon icon-filtdown"></div> </button>
                 </div>
-                <div class="button-add" @click="showDialogAddSupplier()">
-                    <button>Thêm</button>
+                <div class="button-add">
+                    <button @click="showDialogAddSupplier()">Thêm</button>
                     <button class="down-list">
                         <div class="split"></div>
                         <div class="icon icon-downlist"></div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="grid-filter-right">
                     <div class="header-search">
-                        <input type="text" class="txt-search" placeholder="Nhập từ khóa tìm kiếm">
+                        <input type="text" v-model="txtSearch" class="txt-search" placeholder="Nhập từ khóa tìm kiếm">
                         <div class="icon icon-search"></div>
                     </div>
                     <div class="icon icon-excel"></div>
@@ -117,7 +117,7 @@
                     <el-table-column
                     property="TaxCode"
                     label="MÃ SỐ THUẾ"
-                    width="175">
+                    width="170">
                     </el-table-column>
 
                     <el-table-column
@@ -196,14 +196,13 @@ import MSSelect from '@/components/common/MSSelect'
                 totalPage:0,
                 pageNow:1,
                 recordOnPage:'20',
-
+                txtSearch:''
             }
         },
         created(){
             busData.$emit('changeTab',1);
 
             busData.$on('reloadData',()=>{
-                console.log('Load lại');
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
             })
         },
@@ -270,6 +269,15 @@ import MSSelect from '@/components/common/MSSelect'
         },watch:{
             recordOnPage:function(){
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
+            },
+            txtSearch:function(){
+                this.data = this.data.filter((item)=>{
+                    var check = this.txtSearch.toUpperCase();
+                    return item.SupplierCode.toUpperCase().search(check) != -1;
+                })
+                if(this.txtSearch == ''){
+                    this.GetDataSuplier(this.pageNow,this.recordOnPage);
+                }
             }
         }
      
@@ -409,7 +417,7 @@ import MSSelect from '@/components/common/MSSelect'
     z-index: 4;
 }
 .grid-Supp{
-    height:calc(100% - 110px);
+    height:calc(100% - 140px);
 }
 .grid-filter{
     display: flex;
@@ -535,10 +543,9 @@ tfoot{
     background-color: #f8f9fe !important;
 }
 .footer-fixed{
-    position: fixed;
     bottom: 5px;
     left: 185px;
-    width: calc(100% - 215px);
+    width: 100%;
     z-index: 2;
 }
 .grid-footer{

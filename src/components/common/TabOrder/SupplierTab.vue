@@ -96,29 +96,29 @@
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :disable="isShow" :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" :number="true" label="Số ngày được nợ"/>
+                            <MSTextbox :disable="isShow" :value="obj.DaysOfOwed" @valueChanged="obj.DaysOfOwed = $event" :number="true" textAlign='right' label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :disable="isShow" :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" :number="true" label="Số nợ tối đa"/>
+                            <MSTextbox :disable="isShow" :value="obj.MaxDebt" @valueChanged="obj.MaxDebt = $event" :number="true" type='money' textAlign='right' label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
                 <div class="row-input">
-                    <div class="w-input" v-show="isCus">
-                        <DebtAccountCBB  label="Tài khoản công nợ phải thu" currentValue="131" type='collect'/>
+                    <div class="w-input">
+                        <BaseCBB :disable="isShow" label="Tài khoản công nợ phải thu" :value="obj.AccountCodeReceivable" @valueCBBChanged="obj.AccountCodeReceivable = $event" :header="accountLabel" :data="dataAccountReceivable"/>
                     </div>
-                    <div class="w-input" >
-                        <DebtAccountCBB label="Tài khoản công nợ phải trả" currentValue="331" type='pay'/>
+                    <div class="w-input" v-show="isCus">
+                        <BaseCBB :disable="isShow" label="Tài khoản công nợ phải trả" :value="obj.AccountCodePay" @valueCBBChanged="obj.AccountCodePay = $event" :header="accountLabel" :data="dataAccountPay"/>
                     </div>
                 </div>
             </div>
             <div class="bank-account" v-show="thisTab == 2">
-                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px" ref="test">
+                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
-                             <MSTextbox :disable="isShow"    :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event" />
+                            <MSTextbox :disable="isShow"  ref="BankAccount"  :value="scope.row.BankAccount" @valueChanged="scope.row.BankAccount = $event"/>
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
@@ -211,7 +211,6 @@
 import MSSelect from '@/components/common/MSSelect'
 import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
-import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
 import BaseCBB from '@/components/common/BaseCBB'
     export default {
         props:{
@@ -225,7 +224,6 @@ import BaseCBB from '@/components/common/BaseCBB'
             MSSelect,
             MSDatetime,
             BaseCBB,
-            DebtAccountCBB
         },
         data(){
             return{
@@ -240,11 +238,20 @@ import BaseCBB from '@/components/common/BaseCBB'
                         {value:'8',label:'Ông'},
                 ],
                 header:[{label:'Mã điều khoản',width:'100'},{label:'Tên điều khoản',width:'250'}],
-                data:[{TermsOfPayment:'DK01',TermsOfPaymentName:'Tên gì đó 1'},
-                        {TermsOfPayment:'DK02',TermsOfPaymentName:'Tên gì đó 2 '},
-                        {TermsOfPayment:'DK03',TermsOfPaymentName:'Tên gì đó3 '}
+                data:[{TermsOfPayment:'DK01',TermsOfPaymentName:'Điều khoản 1'},
+                        {TermsOfPayment:'DK02',TermsOfPaymentName:'Điều khoản 2'},
+                        {TermsOfPayment:'DK03',TermsOfPaymentName:'Điều khoản 3'}
                 ],
-                rowBankAccount:0,
+                accountLabel:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
+                dataAccountReceivable:[
+                    {AccountCode:'131',AccountName:'Phải thu của khách hàng'}
+                ],
+                
+                dataAccountPay:[
+                    {AccountCode:'331',AccountName:'Phải trả cho người bán'},
+                    {AccountCode:'3388',AccountName:'Phải trả, phải nộp khác'},
+                    {AccountCode:'3411',AccountName:'Các khoản đi vay'},
+                ],
                 tableBankAccount:[{
                     BankAccount:'',
                     BankName:'',
@@ -298,8 +305,8 @@ import BaseCBB from '@/components/common/BaseCBB'
             if(this.obj.BankAccount){
                 this.tableBankAccount = JSON.parse(this.obj.BankAccount);
             }
+            //TODO
             this.obj.BankAccount = this.tableBankAccount;
-
             if(this.obj.DeliveryAddress){
                 this.tableDeliveryAddress = this.obj.DeliveryAddress.map((item)=>{
                     return{
@@ -312,11 +319,13 @@ import BaseCBB from '@/components/common/BaseCBB'
         methods:{
             tabBankAccountOnClick(){
                 this.thisTab = 2;
-                //this.$refs.BankAccount.focusInput();
-                console.log(this.$refs.test)
+                setTimeout(()=>{
+                    this.$refs.BankAccount.focusInput();
+                },100)
             },
             
             deleteRow(index) {
+                console.log(index);
                 this.tableBankAccount.splice(index, 1);
             },
             addRow(){
@@ -327,6 +336,7 @@ import BaseCBB from '@/components/common/BaseCBB'
                     BankCity:''
                 };
                 this.tableBankAccount.push(newRow);
+                console.log(this.$refs.BankAccount);
             },
             removeAllRow(){
                 this.tableBankAccount = [];
@@ -345,7 +355,6 @@ import BaseCBB from '@/components/common/BaseCBB'
                 this.tableDeliveryAddress = [];
             },
         },
-        
     }
 </script>
 

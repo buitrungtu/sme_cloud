@@ -1,13 +1,13 @@
 <template>
     <div class="add-unit">
         <el-drawer
-             title="Thêm tài khoản"
+            title="Thêm tài khoản"
             :visible="drawer"
-             direction="rtl"
+            direction="rtl"
             :wrapperClosable="false"
             :show-close="false"
             :size="formSize"
-            >
+        >
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
                 <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
@@ -20,7 +20,7 @@
             <div class="content" v-if="drawer">
                 <div class="row-input">
                     <div class="w-1-4">
-                        <MSTextbox ref="AccountCode" :autofocus="true" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
+                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
                     </div>
                 </div>
                 <div class="row-input">
@@ -189,6 +189,9 @@ import BaseAPI from '@/BaseAPI.js'
         created(){
             busData.$on('showDialogAddAccount',()=>{
                 this.drawer = true;
+                setTimeout(()=>{
+                    this.$refs.AccountCode.focusInput();
+                },200)
             })
 
             busData.$on('editAccount',(data)=>{
@@ -201,8 +204,26 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 }
                 this.drawer = true;
+                setTimeout(()=>{
+                    this.$refs.AccountCode.focusInput();
+                },200)
                 this.formMode = 'Edit'
             })
+
+            busData.$on('duplicateAccount',(data)=>{
+                this.obj = data;
+                console.log(this.obj);
+                for(let i=0;i<this.trackingDetails.length;i++){
+                    if(this.obj[this.trackingDetails[i].name]){
+                        this.trackingDetails[i].check = true;
+                        this.trackingDetails[i].value = this.obj[this.trackingDetails[i].name];
+                    }
+                }
+                this.drawer = true;
+                this.obj.AccountId = null;
+                this.obj.AccountCode = '';
+            })
+
         },
         mounted(){
             this.getAccounts();
@@ -242,23 +263,23 @@ import BaseAPI from '@/BaseAPI.js'
                         }
                     }
                     //gọi api
+                    let res;
                     if(this.formMode == 'Add'){
-                        let res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
-                        if(res){
-                            this.resetForm();
-                            this.$emit('reloadData');
-                        }
+                        res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
                     }else{
-                        let res = await BaseAPI.Put('https://localhost:44363/api/accounts',this.obj.AccountId,this.obj);
-                        if(res){
+                        res = await BaseAPI.Put('https://localhost:44363/api/accounts',this.obj.AccountId,this.obj);
+                    }
+                    if(res){
+                        if(res.data.Success == false){
+                            busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
+                        }else{
+                            busData.$emit('reloadData');
+                            this.btnCloseOnClick();
                             this.resetForm();
                             this.$emit('reloadData');
+                            this.drawer=isSaveAndAdd;
+                            this.getAccounts();
                         }
-                    }
-                    this.drawer=false;
-                    this.getAccounts();
-                    if(isSaveAndAdd){
-                        this.$parent.showDialogAddAccount();
                     }
                 }   
             },
