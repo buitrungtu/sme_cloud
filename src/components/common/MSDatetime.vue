@@ -5,14 +5,14 @@
         </div>
         <el-date-picker
             v-model="content"
+            v-on="inputListeners"
             type="date"
             :placeholder="valplace"
             format="dd/MM/yyyy"
             value-format="dd/MM/yyyy"
             clear-icon=""
-            :change="valueChanged(value)" 
         >
-        </el-date-picker>
+        </el-date-picker> 
     </div>
 </template>
 
@@ -25,7 +25,7 @@
         },
         data(){
             return{
-                content: '',
+                content:'',
                 valplace: '',
             }
         },
@@ -54,8 +54,15 @@
                 }
                 return null
             },
-            valueChanged(){
-                this.$emit('valueDTChanged',this.formatDate(this.content));
+        },
+        computed:{
+            inputListeners(){
+                let vm = this;
+                return Object.assign({},this.$listeners,{
+                    ElInput: function (event) {
+                        vm.$emit('ElInput', event.target.value)
+                    }
+                })
             }
         }
     }

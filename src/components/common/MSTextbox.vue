@@ -7,7 +7,7 @@
                 class="cb-input"
                 @focus="isFocus=true" @blur="checkRequired()"
                 v-bind="$attrs"
-                v-on:input="$emit('input', $event.target.value)"
+                v-on="inputListeners"
                 v-model="content" >
         </div>
     </div> 
@@ -33,7 +33,7 @@ import {busData} from '@/main.js';
             },
             ID:String,
             value: {
-                type: String,
+                type: [String,Number],
                 default: ''
             },
             autofocus:Boolean,
@@ -55,9 +55,6 @@ import {busData} from '@/main.js';
             }
         },
         methods:{
-           changeInput(){
-               this.$emit('valueChanged',this.content);
-           },
            checkRequired(){
                this.isFocus = false;
                if(this.required == true){
@@ -80,6 +77,14 @@ import {busData} from '@/main.js';
         computed:{
             TextAlign(){
                 return 'text-align: '+ this.textAlign;
+            },
+            inputListeners(){
+                let vm = this;
+                return Object.assign({},this.$listeners,{
+                    input: function (event) {
+                        vm.$emit('input', event.target.value)
+                    }
+                })
             }
         },watch:{
             content:function(){

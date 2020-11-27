@@ -37,24 +37,27 @@
                         <div class="row-input">
                             <MSTextbox ref="SupplierName1" v-model="obj.SupplierName" :disable="isShow" label="Tên nhà cung cấp" :required="true" />
                         </div>
+                        <div class="row-input" style="padding-bottom:0px">
+                            <div class="cb-label">Địa chỉ </div>
+                        </div>
                         <div class="row-input">
-                            <MSTextbox v-model ="obj.Address"  v-bind:textarea="true" label="Địa chỉ" :disable="isShow" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                            <textarea class="address" :disabled="isShow" v-model="obj.Address"></textarea>
                         </div>
                     </div> 
                     <div class="w-1-2" style="padding-right:2.3px">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox  :value="obj.Mobile" @valueChanged="obj.Mobile = $event" label="Điện thoại" :disable="isShow"/>
+                                <MSTextbox  v-model="obj.Mobile" label="Điện thoại" :disable="isShow"/>
                             </div>
                             <div class="w-3-5">
-                                <MSTextbox  :value="obj.Website" @valueChanged="obj.Website = $event" label="Website" :disable="isShow"/>
+                                <MSTextbox  v-model="obj.Website" label="Website" :disable="isShow"/>
                             </div>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :disable="isShow" v-model="obj.GroupSupplierCode" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="isShow" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -63,27 +66,30 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
-                                <MSTextbox :disable="isShow" ref="SupplierCode2" :value="obj.SupplierCode" @valueChanged="obj.SupplierCode = $event" label="Mã nhà cung cấp"   v-bind:required="true" />
+                                <MSTextbox :disable="isShow" ref="SupplierCode2" v-model="obj.SupplierCode" label="Mã nhà cung cấp"   v-bind:required="true" />
                             </div>
                             <div class="w-2-5" style="padding-top:2px">
-                                <MSTextbox :disable="isShow" :value="obj.TaxCode" @valueChanged="obj.TaxCode = $event" label="Mã số thuế"/>
+                                <MSTextbox :disable="isShow" v-model="obj.TaxCode" label="Mã số thuế"/>
                             </div>
                         </div>
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSSelect :disable="isShow" :value="obj.Vocative"  @valueSLChanged="obj.Vocative = $event" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox :disable="isShow" ref="SupplierName2" :value="obj.SupplierName" @valueChanged="obj.SupplierName = $event" placeholder="Họ và tên" style="padding-top:2.5px" />
+                            <MSSelect :disable="isShow" v-model="obj.Vocative" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSTextbox :disable="isShow" ref="SupplierName2" v-model="obj.SupplierName"  placeholder="Họ và tên" style="padding-top:2.5px" />
+                        </div>
+                        <div class="row-input" style="padding-bottom:0px">
+                            <div class="cb-label">Địa chỉ </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox :disable="isShow" :value="obj.Address" @valueChanged="obj.Address = $event" v-bind:textarea="true" label="Địa chỉ" style="height:60px" placeholder="VD:Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"/>
+                            <textarea class="address" :disabled="isShow" v-model="obj.Address"></textarea>
                         </div>
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" :valueArr="obj.GroupSupplierCode" @valueCBBChanged="obj.GroupSupplierCode = $event" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
+                            <BaseCBB :disable="isShow" v-model="obj.GroupSupplierCode" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
-                            <BaseCBB :disable="isShow" :value="obj.EmployeeCode" @valueCBBChanged="obj.EmployeeCode = $event" label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="isShow" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -95,7 +101,7 @@
                     <div class="btn-footer">
                         <div class="btn-right">
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
-                                <button @click="btnSaveOnClick()" > Cất</button>
+                                <button @click="btnSaveOnClick()"> Cất</button>
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và thêm (Ctrl + Shift + S)" placement="top-start">
                                 <button class="save-and-add" @click="btnAddAndSaveOnClick()">Cất và thêm</button>
@@ -200,6 +206,8 @@ import BaseAPI from '@/BaseAPI.js'
             busData.$on('closeDialogEmployee',()=>{
                 this.showFormAddEmployee = false;
             })
+            this.GetGroupSupplies();
+            this.GetEmployees();
         },
       
         mounted(){
@@ -207,9 +215,6 @@ import BaseAPI from '@/BaseAPI.js'
                 this.supplierID = SuppID;
                 this.GetSupplier(this.supplierID);
             })
-
-            this.GetGroupSupplies();
-            this.GetEmployees();
 
             document.addEventListener('keyup', this.keyupHandler)
         },
@@ -254,7 +259,6 @@ import BaseAPI from '@/BaseAPI.js'
             focusError(errCode){
                 if(errCode == 1){
                     if(!this.obj.IsPersonal){
-                        
                         this.$refs.SupplierCode1.focusInput();
                     }else{
                         this.$refs.SupplierCode2.focusInput();
@@ -271,7 +275,7 @@ import BaseAPI from '@/BaseAPI.js'
             async btnSaveOnClick(){
                 let err = '';
                 //Check Require
-                console.log(this.obj.SupplierCode);
+                console.log(this.obj);
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err,1);
@@ -445,5 +449,20 @@ import BaseAPI from '@/BaseAPI.js'
 .bottom {
     clear: both;
     text-align: center;
+}
+.cb-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: #212121;
+    padding-bottom: 4px;
+}
+textarea.address{
+    width: 100%;
+    height: 40px;
+    padding:10px;
+    border: 1px solid #babec5;
+}
+textarea.address:focus{
+    border-color: #2ca01c;
 }
 </style>

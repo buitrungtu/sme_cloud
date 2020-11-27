@@ -3,6 +3,7 @@
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
             v-model="content"
+            v-on="EventListeners"
             filterable
             reserve-keyword
             placeholder=""
@@ -25,7 +26,6 @@
                     </span>
                 </el-option>
             </div>
-            
         </el-select>
         <div class="cb-action" v-show="plus">
             <div class="btn-add" @click="showDialog()">
@@ -55,33 +55,32 @@ import {busData} from '@/main.js';
             addNewF9:Boolean,
             indexshow:Number, //tính từ 1,
             multiple:Boolean,
-            value:String,
-            valueArr:Array,
+            value:[String,Array],
             disable:Boolean
         },
         data(){
             return{
-                content:[],
+                content:this.value,
                 loading: false,
             }
         },
         created(){
-            if(this.valueArr){
-                this.content = this.valueArr;
-            }
-            if(this.value){
-                this.content = this.value;
-            }
+           
         },
         methods:{
             showDialog(){
                busData.$emit('showDialog',this.mission)
             },
         },
-        watch:{
-           content:function(){
-               this.$emit('valueCBBChanged',this.content);
-           }
+        computed:{
+            EventListeners(){
+                let vm = this;
+                return Object.assign({},this.$listeners,{
+                    ElInput: function (event) {
+                        vm.$emit('ElInput', event.target.value)
+                    }
+                })
+            }
         }
     }
 </script>

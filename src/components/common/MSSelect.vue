@@ -1,7 +1,7 @@
 <template>
     <div class="select">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <el-select v-model="content" size="small" :disabled="disable" :placeholder="placeholder">
+        <el-select v-model="content"  v-on="EventListeners" size="small" :disabled="disable" :placeholder="placeholder">
             <el-option
                 v-for="item in data"
                 :key="item.value"
@@ -30,25 +30,26 @@
             return{
                 isFocus:false,
                 showOptionDetail:false,
-                content:""
+                content:this.value
             }
         },
         created(){
-            if(this.value){
-                this.content= this.value + '';
-            }else{
-                if(this.required){
-                    this.content = this.data[0].value;
-                }
-            }
+            
         },
         methods:{
-
+        },
+        computed:{
+            EventListeners(){
+                let vm = this;
+                return Object.assign({},this.$listeners,{
+                    ElInput: function (event) {
+                        vm.$emit('ElInput', event.target.value)
+                    }
+                })
+            }
         },
         watch:{
-            content:function(){
-                this.$emit('valueSLChanged',this.content);
-            }
+            
         }
     }
 </script>
