@@ -30,11 +30,13 @@
             return{
                 isFocus:false,
                 showOptionDetail:false,
-                content:this.value
+                content:''
             }
         },
         created(){
-            
+            if(this.value){
+                this.content = this.value+'';
+            }
         },
         methods:{
         },

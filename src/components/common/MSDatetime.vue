@@ -11,6 +11,7 @@
             format="dd/MM/yyyy"
             value-format="dd/MM/yyyy"
             clear-icon=""
+            :disabled="disabled"
         >
         </el-date-picker> 
     </div>
@@ -21,7 +22,8 @@
         props:{
             label:String,
             placeholder:String,
-            value:String
+            value:String,
+            disabled:Boolean
         },
         data(){
             return{
@@ -45,15 +47,6 @@
             }else{
                 this.valplace = this.placeholder
             }
-        },
-        methods:{
-            formatDate(date){
-                if(date){
-                    var ez = date.split("/");
-                    return ez[1]+'/'+ez[0]+'/'+ez[2];
-                }
-                return null
-            },
         },
         computed:{
             inputListeners(){

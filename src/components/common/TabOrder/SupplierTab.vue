@@ -13,37 +13,37 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Người liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSSelect :disable="isShow" v-model="obj.VocativeContact" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
-                        <MSTextbox :disable="isShow" v-model="obj.FullnameContact" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
+                        <MSSelect :disable="review" v-model="obj.VocativeContact" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
+                        <MSTextbox :disabled="review" v-model="obj.FullnameContact" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow" v-model="obj.EmailContact"  placeholder="Email"/> 
+                            <MSTextbox :disabled="review" v-model="obj.EmailContact"  placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :disable="isShow"  v-model="obj.MobileContact"  placeholder="Số điện thoại"/>
+                                <MSTextbox :disabled="review"  v-model="obj.MobileContact"  placeholder="Số điện thoại"/>
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;"  v-show="isCus">
-                            <MSTextbox :disable="isShow" v-model="obj.LegalRepresent"   label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disabled="review" v-model="obj.LegalRepresent"   label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="!isCus">
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow"  v-model="obj.LegalRepresent"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disabled="review"  v-model="obj.LegalRepresent"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                     <div class="w-1-2" v-show="isCus">
                         <label class="label-input">Người nhận hóa đơn điện tử</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow"  v-model="obj.FullnameEInvoice"  placeholder="Họ và tên"/> 
+                            <MSTextbox :disabled="review"  v-model="obj.FullnameEInvoice"  placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow" v-model="obj.EmailEInvoice"  placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
+                            <MSTextbox :disabled="review" v-model="obj.EmailEInvoice"  placeholder="Email, ngăn cách nhiều email bởi dấu chấm phẩy"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :disable="isShow" v-model="obj.MobileEInvoice" placeholder="Số điện thoại"/>
+                                <MSTextbox :disabled="review" v-model="obj.MobileEInvoice" placeholder="Số điện thoại"/>
                             </div>
                         </div>
                     </div>
@@ -52,20 +52,20 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Thông tin liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow" v-model="obj.EmailContact"  style="padding-top:3px" placeholder="Email"/> 
+                            <MSTextbox :disabled="review" v-model="obj.EmailContact"  style="padding-top:3px" placeholder="Email"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :disable="isShow" v-model="obj.MobileContact"  style="padding-top:3px" placeholder="Điện thoại di động"/> 
+                                <MSTextbox :disabled="review" v-model="obj.MobileContact"  style="padding-top:3px" placeholder="Điện thoại di động"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2">
-                                <MSTextbox :disable="isShow" v-model="obj.FixMobileContact"  style="padding-top:3px" placeholder="Điện thoại cố định"/> 
+                                <MSTextbox :disabled="review" v-model="obj.FixMobileContact"  style="padding-top:3px" placeholder="Điện thoại cố định"/> 
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow" v-model="obj.LegalRepresent"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
+                            <MSTextbox :disabled="review" v-model="obj.LegalRepresent"  label="Đại diện theo PL" placeholder="Đại diện theo PL"/> 
                         </div>
                     </div>
                 
@@ -73,16 +73,16 @@
                         <label class="label-input">Thông tin CMND/Thẻ căn cước</label>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div class="w-1-2" >
-                                <MSTextbox :disable="isShow" v-model="obj.Identity" style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
+                                <MSTextbox :disabled="review" v-model="obj.Identity" style="padding:3px 3px 0px 0px" placeholder="Số CMND/Thẻ căn cước"/> 
                             </div> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
                             <div style="width:calc(50% + 2.5px)">
-                                <MSDatetime v-model="obj.IdentityDate"  placeholder="Ngày cấp"/> 
+                                <MSDatetime v-model="obj.IdentityDate" :disabled="review"  placeholder="Ngày cấp"/> 
                             </div>
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSTextbox :disable="isShow" v-model="obj.IdentityPlace"  placeholder="Nơi cấp"/>
+                            <MSTextbox :disabled="review" v-model="obj.IdentityPlace"  placeholder="Nơi cấp"/>
                         </div>
                     </div>
                 </div>
@@ -91,26 +91,26 @@
                 <div class="w-3-4" style="display:flex">
                     <div class="w-input">
                         <div class="row-input" >
-                            <BaseCBB :disable="isShow" v-model="obj.TermsOfPayment" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                            <BaseCBB :disable="review" v-model="obj.TermsOfPayment" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :disable="isShow" v-model="obj.DaysOfOwed" :number="true" textAlign='right' label="Số ngày được nợ"/>
+                            <MSTextbox :disabled="review" v-model="obj.DaysOfOwed" :number="true" textAlign='right' label="Số ngày được nợ"/>
                         </div>
                     </div>
                     <div class="w-input">
                         <div class="row-input" >
-                            <MSTextbox :disable="isShow" v-model="obj.MaxDebt" :number="true" type='money' textAlign='right' label="Số nợ tối đa"/>
+                            <MSTextbox :disabled="review" v-model="obj.MaxDebt" :number="true" type='money' textAlign='right' label="Số nợ tối đa"/>
                         </div>
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-input">
-                        <BaseCBB :disable="isShow" label="Tài khoản công nợ phải thu" v-model="obj.AccountCodeReceivable" :header="accountLabel" :data="dataAccountReceivable"/>
+                        <BaseCBB :disable="review" label="Tài khoản công nợ phải thu" v-model="obj.AccountCodeReceivable" :header="accountLabel" :data="dataAccountReceivable"/>
                     </div>
                     <div class="w-input" v-show="isCus">
-                        <BaseCBB :disable="isShow" label="Tài khoản công nợ phải trả" v-model="obj.AccountCodePay" :header="accountLabel" :data="dataAccountPay"/>
+                        <BaseCBB :disable="review" label="Tài khoản công nợ phải trả" v-model="obj.AccountCodePay" :header="accountLabel" :data="dataAccountPay"/>
                     </div>
                 </div>
             </div>
@@ -118,28 +118,28 @@
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
-                            <MSTextbox :disable="isShow"  ref="BankAccount"  v-model="scope.row.BankAccount"/>
+                            <MSTextbox :disabled="review"  ref="BankAccount"  v-model="scope.row.BankAccount"/>
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow"  v-model="scope.row.BankName" />
+                            <MSTextbox :disabled="review"  v-model="scope.row.BankName" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankBranch" label="CHI NHÁNH" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow"  v-model="scope.row.BankBranch" />
+                            <MSTextbox :disabled="review"  v-model="scope.row.BankBranch" />
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankCity" label="TỈNH/TP CỦA NGÂN HÀNG" width="190">
                         <template slot-scope="scope">
-                            <MSTextbox :disable="isShow"  v-model="scope.row.BankCity" />
+                            <MSTextbox :disabled="review"  v-model="scope.row.BankCity" />
                         </template>
                     </el-table-column>
 
                     <el-table-column fixed="right" label="" width="50">
                         <template slot-scope="scope">
-                            <el-button :disabled="isShow" @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
+                            <el-button :disabled="review" @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
                                 <div class="icon icon-delete"></div>
                             </el-button>
                         </template>
@@ -147,8 +147,8 @@
                 </el-table>
                 <div class="grid-footer">
                     <div class="btn-grid-act">
-                        <button :disabled="isShow" @click="addRow()">Thêm dòng</button>
-                        <button :disabled="isShow" @click="removeAllRow()">Xóa hết dòng</button>
+                        <button :disabled="review" @click="addRow()">Thêm dòng</button>
+                        <button :disabled="review" @click="removeAllRow()">Xóa hết dòng</button>
                     </div>
                 </div>
             </div>
@@ -157,18 +157,18 @@
                     <label class="label-input">Vị trí địa lý</label>
                     <div class="row-input">
                         <div class="w-1-2" style="padding-right:12px" >
-                            <MSSelect :disable="isShow"  value="1" :data="nations" placeholder="Quốc Gia"/>
+                            <MSSelect :disable="review"  value="1" :data="nations" placeholder="Quốc Gia"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :disable="isShow" v-model="obj.City" :data="cities" placeholder="Tỉnh/Thành phố"/>
+                            <MSSelect :disable="review" v-model="obj.City" :data="cities" placeholder="Tỉnh/Thành phố"/>
                         </div>
                     </div>
                     <div class="row-input" >
                         <div class="w-1-2" style="padding-right:12px">
-                            <MSSelect :disable="isShow" v-model="obj.District"  :data="districts" placeholder="Quận/Huyện"/>
+                            <MSSelect :disable="review" v-model="obj.District"  :data="districts" placeholder="Quận/Huyện"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :disable="isShow" v-model="obj.Village" :data="villages" placeholder="Xã/Phường"/>
+                            <MSSelect :disable="review" v-model="obj.Village" :data="villages" placeholder="Xã/Phường"/>
                         </div>
                     </div>
                 </div>
@@ -180,12 +180,12 @@
                     <el-table :data="tableDeliveryAddress" style="width: 100%;" max-height="140">
                        <el-table-column prop="Address" width="300" label="Địa chỉ giao hàng">
                             <template slot-scope="scope">
-                                <MSTextbox :disable="isShow" v-model="scope.row.Address" />
+                                <MSTextbox :disabled="review" v-model="scope.row.Address" />
                             </template>
                         </el-table-column>
                         <el-table-column fixed="right" label="" width="50">
                             <template slot-scope="scope">
-                                <el-button :disabled="isShow" @click.native.prevent="deleteRowAddress(scope.$index, scope.row)" type="text" size="small">
+                                <el-button :disabled="review" @click.native.prevent="deleteRowAddress(scope.$index, scope.row)" type="text" size="small">
                                     <div class="icon icon-delete"></div>
                                 </el-button>
                             </template>
@@ -193,15 +193,15 @@
                     </el-table>
                     <div class="grid-footer">
                     <div class="btn-grid-act">
-                        <button :disabled="isShow" @click="addRowAddress()">Thêm dòng</button>
-                        <button :disabled="isShow" @click="removeAllRowAddress()">Xóa hết dòng</button>
+                        <button :disabled="review" @click="addRowAddress()">Thêm dòng</button>
+                        <button :disabled="review" @click="removeAllRowAddress()">Xóa hết dòng</button>
                     </div>
                 </div>
                 </div>
             </div>
 
             <div class="note" v-show="thisTab == 4">
-                <textarea :disabled="isShow" v-model="obj.Note" tabindex="1"></textarea>
+                <textarea :disabled="review" v-model="obj.Note" tabindex="1"></textarea>
             </div>
         </div>
     </div>
@@ -217,7 +217,7 @@ import BaseCBB from '@/components/common/BaseCBB'
             isPer:Boolean,
             root:Object,
             isCus:Boolean,
-            isShow:Boolean
+            review:Boolean
         },
         components:{
             MSTextbox,
@@ -237,7 +237,7 @@ import BaseCBB from '@/components/common/BaseCBB'
                         {value:'7',label:'Mrs'},
                         {value:'8',label:'Ông'},
                 ],
-                header:[{label:'Mã điều khoản',width:'100'},{label:'Tên điều khoản',width:'250'}],
+                header:[{label:'Mã điều khoản',width:'100'},{label:'Tên điều khoản',width:'200'}],
                 data:[{TermsOfPayment:'DK01',TermsOfPaymentName:'Điều khoản 1'},
                         {TermsOfPayment:'DK02',TermsOfPaymentName:'Điều khoản 2'},
                         {TermsOfPayment:'DK03',TermsOfPaymentName:'Điều khoản 3'}
@@ -305,8 +305,6 @@ import BaseCBB from '@/components/common/BaseCBB'
             if(this.obj.BankAccount){
                 this.tableBankAccount = JSON.parse(this.obj.BankAccount);
             }
-            //TODO
-            this.obj.BankAccount = this.tableBankAccount;
             if(this.obj.DeliveryAddress){
                 this.tableDeliveryAddress = this.obj.DeliveryAddress.map((item)=>{
                     return{
@@ -314,7 +312,6 @@ import BaseCBB from '@/components/common/BaseCBB'
                     }
                 });
             }
-            this.obj.DeliveryAddress = this.tableDeliveryAddress;
         },
         methods:{
             tabBankAccountOnClick(){
@@ -336,7 +333,6 @@ import BaseCBB from '@/components/common/BaseCBB'
                     BankCity:''
                 };
                 this.tableBankAccount.push(newRow);
-                console.log(this.$refs.BankAccount);
             },
             removeAllRow(){
                 this.tableBankAccount = [];

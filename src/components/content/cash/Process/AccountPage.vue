@@ -9,10 +9,10 @@
                 </div>
             </div>
             <div class="top-btn">
-                 <div class="button-add" @click="gotoPaymentVoucher()">
+                 <div class="button-add">
                     <button class="change-acc">Chuyển tài khoản hạch toán</button>
                 </div>
-                <div class="button-add" @click="showDialogAddAccount()">
+                <div class="button-add" @click="btnAddAccountOnClick()">
                     <button>Thêm</button>
                 </div> 
             </div>
@@ -145,6 +145,10 @@ import BaseAPI from '@/BaseAPI.js'
             this.getAccounts();
         },
         methods:{
+            //API
+            /**
+             * Lấy danh sách tài khoản (Tạo thành dạng cây)
+             */
             async getAccounts(){
                 let tempdata = [];
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
@@ -180,18 +184,38 @@ import BaseAPI from '@/BaseAPI.js'
                     });
                 }
             },
+            /**
+             * Sửa thông tin tài khoản
+             */
             async btnEditOnClick(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
                 if(res && res.data){
+                    //gửi thông tin tài khoản lấy được cho AddAccount show lên
                     busData.$emit('editAccount',res.data);
                 }
             },
+            /**
+             * Nhân bản tài khoản
+             */
             async duplicateAccount(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
                 if(res && res.data){
+                    //gửi thông tin tài khoản lấy được cho AddAccount show lên
                     busData.$emit('duplicateAccount',res.data);
                 }
             },
+            /**
+             * Xóa tài khoản
+             */
+            async deleteAccount(id){
+                let res = await BaseAPI.Delete('https://localhost:44363/api/accounts',id); 
+                if(res && res.data){
+                    this.reloadData();
+                }
+            },
+            /**
+             * Ngưng sử dụng
+             */
             async stopUse(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
                 if(res && res.data){
@@ -202,34 +226,24 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 } 
             },
+
+            /**
+             * Sự kiện thêm tài khoản
+             */
+            btnAddAccountOnClick(){
+                //gửi yêu cầu show form cho AddAccount
+                busData.$emit('showDialogAddAccount');
+            },
+            /**
+             * Sự kiện double click vào 1 bản ghi
+             */
             dbClickForEdit(row){
                 this.btnEditOnClick(row.AccountId);
-            },
-            async deleteAccount(id){
-                let res = await BaseAPI.Delete('https://localhost:44363/api/accounts',id); 
-                if(res && res.data){
-                    this.reloadData();
-                }
             },
             reloadData(){
                 this.getAccounts();
             },
-            gotoPaymentVoucher(){
-                this.$router.push('/paymentvoucher');
-            },
-            showDialogAddAccount(){
-                busData.$emit('showDialogAddAccount');
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-           
+        
             collapseAll(){
                 this.collapse = !this.collapse;
             },

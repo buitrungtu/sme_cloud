@@ -82,7 +82,7 @@
                     :data="data"
                     style="width: 100%"
                     height="100%"
-                    @cell-dblclick="dbClickForEdit"	
+                    @cell-dblclick="dbClickForReview"	
                 >
 
                     <el-table-column
@@ -149,7 +149,7 @@
                     <div class="grid-footer">
                     <div class="footer-left">Tổng số: <span style="font-weight:700">{{totalRecord}}</span> bản ghi</div>
                         <div class="footer-right">
-                            <div class="recordOnPage"><MSSelect :value="recordOnPage" @valueSLChanged="recordOnPage = $event" :data="recordPages"/></div>
+                            <div class="recordOnPage"><MSSelect v-model="recordOnPage" :data="recordPages"/></div>
                             <div class="totalPage">
                                 <div class="pre" :class="{disable:pageNow == 1}" @click="prePage()">Trước</div>
                                 <div class="page-list">
@@ -181,17 +181,16 @@ import MSSelect from '@/components/common/MSSelect'
         },
         data(){
             return{
-                thisPage:'ReceivePayment',
                 data: [
+                    //Danh sách nhà cung cấp
                 ],
+                
+                //Paging
                 recordPages:[{value:'10',label:'10 bản ghi trên 1 trang'},
                     {value:'20',label:'20 bản ghi trên 1 trang'},
                     {value:'30',label:'50 bản ghi trên 1 trang'},
                     {value:'40',label:'100 bản ghi trên 1 trang'},
                 ],
-
-
-                //Paging
                 totalRecord:0,
                 totalPage:0,
                 pageNow:1,
@@ -202,6 +201,8 @@ import MSSelect from '@/components/common/MSSelect'
         created(){
             busData.$emit('changeTab',1);
 
+
+            //Lắng nghe sự kiện load lại data từ AddSupplier
             busData.$on('reloadData',()=>{
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
             })
@@ -228,7 +229,12 @@ import MSSelect from '@/components/common/MSSelect'
                     this.GetDataSuplier(this.pageNow,this.recordOnPage);
                 }
             },
+
             //Event vue
+
+            /**
+             * Sự kiện xóa 1 bản ghi
+             */
             deleteRow(SuppID){
                 this.DeleteSuplier(SuppID);
             },
@@ -238,12 +244,27 @@ import MSSelect from '@/components/common/MSSelect'
             showDialogAddSupplier(){
                 busData.$emit('showFormAddSupplier');
             },
-            editRow(SuppID){
-                busData.$emit('editSupplier',SuppID);
+
+            /**
+             * Sửa thông tin nhân viên
+             */
+            async editRow(SuppID){
+                //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',SuppID); 
+                if(res && res.data){
+                    console.log(res.data)
+                    busData.$emit('editSupplier',res.data);
+                }
             },
             
-            dbClickForEdit(row){
-                busData.$emit('editSupplier',row.SupplierId);
+            async dbClickForReview(row){
+                console.log(row);
+                //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',row.SupplierId); 
+                if(res && res.data){
+                    console.log(res.data)
+                    busData.$emit('editSupplier',res.data);
+                }
             },
 
             //Xử lý phím tắt
@@ -252,7 +273,7 @@ import MSSelect from '@/components/common/MSSelect'
                     busData.$emit('showFormAddSupplier');
                 }
             },
-            //Phan trang
+            //Phân trang
             gotoPage(page){
                 this.GetDataSuplier(page,this.recordOnPage);
             },

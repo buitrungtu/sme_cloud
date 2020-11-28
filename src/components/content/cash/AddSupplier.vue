@@ -7,11 +7,11 @@
                 <div class="tilte-content" style="display:flex;align-items: center;">
                     <div class="title">Thông tin nhà cung cấp</div>
                     <div class="gr-radio">
-                        <el-radio :disabled="isShow"  v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
-                        <el-radio :disabled="isShow" v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
+                        <el-radio :disabled="review"  v-model="obj.IsPersonal" :label=false >Tổ chức</el-radio>
+                        <el-radio :disabled="review" v-model="obj.IsPersonal" :label=true >Cá nhân</el-radio>
                     </div>
                     <div class="title-right">
-                        <el-checkbox :disabled="isShow" v-model="obj.IsCustomer">Là khách hàng</el-checkbox>
+                        <el-checkbox :disabled="review" v-model="obj.IsCustomer">Là khách hàng</el-checkbox>
                     </div>
                 </div>
             </div>
@@ -28,36 +28,36 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox :autofocus="true" v-model="obj.TaxCode"  :disable="isShow" label="Mã số thuế"/>
+                                <MSTextbox :autofocus="true" v-model="obj.TaxCode"  :disabled="review" label="Mã số thuế"/>
                             </div>
                             <div class="w-3-5"> 
-                                <MSTextbox ref="SupplierCode1" v-model="obj.SupplierCode" :disable="isShow" label="Mã nhà cung cấp"  :required="true" />
+                                <MSTextbox ref="SupplierCode1" v-model="obj.SupplierCode" :disabled="review" label="Mã nhà cung cấp"  :required="true" />
                             </div>
                         </div>
                         <div class="row-input">
-                            <MSTextbox ref="SupplierName1" v-model="obj.SupplierName" :disable="isShow" label="Tên nhà cung cấp" :required="true" />
+                            <MSTextbox ref="SupplierName1" v-model="obj.SupplierName" :disabled="review" label="Tên nhà cung cấp" :required="true" />
                         </div>
                         <div class="row-input" style="padding-bottom:0px">
                             <div class="cb-label">Địa chỉ </div>
                         </div>
                         <div class="row-input">
-                            <textarea class="address" :disabled="isShow" v-model="obj.Address"></textarea>
+                            <textarea class="address" :disabled="review" v-model="obj.Address"></textarea>
                         </div>
                     </div> 
                     <div class="w-1-2" style="padding-right:2.3px">
                         <div class="row-input">
                             <div class="w-2-5" style="padding-right:12px;">
-                                <MSTextbox  v-model="obj.Mobile" label="Điện thoại" :disable="isShow"/>
+                                <MSTextbox  v-model="obj.Mobile" label="Điện thoại" :disabled="review"/>
                             </div>
                             <div class="w-3-5">
-                                <MSTextbox  v-model="obj.Website" label="Website" :disable="isShow"/>
+                                <MSTextbox  v-model="obj.Website" label="Website" :disabled="review"/>
                             </div>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" v-model="obj.GroupSupplierCode" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :disable="review" v-model="obj.GroupSupplierCode" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -66,41 +66,42 @@
                     <div class="w-1-2 body-left">
                         <div class="row-input">
                             <div class="w-3-5" style="padding:2.5px 12px 0px 0px;">
-                                <MSTextbox :disable="isShow" ref="SupplierCode2" v-model="obj.SupplierCode" label="Mã nhà cung cấp"   v-bind:required="true" />
+                                <MSTextbox :disabled="review" ref="SupplierCode2" v-model="obj.SupplierCode" label="Mã nhà cung cấp"   v-bind:required="true" />
                             </div>
                             <div class="w-2-5" style="padding-top:2px">
-                                <MSTextbox :disable="isShow" v-model="obj.TaxCode" label="Mã số thuế"/>
+                                <MSTextbox :disabled="review" v-model="obj.TaxCode" label="Mã số thuế"/>
                             </div>
                         </div>
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSSelect :disable="isShow" v-model="obj.Vocative" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
-                            <MSTextbox :disable="isShow" ref="SupplierName2" v-model="obj.SupplierName"  placeholder="Họ và tên" style="padding-top:2.5px" />
+                            <MSSelect :disable="review" v-model="obj.Vocative" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSTextbox :disabled="review" ref="SupplierName2" v-model="obj.SupplierName"  placeholder="Họ và tên" style="padding-top:2.5px" />
                         </div>
                         <div class="row-input" style="padding-bottom:0px">
                             <div class="cb-label">Địa chỉ </div>
                         </div>
                         <div class="row-input">
-                            <textarea class="address" :disabled="isShow" v-model="obj.Address"></textarea>
+                            <textarea class="address" :disabled="review" v-model="obj.Address"></textarea>
                         </div>
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
                         <div class="row-input">
-                            <BaseCBB :disable="isShow" v-model="obj.GroupSupplierCode" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
+                            <BaseCBB :disable="review" v-model="obj.GroupSupplierCode" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
-                            <BaseCBB :disable="isShow" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disable="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
 
-                <SupplierTab :isPer="obj.IsPersonal" :root="obj" :isCus="obj.IsCustomer" :isShow="isShow"/> 
+                <SupplierTab :isPer="obj.IsPersonal" ref="SupplierTab" :root="obj" :isCus="obj.IsCustomer" :review="review"/> 
                 
-                <div class="dialog-footer" v-show="!isShow">
+                <div class="dialog-footer" v-show="!review">
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-right">
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
+                                <!-- <button v-short v-shortkey="['ctrl', 's']" @shortkey="btnSaveOnClick()" @click="btnSaveOnClick()"> Cất</button> -->
                                 <button @click="btnSaveOnClick()"> Cất</button>
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và thêm (Ctrl + Shift + S)" placement="top-start">
@@ -112,12 +113,12 @@
                         </div>  
                     </div>
                 </div>
-                 <div class="dialog-footer" v-show="isShow">
+                 <div class="dialog-footer" v-show="review">
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-right">
                             <el-tooltip class="item" effect="dark" content="Sửa (Ctrl + Shift + G)" placement="bottom">
-                                <button class="save-and-add" @click="isShow = false">Sửa</button>
+                                <button class="save-and-add" @click="review = false">Sửa</button>
                             </el-tooltip>
                         </div>
                         <div class="btn-left">
@@ -128,9 +129,9 @@
                 </div>
             </div>
         </div>
-            <AddGroupSupplier :visible="showFormAddGroupSupplier"/>
-            <div class="black-model-2" v-show="showFormAddGroupSupplier || showFormAddEmployee"></div>
-            <AddEmployee :visible="showFormAddEmployee"/>
+            <AddGroupSupplier :visible="false"/>
+            <div class="black-model-2" v-show="false"></div>
+            <AddEmployee :visible="false"/>
         </div>
         <DialogError @dialogErrorClose="focusError($event)"/>
     </div>
@@ -161,8 +162,6 @@ import BaseAPI from '@/BaseAPI.js'
                 show:false,
                 showDialogError:false,
                 checkRequire:false,
-                showFormAddGroupSupplier:false,
-                showFormAddEmployee:false,
                 headerGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'125'},{label:'Tên nhóm KH,NCC',width:'180'}],
                 dataGroupSupplies:[],
                 headerEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
@@ -177,49 +176,41 @@ import BaseAPI from '@/BaseAPI.js'
                     {value:'7',label:'Mr'},
                     {value:'8',label:'Mrs'},
                 ],
-                //data của đối tượng
+
+                //dữ liệu gửi cho service
                 obj:{
                     IsPersonal:false,
                     IsCustomer:false
                 },
-                state:'Add',
-                supplierID:'',
-                triggerErr:[false,false],
-                isShow:false     
+                state:'Add', //Thêm hay sửa
+                review:false, // chế độ xem không sửa
             }
         },
         created(){
+            //Lắng nghe sự kiện show form từ SupplierPage
             busData.$on('showFormAddSupplier',()=>{
+                this.GetGroupSupplies();
+                this.GetEmployees();
                 this.show = true;
             })
-            
-            busData.$on('showDialog',(mission)=>{
-                if(mission == 'AddGropSupplier'){
-                    this.showFormAddGroupSupplier = true;
-                }else if(mission == 'AddEmployee'){
-                    this.showFormAddEmployee = true;
-                }
-            })
-            busData.$on('closeDialogGroupSupplier',()=>{
-                this.showFormAddGroupSupplier = false;
-            })
-            busData.$on('closeDialogEmployee',()=>{
-                this.showFormAddEmployee = false;
-            })
-            this.GetGroupSupplies();
-            this.GetEmployees();
         },
       
         mounted(){
-            busData.$on('editSupplier',(SuppID)=>{
-                this.supplierID = SuppID;
-                this.GetSupplier(this.supplierID);
+            //Nhận sự kiện edit supplier từ form SupplierPage
+            busData.$on('editSupplier',(supplier)=>{
+                this.obj = supplier;
+                this.state = 'Edit'
+                this.show = true;
+                this.review = true; //để chế độ xem không cho sửa
             })
-
             document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
             //API
+
+            /**
+             * Lấy danh sách nhóm khách hàng
+             */
             async GetGroupSupplies(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/GroupSuppliers'); 
                 if(res && res.data){
@@ -229,9 +220,12 @@ import BaseAPI from '@/BaseAPI.js'
                             'GroupSupplierName':item.GroupSupplierName
                         }
                     })
-                    console.log(this.dataGroupSupplies)
                 }
             },
+            
+            /**
+             * Lấy danh sách nhân viên
+             */
             async GetEmployees(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/employees'); 
                 if(res && res.data){
@@ -241,21 +235,12 @@ import BaseAPI from '@/BaseAPI.js'
                             'EmployeeName':item.EmployeeName
                         }
                     })
-                    console.log(this.dataEmployees)
                 }
             },
-           
-            async GetSupplier(id){
-                let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',id); 
-                if(res && res.data){
-                    this.obj = res.data;
-                    this.state = 'Edit'
-                    this.show = true;
-                    this.isShow = true;
-                }
-            },
-
-            //Xử lý sự kiện focus vào các ô nhập liệu lỗi
+            
+            /**
+             * Trigger cho người dùng các ô nhập liệu bị lỗi
+             */
             focusError(errCode){
                 if(errCode == 1){
                     if(!this.obj.IsPersonal){
@@ -265,133 +250,96 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 } else if(errCode == 2){
                      if(!this.obj.IsPersonal){
+                        console.log(this.$refs.SupplierName1)
                         this.$refs.SupplierName1.focusInput();
                     }else{
                         this.$refs.SupplierName2.focusInput();
                     }
                 }    
             },
-            //Event 
-            async btnSaveOnClick(){
+            /**
+             * Validate dữ liệu trước khi gửi lên service 
+             */
+            validate(){
                 let err = '';
-                //Check Require
-                console.log(this.obj);
                 if(!this.obj.SupplierCode){
                     err = 'Mã nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err,1);
+                    return false;
                 }else if(!this.obj.SupplierName){
                     err = 'Tên nhà cung cấp không được bỏ trống';
                     busData.$emit('showDialogError',err,2);
-                }else{
-                    for(let propName in this.obj){
-                        if(this.obj[propName] === undefined){
-                            delete this.obj[propName];
-                        }
-                    }
-                    //Xử lý dữ liệu
-                    debugger;
-                    if(this.obj.BankAccount){
-                        this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
-                    }
-                    if(this.obj.DeliveryAddress){
-                        this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
-                            return item.Address;
-                        });
-                    }
+                    return false;
+                }
+                return true;
+            },
+            //Event 
 
-                    let res;
-                    if(this.state == 'Add'){
-                        res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
-                    }else{ //EDIT
-                        res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
-                    }
-                    if(res){
-                        if(res.data.Success == false){
-                            busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
-                        }else{
-                            busData.$emit('reloadData');
-                            this.btnCloseOnClick();
-                        }
+            async callApiSaveData(){
+                //Xử lý dữ liệu
+                //Chuyển trường BankAccount về dạng json
+                this.obj.BankAccount = JSON.stringify(this.$refs.SupplierTab.tableBankAccount);
+                this.obj.DeliveryAddress = this.$refs.SupplierTab.tableDeliveryAddress.map(item=>{
+                    return item.Address;
+                });
+                if(this.obj.IdentityDate){  
+                    this.obj.IdentityDate = this.obj.IdentityDate.split('/').reverse().join('/');
+                }
+                this.obj.MaxDebt = this.obj.MaxDebt.replace(/\./g,' ');
+                console.log(this.obj);
+                //Gọi API
+                let res;
+                if(this.state == 'Add'){
+                    res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
+                }else{ //EDIT
+                    res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.obj.SupplierId,this.obj); 
+                }
+                if(res){
+                    if(res.data.Success == false){
+                        //Lỗi gửi về từ server
+                        busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
+                    }else{
+                        //Gửi tín hiệu load lại data sang form SupplierPage
+                        busData.$emit('reloadData');
+                        this.btnCloseOnClick();
                     }
                 }
             },
-            async btnAddAndSaveOnClick(){
-                let err = '';
+
+            /**
+             * Sự kiện khi click nút cất
+             */
+            btnSaveOnClick(){
                 //Check Require
-                console.log(this.obj.SupplierCode);
-                if(!this.obj.SupplierCode){
-                    err = 'Mã nhà cung cấp không được bỏ trống';
-                    busData.$emit('showDialogError',err);
-                    this.errCode=true;
-
-                }else if(!this.obj.SupplierName){
-                    err = 'Tên nhà cung cấp không được bỏ trống';
-                    busData.$emit('showDialogError',err);
-                    this.errName=true;
-                }else{
-                    for(let propName in this.obj){
-                        if(this.obj[propName] === undefined){
-                            delete this.obj[propName];
-                        }
-                    }
-                    //Xử lý dữ liệu
-                    this.obj.BankAccount = JSON.stringify(this.obj.BankAccount);
-                    this.obj.DeliveryAddress = this.obj.DeliveryAddress.map(item=>{
-                        return item.Address;
-                    });
-                    console.log(this.obj);
-                    let res;
-                    if(this.state == 'Add'){
-                        res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
-                    }else{ //EDIT
-                        res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.supplierID,this.obj); 
-                    }
-                    if(res && res.status){
-                        if(typeof(res.data) === "string" && res.data != ""){
-                            busData.$emit('showDialogError',res.data);
-                        }else{
-                            this.show = false;
-                            this.resetForm();
-                            busData.$emit('reloadData');
-                            this.show = true;
-                        }
-                    }
+                if(this.validate()){
+                    this.callApiSaveData();
                 }
             },
+            /**
+             * Sự kiện khi click nút cất và thêm
+             */
+            btnAddAndSaveOnClick(){
+                if(this.validate()){
+                    this.callApiSaveData();
+                    this.resetForm();
+                }
+            },
+
+            /**
+             * Reset lại data của component
+             */
             resetForm(){
                 Object.assign(this.$data, this.$options.data());
-                this.GetGroupSupplies();
-                this.GetEmployees();
             },
             btnCloseOnClick(){
-                Object.assign(this.$data, this.$options.data());
+                this.resetForm();
                 this.show = false;
             },
-             //Xử lý phím tắt
+
+            //Xử lý phím tắt
             keyupHandler(event){
-                if (event.ctrlKey || event.metaKey) {
-                    var c = event.which || event.keyCode; // get key code
-                    switch(c){
-                        case 83: //block Ctrl+S
-                            event.preventDefault();    
-                            break; 
-                        case 82: //block Ctrl+R
-                            event.preventDefault();   
-                            break;   
-                    }
-                }
                 if(event.code === 'Escape') {
                     this.btnCloseOnClick();
-                }
-                else if(event.ctrlKey && event.key==='s'){
-                    event.preventDefault();
-                    event.stopPropagation();
-                    this.btnSaveOnClick();
-                }else if(event.ctrlKey && event.key === 'Shift' && event.key==='s'){
-                    console.log('Ctrl + Shift + s');
-                    //this.btnAddAndSaveOnClick();
-                }else if(event.ctrlKey && event.key === 'Shift' && event.key==='g'){
-                     console.log('Ctrl + Shift + g');
                 }
             },
           

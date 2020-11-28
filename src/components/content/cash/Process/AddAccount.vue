@@ -20,30 +20,33 @@
             <div class="content" v-if="drawer">
                 <div class="row-input">
                     <div class="w-1-4">
-                        <MSTextbox ref="AccountCode" :value="obj.AccountCode" @valueChanged="obj.AccountCode = $event" :disable="isShow" label="Số tài khoản"  :required="true" />
+                        <MSTextbox ref="AccountCode" v-model="obj.AccountCode" :disable="isShow" label="Số tài khoản"  :required="true" />
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-1-2" style="padding-right: 12px;">
-                        <MSTextbox  ref="AccountName" label="Tên tài khoản" :value="obj.AccountName" @valueChanged="obj.AccountName = $event" :disable="isShow" :required="true"/>
+                        <MSTextbox  ref="AccountName" label="Tên tài khoản" v-model="obj.AccountName" :disable="isShow" :required="true"/>
                     </div>
                     <div class="w-1-2" >
-                        <MSTextbox label="Tên tiếng anh" :value="obj.AccountNameEnglish" @valueChanged="obj.AccountNameEnglish = $event" :disable="isShow"/>
+                        <MSTextbox label="Tên tiếng anh" v-model="obj.AccountNameEnglish" :disable="isShow"/>
                     </div>
                 </div>
                 <div class="row-input">
                     <div class="w-1-2" style="display:flex;align-items:center">
                         <div class="w-1-2" style="padding:1.5px 12px 0px 0px;">
-                            <BaseCBB label="Tài khoản tổng hợp" :value="obj.AccountCodeRoot" @valueCBBChanged="obj.AccountCodeRoot = $event" :disable="isShow" :header="accountHead" :data="ListAccounts" :plus="false" :indexshow="1"/>
+                            <BaseCBB label="Tài khoản tổng hợp" v-model="obj.AccountCodeRoot" :disable="isShow" :header="accountHead" :data="ListAccounts" :plus="false" :indexshow="1"/>
                         </div>
                         <div class="w-1-2" style="padding-top:4px">
-                            <MSSelect :disable="isShow" :value="obj.Propertie"  @valueSLChanged="obj.Propertie = $event" label="Tính chất" :data="ListType" :required="true"/>
+                            <MSSelect :disable="isShow" v-model="obj.Propertie" label="Tính chất" :data="ListType" :required="true"/>
                         </div>
                     </div>
                 </div>
-                 <div class="row-input">
-                    <MSTextbox label="Diễn giải" :textarea="true"  :value="obj.Explain" @valueChanged="obj.Explain = $event" :disable="isShow"/>
-                 </div>
+                <div class="row-input">
+                    <div class="cb-label">Diễn giải</div>
+                </div>
+                <div class="row-input">
+                    <textarea class="explain" v-model="obj.Explain"></textarea>
+                </div>
                  <div class="row-input">
                     <el-checkbox v-model="obj.IsForeignCurrencyAccounting">Có hạch toán ngoại tệ</el-checkbox>
                  </div>
@@ -61,7 +64,7 @@
                                          <el-checkbox v-model="trackingDetails[0].check" >Đối tượng</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[0].value"  @valueSLChanged="trackingDetails[0].value = $event" :data="ListSupp" :disable="!trackingDetails[0].check"/>
+                                         <MSSelect v-model="trackingDetails[0].value" :data="ListSupp" :disable="!trackingDetails[0].check"/>
                                      </div>
                                  </div>
                              </div>
@@ -79,7 +82,7 @@
                                          <el-checkbox v-model="trackingDetails[n].check">{{trackingDetails[n].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[n].value"  @valueSLChanged="trackingDetails[n].value = $event" :data="rules" :disable="!trackingDetails[n].check"/>
+                                         <MSSelect v-model="trackingDetails[n].value" :data="rules" :disable="!trackingDetails[n].check"/>
                                      </div>
                                  </div>
                              </div>
@@ -90,7 +93,7 @@
                                          <el-checkbox v-model="trackingDetails[n+1].check">{{trackingDetails[n+1].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect :value="trackingDetails[n+1].value"  @valueSLChanged="trackingDetails[n+1].value = $event" :data="rules" :disable="!trackingDetails[n+1].check"/>
+                                         <MSSelect v-model="trackingDetails[n+1].value" :data="rules" :disable="!trackingDetails[n+1].check"/>
                                      </div>
                                  </div>
                                 </div>     
@@ -156,21 +159,23 @@ import BaseAPI from '@/BaseAPI.js'
                 ],
                 rangeFor:[2,4,6,8],
                 isShow:false,
-                trackingDetails:[ // để đúng thứ tự trái -> phải
-                    {check:false,value:1,name:'Object',show:'Đối tượng'},
+
+                //Theo dõi chi tiết
+                trackingDetails:[ 
+                    {check:false,value:"1",name:'Object',show:'Đối tượng'},
                     {check:false,value:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
 
-                    {check:false,value:1,name:'ObjectGatherCost',show:'Đối tượng THCP'},
-                    {check:false,value:1,name:'Construct',show:'Công trình'},
+                    {check:false,value:"1",name:'ObjectGatherCost',show:'Đối tượng THCP'},
+                    {check:false,value:"1",name:'Construct',show:'Công trình'},
 
-                    {check:false,value:1,name:'Order',show:'Đơn đặt hàng'},
-                    {check:false,value:1,name:'PurchaseSell',show:'Hợp đồng bán'},
+                    {check:false,value:"1",name:'Order',show:'Đơn đặt hàng'},
+                    {check:false,value:"1",name:'PurchaseSell',show:'Hợp đồng bán'},
 
-                    {check:false,value:1,name:'PurchaseBuy',show:'Hợp đồng mua'},
-                    {check:false,value:1,name:'ExpenseItem',show:'Khoản mục CP'},
+                    {check:false,value:"1",name:'PurchaseBuy',show:'Hợp đồng mua'},
+                    {check:false,value:"1",name:'ExpenseItem',show:'Khoản mục CP'},
 
-                    {check:false,value:1,name:'Unit',show:'Đơn vị'},
-                    {check:false,value:1,name:'StatisticalCode',show:'Mã thống kê'},
+                    {check:false,value:"1",name:'Unit',show:'Đơn vị'},
+                    {check:false,value:"1",name:'StatisticalCode',show:'Mã thống kê'},
                 ],
 
                 formMode:'Add',
@@ -188,6 +193,7 @@ import BaseAPI from '@/BaseAPI.js'
         },
         created(){
             busData.$on('showDialogAddAccount',()=>{
+                this.getAccounts();
                 this.drawer = true;
                 setTimeout(()=>{
                     this.$refs.AccountCode.focusInput();
@@ -226,12 +232,14 @@ import BaseAPI from '@/BaseAPI.js'
 
         },
         mounted(){
-            this.getAccounts();
         },
         methods:{
             resetForm(){
                 Object.assign(this.$data, this.$options.data())
             },
+            /**
+             * Lấy danh sách tài khoản tổng hợp
+             */
             async getAccounts(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
@@ -247,7 +255,8 @@ import BaseAPI from '@/BaseAPI.js'
                 this.drawer=false;
                 this.resetForm();
             },
-            async btnSaveOnClick(isSaveAndAdd){
+
+            validate(){
                 let err;
                 if(!this.obj.AccountCode){
                     err = 'Số tài khoản không được bỏ trống';
@@ -255,7 +264,17 @@ import BaseAPI from '@/BaseAPI.js'
                 }else if(!this.obj.AccountName){
                     err = 'Tên tài khoản không được bỏ trống';
                     busData.$emit('showDialogError',err,2);
-                }else{
+                }
+            },
+            focusError(errCode){
+                if(errCode == 1){
+                    this.$refs.AccountCode.focusInput();
+                } else if(errCode == 2){
+                    this.$refs.AccountName.focusInput();
+                }    
+            },
+            async btnSaveOnClick(isSaveAndAdd){
+                if(this.validate){
                     //gom dữ liệu phần chi tiết theo dõi
                     for(let i=0;i<this.trackingDetails.length;i++){
                         if(this.trackingDetails[i].check){
@@ -281,16 +300,13 @@ import BaseAPI from '@/BaseAPI.js'
                             this.getAccounts();
                         }
                     }
-                }   
+                }
             },
+            
            
-            focusError(errCode){
-                if(errCode == 1){
-                    this.$refs.AccountCode.focusInput();
-                } else if(errCode == 2){
-                    this.$refs.AccountName.focusInput();
-                }    
-            },
+            /**
+             * Thay đổi kích thước form 
+             */
             resizeForm(){
                 if(this.formSize == '800px'){
                     this.formSize = 'calc(100% - 6px)';
@@ -361,5 +377,20 @@ import BaseAPI from '@/BaseAPI.js'
     font-size: 16px;
     font-weight: 400;
     color: #212121;
+}
+.cb-label{
+    font-size: 12px;
+    font-weight: 700;
+    color: #212121;
+    padding-bottom: 4px;
+}
+textarea.explain{
+    width: 100%;
+    height: 40px;
+    padding:10px;
+    border: 1px solid #babec5;
+}
+textarea.explain:focus{
+    border-color: #2ca01c;
 }
 </style>

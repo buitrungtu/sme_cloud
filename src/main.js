@@ -13,13 +13,19 @@ import DialogError from '@/components/content/cash/Process/DialogError'
 Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
 Vue.use(ElSelectTree);
-
+Vue.use(require('vue-shortkey'))
+Vue.directive('focus', {
+  inserted: function (el) {
+      el.focus()
+  }
+})
 
 Vue.component('DialogError',DialogError)
 
 const router = new VueRouter({
   routes
 })
+
 // bus event
 export const busData = new Vue();
 Vue.config.productionTip = false
