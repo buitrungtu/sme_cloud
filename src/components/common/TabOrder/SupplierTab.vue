@@ -115,7 +115,7 @@
                 </div>
             </div>
             <div class="bank-account" v-show="thisTab == 2">
-                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px">
+                <el-table :data="tableBankAccount" style="width: 100%" max-height="150px" ref="table">
                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
                             <MSTextbox :disabled="review"  ref="BankAccount"  v-model="scope.row.BankAccount"/>
@@ -333,6 +333,10 @@ import BaseCBB from '@/components/common/BaseCBB'
                     BankCity:''
                 };
                 this.tableBankAccount.push(newRow);
+                setTimeout(()=>{
+                    console.log(this.$refs.table.$children[8].$children[6].$refs);
+                    this.$refs.table.$children[8].$children[6].$refs.input.focus();
+                },100)
             },
             removeAllRow(){
                 this.tableBankAccount = [];

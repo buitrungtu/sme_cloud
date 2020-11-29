@@ -17,7 +17,7 @@
                     <button>Tiện ích <div class="icon icon-filtdown"></div> </button>
                 </div>
                 <div class="button-add">
-                    <button @click="showDialogAddSupplier()">Thêm</button>
+                    <button @click="btnAddSupplierOnClick()">Thêm</button>
                     <button class="down-list">
                         <div class="split"></div>
                         <div class="icon icon-downlist"></div>
@@ -79,7 +79,7 @@
             <div class="grid-content">
             <el-table
                     ref="multipleTable"
-                    :data="data"
+                    :data="dataSearch"
                     style="width: 100%"
                     height="100%"
                     @cell-dblclick="dbClickForReview"	
@@ -138,7 +138,7 @@
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
                                         <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
-                                        <el-dropdown-item @click.native.prevent="deleteRow(control.row.SupplierId)" >Xóa</el-dropdown-item>
+                                        <el-dropdown-item @click.native.prevent="deleteRow(control.row)" >Xóa</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </div>
@@ -166,6 +166,7 @@
     </div> 
         </div>
         <AddSupplier @stateChange="isShow == $event"/>
+        <DialogNotification />
     </div>
 </template>
 
@@ -201,11 +202,17 @@ import MSSelect from '@/components/common/MSSelect'
         created(){
             busData.$emit('changeTab',1);
 
-
             //Lắng nghe sự kiện load lại data từ AddSupplier
             busData.$on('reloadData',()=>{
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
             })
+
+
+            //Khi người dùng xác nhận xóa
+            busData.$on('deleteObj',(SupplierId)=>{
+                this.DeleteSuplier(SupplierId);
+            })
+
         },
         mounted(){
             this.GetDataSuplier(this.pageNow,this.recordOnPage);
@@ -216,7 +223,6 @@ import MSSelect from '@/components/common/MSSelect'
             async GetDataSuplier(page,record){
                 let res = await BaseAPI.GetByPaging('https://localhost:44363/api/suppliers',page,record); 
                 if(res){
-                    console.log(res.data.Data);
                     this.data = res.data.Data;
                     this.totalRecord = res.data.TotalRecord;
                     this.totalPage = res.data.TotalPage;
@@ -235,16 +241,16 @@ import MSSelect from '@/components/common/MSSelect'
             /**
              * Sự kiện xóa 1 bản ghi
              */
-            deleteRow(SuppID){
-                this.DeleteSuplier(SuppID);
+            deleteRow(row){
+                let mes = 'Bạn có thực sự muốn xóa nhà cung cấp < '+ row.SupplierCode +' > không?';
+                busData.$emit('showDialogConfirm',mes,row.SupplierId);
             },
-            gotoPaymentVoucher(){
-                this.$router.push('/paymentvoucher');
-            },
-            showDialogAddSupplier(){
+            /**
+             * Sự kiện thêm supplier
+             */
+            btnAddSupplierOnClick(){
                 busData.$emit('showFormAddSupplier');
             },
-
             /**
              * Sửa thông tin nhân viên
              */
@@ -252,21 +258,20 @@ import MSSelect from '@/components/common/MSSelect'
                 //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',SuppID); 
                 if(res && res.data){
-                    console.log(res.data)
                     busData.$emit('editSupplier',res.data);
                 }
             },
-            
+            /**
+             * Sự kiện double click vào 1 trường
+             */
             async dbClickForReview(row){
                 console.log(row);
                 //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',row.SupplierId); 
                 if(res && res.data){
-                    console.log(res.data)
                     busData.$emit('editSupplier',res.data);
                 }
             },
-
             //Xử lý phím tắt
             keyupHandler(event){
                 if (event.ctrlKey && event.code  === 'F9') {
@@ -286,20 +291,30 @@ import MSSelect from '@/components/common/MSSelect'
                 if(this.pageNow < this.totalPage){
                     this.GetDataSuplier(this.pageNow+1,this.recordOnPage);
                 }
+            },
+
+            supportSearch(item,search){
+                let aimsSearch = ['SupplierCode','SupplierName','Address','TaxCode','Mobile'];
+                for(let i=0;i<aimsSearch.length;i++){
+                    if(item[aimsSearch[i]] && item[aimsSearch[i]].toLowerCase().includes(search.toLowerCase())){
+                        return true;
+                    }
+                }
+                return false;
+            },
+            
+        },
+        computed:{
+            dataSearch(){
+                return this.data.filter(
+                    x => !this.txtSearch || this.supportSearch(x,this.txtSearch)
+                )
             }
-        },watch:{
+        },
+        watch:{
             recordOnPage:function(){
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
             },
-            txtSearch:function(){
-                this.data = this.data.filter((item)=>{
-                    var check = this.txtSearch.toUpperCase();
-                    return item.SupplierCode.toUpperCase().search(check) != -1;
-                })
-                if(this.txtSearch == ''){
-                    this.GetDataSuplier(this.pageNow,this.recordOnPage);
-                }
-            }
         }
      
     }

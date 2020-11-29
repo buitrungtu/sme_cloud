@@ -6,7 +6,7 @@ import ElementUI from 'element-ui';
 import ElSelectTree from 'el-select-tree';
 
 import locale from 'element-ui/lib/locale/lang/vi'
-import DialogError from '@/components/content/cash/Process/DialogError'
+import DialogNotification from '@/components/content/cash/Process/DialogNotification'
 
 
 
@@ -20,7 +20,7 @@ Vue.directive('focus', {
   }
 })
 
-Vue.component('DialogError',DialogError)
+Vue.component('DialogNotification',DialogNotification)
 
 const router = new VueRouter({
   routes

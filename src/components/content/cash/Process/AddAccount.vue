@@ -1,5 +1,5 @@
 <template>
-    <div class="add-unit">
+    <div class="add-unit" v-shortkey="['esc']" @shortkey="btnCloseOnClick()">
         <el-drawer
             title="Thêm tài khoản"
             :visible="drawer"
@@ -10,14 +10,14 @@
         >
             <div class="dialog-close">
                 <div class="icon icon-help"></div>
-                <el-tooltip class="item" effect="dark" :visible-arrow="false"	 content="Đóng (ESC)" placement="top-start">
-                    <div @click="btnCloseOnClick()" class="icon icon-close"></div>
+                <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Đóng (ESC)" placement="top-start">
+                    <div @click="btnCloseOnClick()" v-shortkey="['esc']" @shortkey="btnCloseOnClick()" class="icon icon-close"></div>
                 </el-tooltip>
             </div>
             <div class="btn-fullsreen" :class="{true:formSize != '800px'}" @click="resizeForm()">
                 <div class="icon icon-fullsreen"></div>
             </div>
-            <div class="content" v-if="drawer">
+            <div class="content" v-if="!reset">
                 <div class="row-input">
                     <div class="w-1-4">
                         <MSTextbox ref="AccountCode" v-model="obj.AccountCode" :disable="isShow" label="Số tài khoản"  :required="true" />
@@ -102,21 +102,24 @@
                     </el-collapse-item>
                  </el-collapse>
             </div>
-           
-            <div class="dialog-footer">
-                   <div class="divide"></div>
-                   <div class="btn-footer">
-                       <div class="btn-right">
-                           <button @click="btnSaveOnClick(false)" >Cất</button>
-                           <button @click="btnSaveOnClick(true)" class="save-and-add">Cất và thêm</button>
-                       </div>
-                       <div class="btn-left">
-                           <button @click="btnCloseOnClick()">Hủy</button>
-                       </div>
-                   </div>
-               </div>
+            <div class="dialog-footer" v-show="!reset" :style="{width:formSize}" >
+                <div class="divide"></div>
+                <div class="btn-footer">
+                    <div class="btn-right">
+                        <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
+                            <button v-shortkey="['ctrl', 's']" @shortkey="btnSaveOnClick()" @click="btnSaveOnClick()"> Cất</button> 
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và thêm (Ctrl + Shift + S)" placement="top-start">
+                            <button v-shortkey="['ctrl','shift' ,'s']" @shortkey="btnSaveAndAddOnClick()" class="save-and-add" @click="btnSaveAndAddOnClick()">Cất và thêm</button>
+                            </el-tooltip>
+                    </div>
+                    <div class="btn-left">
+                        <button @click="btnCloseOnClick()">Hủy</button>
+                    </div>
+                </div>
+            </div>
         </el-drawer>
-        <DialogError @dialogErrorClose="focusError($event)"/>
+        <DialogNotification />
     </div>
 </template>
 
@@ -137,7 +140,6 @@ import BaseAPI from '@/BaseAPI.js'
                 formSize:'800px',
                 followClick:false,
                 AccountID:"",
-                drawer: false,
                 dummy:['1'],
                 accountHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
                 ListAccounts:[
@@ -178,7 +180,9 @@ import BaseAPI from '@/BaseAPI.js'
                     {check:false,value:"1",name:'StatisticalCode',show:'Mã thống kê'},
                 ],
 
-                formMode:'Add',
+                drawer: false, // Form show hoặc ẩn
+                reset:false, // reset nội dung form
+                formMode:'Add', 
                 obj:{
                     BankAccount:false, 
                     IsForeignCurrencyAccounting:false,
@@ -195,6 +199,7 @@ import BaseAPI from '@/BaseAPI.js'
             busData.$on('showDialogAddAccount',()=>{
                 this.getAccounts();
                 this.drawer = true;
+                this.reset = false;
                 setTimeout(()=>{
                     this.$refs.AccountCode.focusInput();
                 },200)
@@ -210,10 +215,11 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 }
                 this.drawer = true;
+                this.formMode = 'Edit';
+                this.reset = false;
                 setTimeout(()=>{
                     this.$refs.AccountCode.focusInput();
                 },200)
-                this.formMode = 'Edit'
             })
 
             busData.$on('duplicateAccount',(data)=>{
@@ -230,13 +236,16 @@ import BaseAPI from '@/BaseAPI.js'
                 this.obj.AccountCode = '';
             })
 
+            busData.$on('dialogErrorClose',(errCode)=>{
+                this.focusError(errCode);
+            })
+
         },
         mounted(){
+           
         },
         methods:{
-            resetForm(){
-                Object.assign(this.$data, this.$options.data())
-            },
+           
             /**
              * Lấy danh sách tài khoản tổng hợp
              */
@@ -251,21 +260,28 @@ import BaseAPI from '@/BaseAPI.js'
                     })
                 }
             },
-            btnCloseOnClick(){
-                this.drawer=false;
-                this.resetForm();
-            },
 
+            
+
+            /**
+             * Validate dữ liệu trước khi đem cất
+             */
             validate(){
                 let err;
                 if(!this.obj.AccountCode){
                     err = 'Số tài khoản không được bỏ trống';
                     busData.$emit('showDialogError',err,1);
+                    return false
                 }else if(!this.obj.AccountName){
                     err = 'Tên tài khoản không được bỏ trống';
                     busData.$emit('showDialogError',err,2);
+                    return false
                 }
+                return true
             },
+            /**
+             * Focus vào ô nhập liệu bị lỗi cho người dùng
+             */
             focusError(errCode){
                 if(errCode == 1){
                     this.$refs.AccountCode.focusInput();
@@ -273,37 +289,78 @@ import BaseAPI from '@/BaseAPI.js'
                     this.$refs.AccountName.focusInput();
                 }    
             },
-            async btnSaveOnClick(isSaveAndAdd){
-                if(this.validate){
-                    //gom dữ liệu phần chi tiết theo dõi
-                    for(let i=0;i<this.trackingDetails.length;i++){
-                        if(this.trackingDetails[i].check){
-                            this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].value;
-                        }
+
+            /**
+             * Gọi API để cất dữ liệu
+             */
+            async callApiSaveData(isAdd){
+                //gom dữ liệu - chi tiết theo dõi
+                for(let i=0;i<this.trackingDetails.length;i++){
+                    if(this.trackingDetails[i].check){
+                        this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].value;
                     }
-                    //gọi api
-                    let res;
-                    if(this.formMode == 'Add'){
-                        res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
+                }
+                //Call API
+                let res;
+                if(this.formMode == 'Add'){
+                    res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
+                }else{
+                    res = await BaseAPI.Put('https://localhost:44363/api/accounts',this.obj.AccountId,this.obj);
+                }
+                if(res){
+                    if(res.data.Success == false){
+                        //Lỗi gửi về từ server
+                        busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
                     }else{
-                        res = await BaseAPI.Put('https://localhost:44363/api/accounts',this.obj.AccountId,this.obj);
-                    }
-                    if(res){
-                        if(res.data.Success == false){
-                            busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
-                        }else{
-                            busData.$emit('reloadData');
-                            this.btnCloseOnClick();
+                        //Gửi tín hiệu load lại data sang form AccountPage
+                        this.$emit('reloadDataAccount');
+                        //Phân hành động cho 2 sự kiện cất, cất và thêm
+                        if(isAdd)   this.btnCloseOnClick();
+                        else{ //Save and add
                             this.resetForm();
-                            this.$emit('reloadData');
-                            this.drawer=isSaveAndAdd;
                             this.getAccounts();
-                        }
+                            
+                            setTimeout(()=>{
+                                this.reset = false;
+                            },100)
+                            setTimeout(()=>{
+                                this.$refs.AccountCode.focusInput();
+                            },200)
+                        }   
                     }
                 }
             },
-            
-           
+            /**
+             * Đưa form về trạng thái ban đầu
+             */
+            resetForm(){
+                Object.assign(this.$data, this.$options.data());
+                this.drawer = true;
+                this.reset = true;
+            },
+            /**
+             * Sự kiện thoát form
+             */
+            btnCloseOnClick(){
+                this.resetForm();
+                this.drawer=false;
+            },
+            /**
+             * Sự kiện cho nút cất
+             */
+            btnSaveOnClick(){
+                if(this.validate()){
+                    this.callApiSaveData(true);
+                }
+            },
+            /**
+             * Sự kiện cho nút cất và thêm
+             */
+            btnSaveAndAddOnClick(){
+                if(this.validate()){
+                    this.callApiSaveData(false);
+                }
+            },
             /**
              * Thay đổi kích thước form 
              */
@@ -322,14 +379,23 @@ import BaseAPI from '@/BaseAPI.js'
 
 .content{
     width: 100%;
-    height: calc(100% - 100px);
+    height: calc(100% - 95px);
     padding: 10px 20px;
     position: relative;
+    overflow-y: auto;
+}
+.content::-webkit-scrollbar{
+    width: 2.5px;
+    background: #fff;
+}
+.content::-webkit-scrollbar-thumb{
+    background: #e0e0e0;
 }
 
 .dialog-footer{
-    width: 100%;
     padding: 0px 15px;
+    position: fixed;
+    right: 0;
 }
 .flex{
     display: flex;
@@ -383,6 +449,13 @@ import BaseAPI from '@/BaseAPI.js'
     font-weight: 700;
     color: #212121;
     padding-bottom: 4px;
+}
+.item {
+    margin:0px 4px;
+}
+.bottom {
+    clear: both;
+    text-align: center;
 }
 textarea.explain{
     width: 100%;

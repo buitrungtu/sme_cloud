@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div  v-shortkey="['esc']" @shortkey="btnCloseOnClick()">
         <div class="black-model" v-show="show"></div>
         <div class="dialog dialog-supplier" v-if="show">
         <header class="dialog-header">
@@ -22,7 +22,7 @@
                 </el-tooltip>
             </div>
         </header>
-        <div class="dialog-content">
+        <div class="dialog-content" v-if="!reset">
             <div class="dialog-body">
                 <div class="body-info" v-show="obj.IsPersonal == false">
                     <div class="w-1-2 body-left">
@@ -101,15 +101,14 @@
                     <div class="btn-footer">
                         <div class="btn-right">
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
-                                <!-- <button v-short v-shortkey="['ctrl', 's']" @shortkey="btnSaveOnClick()" @click="btnSaveOnClick()"> Cất</button> -->
-                                <button @click="btnSaveOnClick()"> Cất</button>
+                                <button v-shortkey="['ctrl', 's']" @shortkey="btnSaveOnClick()" @click="btnSaveOnClick()"> Cất</button> 
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và thêm (Ctrl + Shift + S)" placement="top-start">
-                                <button class="save-and-add" @click="btnAddAndSaveOnClick()">Cất và thêm</button>
+                                <button v-shortkey="['ctrl','shift' ,'s']" @shortkey="btnSaveAndAddOnClick()" class="save-and-add" @click="btnSaveAndAddOnClick()">Cất và thêm</button>
                              </el-tooltip>
                         </div>
                         <div class="btn-left">
-                            <button @click="show = false">Hủy</button>
+                            <button @click="btnCloseOnClick()">Hủy</button>
                         </div>  
                     </div>
                 </div>
@@ -118,12 +117,12 @@
                     <div class="btn-footer">
                         <div class="btn-right">
                             <el-tooltip class="item" effect="dark" content="Sửa (Ctrl + Shift + G)" placement="bottom">
-                                <button class="save-and-add" @click="review = false">Sửa</button>
+                                <button v-shortkey="['ctrl','shift' ,'g']" @shortkey="review = false" class="save-and-add" @click="review = false">Sửa</button>
                             </el-tooltip>
                         </div>
                         <div class="btn-left">
                             <el-tooltip class="item" effect="dark" content="Tool tip nè" placement="top-start"/>
-                            <button @click="show = false">Hủy</button>
+                            <button @click="btnCloseOnClick()">Hủy</button>
                         </div>  
                     </div>
                 </div>
@@ -133,7 +132,6 @@
             <div class="black-model-2" v-show="false"></div>
             <AddEmployee :visible="false"/>
         </div>
-        <DialogError @dialogErrorClose="focusError($event)"/>
     </div>
 </template>
 
@@ -180,10 +178,11 @@ import BaseAPI from '@/BaseAPI.js'
                 //dữ liệu gửi cho service
                 obj:{
                     IsPersonal:false,
-                    IsCustomer:false
+                    IsCustomer:false,
                 },
                 state:'Add', //Thêm hay sửa
                 review:false, // chế độ xem không sửa
+                reset:false
             }
         },
         created(){
@@ -192,6 +191,10 @@ import BaseAPI from '@/BaseAPI.js'
                 this.GetGroupSupplies();
                 this.GetEmployees();
                 this.show = true;
+            }),
+
+            busData.$on('dialogErrorClose',(errCode)=>{
+                this.focusError(errCode);
             })
         },
       
@@ -203,10 +206,8 @@ import BaseAPI from '@/BaseAPI.js'
                 this.show = true;
                 this.review = true; //để chế độ xem không cho sửa
             })
-            document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
-            //API
 
             /**
              * Lấy danh sách nhóm khách hàng
@@ -239,7 +240,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             
             /**
-             * Trigger cho người dùng các ô nhập liệu bị lỗi
+             * Focus vào những ô nhập liệu lỗi
              */
             focusError(errCode){
                 if(errCode == 1){
@@ -275,33 +276,40 @@ import BaseAPI from '@/BaseAPI.js'
             },
             //Event 
 
-            async callApiSaveData(){
+            async callApiSaveData(isAdd){
                 //Xử lý dữ liệu
                 //Chuyển trường BankAccount về dạng json
                 this.obj.BankAccount = JSON.stringify(this.$refs.SupplierTab.tableBankAccount);
+                //Chuyển trường DeliveryAddress về dạng mảng
                 this.obj.DeliveryAddress = this.$refs.SupplierTab.tableDeliveryAddress.map(item=>{
                     return item.Address;
                 });
+                 //Chuyển trường IdentityDate về dạng ngày tháng tiêu chuẩn (yyyy/mm/dd)
                 if(this.obj.IdentityDate){  
                     this.obj.IdentityDate = this.obj.IdentityDate.split('/').reverse().join('/');
                 }
-                this.obj.MaxDebt = this.obj.MaxDebt.replace(/\./g,' ');
-                console.log(this.obj);
+                if(this.obj.MaxDebt)
+                    this.obj.MaxDebt = this.obj.MaxDebt.replace(/\./g,' ');
+
                 //Gọi API
                 let res;
                 if(this.state == 'Add'){
                     res = await BaseAPI.Post('https://localhost:44363/api/suppliers',this.obj); 
-                }else{ //EDIT
+                }else{ // this.state == EDIT
                     res = await BaseAPI.Put('https://localhost:44363/api/suppliers',this.obj.SupplierId,this.obj); 
                 }
                 if(res){
                     if(res.data.Success == false){
-                        //Lỗi gửi về từ server
+                        //Lỗi gửi về từ server, truyền thông tin lỗi cho form DialogError
                         busData.$emit('showDialogError',res.data.Message,res.data.ErrorCode);
                     }else{
                         //Gửi tín hiệu load lại data sang form SupplierPage
                         busData.$emit('reloadData');
-                        this.btnCloseOnClick();
+                        //Phân hành động cho 2 sự kiện cất, cất và thêm
+                        if(isAdd)   this.btnCloseOnClick();
+                        else{
+                            this.resetForm();
+                        }   
                     }
                 }
             },
@@ -312,16 +320,16 @@ import BaseAPI from '@/BaseAPI.js'
             btnSaveOnClick(){
                 //Check Require
                 if(this.validate()){
-                    this.callApiSaveData();
+                    this.callApiSaveData(true);
                 }
             },
+
             /**
              * Sự kiện khi click nút cất và thêm
              */
-            btnAddAndSaveOnClick(){
+            btnSaveAndAddOnClick(){
                 if(this.validate()){
-                    this.callApiSaveData();
-                    this.resetForm();
+                    this.callApiSaveData(false);
                 }
             },
 
@@ -330,19 +338,23 @@ import BaseAPI from '@/BaseAPI.js'
              */
             resetForm(){
                 Object.assign(this.$data, this.$options.data());
+                this.show = true;
+                this.reset = true;
+                setTimeout(()=>{
+                    this.reset = false;
+                },100)
+                this.GetGroupSupplies();
+                this.GetEmployees();
             },
+
+            /**
+             * Sự kiện thoát form
+             */
             btnCloseOnClick(){
+                // trước khi thoát thì reset hết thông tin trên form đó
                 this.resetForm();
                 this.show = false;
             },
-
-            //Xử lý phím tắt
-            keyupHandler(event){
-                if(event.code === 'Escape') {
-                    this.btnCloseOnClick();
-                }
-            },
-          
         },
     }
 </script>

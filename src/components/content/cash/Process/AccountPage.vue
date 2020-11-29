@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <AddAccount @reloadData="reloadData()"/>
+        <AddAccount @reloadDataAccount="reloadData()"/>
     </div>
 </template>
 
@@ -139,13 +139,12 @@ import BaseAPI from '@/BaseAPI.js'
             }
         },
         created(){
-            busData.$emit('changeTab',1);
+            
         },
         mounted(){
             this.getAccounts();
         },
         methods:{
-            //API
             /**
              * Lấy danh sách tài khoản (Tạo thành dạng cây)
              */
@@ -240,6 +239,7 @@ import BaseAPI from '@/BaseAPI.js'
             dbClickForEdit(row){
                 this.btnEditOnClick(row.AccountId);
             },
+
             reloadData(){
                 this.getAccounts();
             },

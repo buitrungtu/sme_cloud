@@ -116,6 +116,7 @@ import {busData} from '@/main.js';
                 this.triggerErr = this.trigger;
                 this.$refs.input.focus();
             },
+           
         },
         
     }
