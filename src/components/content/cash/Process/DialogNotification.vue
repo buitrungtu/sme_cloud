@@ -12,7 +12,7 @@
                 <button @click="errorCloseOnClick()" >Đóng</button>
             </div>
             <div class="confirm-btn"  v-show="!isError">
-                 <button class="btn-cancel" @click="show = false">Không</button>
+                 <button class="btn-cancel" @click="btnCancelOnClick()">Không</button>
                 <button @click="btnConfirmOnClick()">Có</button>
             </div>
         </div>
@@ -28,7 +28,6 @@ import {busData} from '@/main.js'
                 errorMess:'',
                 errCode:0,
                 isError:true,
-                objId:'' //ID để xóa
             }
         },
         created(){
@@ -39,10 +38,9 @@ import {busData} from '@/main.js'
                 this.show = true;
             })
 
-            busData.$on('showDialogConfirm',(mes,id)=>{
+            busData.$on('showDialogConfirm',(mes)=>{
                 this.errorMess = mes;
                 this.isError = false;
-                this.objId = id;
                 this.show = true;
             })
 
@@ -51,9 +49,15 @@ import {busData} from '@/main.js'
                 this.show = false;
                 busData.$emit('dialogErrorClose',this.errCode);
             },
+            
             btnConfirmOnClick(){
                 this.show = false;
-                busData.$emit('deleteObj',this.objId);
+                busData.$emit('deleteAccept');
+            },
+
+            btnCancelOnClick(){
+                this.show = false;
+                busData.$emit('cancelDelete');
             }
         }
     }

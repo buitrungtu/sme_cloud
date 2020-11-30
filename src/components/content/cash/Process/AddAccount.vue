@@ -302,6 +302,9 @@ import BaseAPI from '@/BaseAPI.js'
                         this.obj[this.trackingDetails[i].name] = null
                     }
                 }
+
+                this.obj.BankAccount = this.trackingDetails[1].value;
+
                 //Call API
                 let res;
                 console.log(this.trackingDetails)

@@ -8,7 +8,9 @@
                 @focus="isFocus=true" @blur="checkRequired()"
                 v-bind="$attrs"
                 v-on="inputListeners"
-                v-model="content" >
+                v-model="content" 
+                @keypress="isNumber($event)"
+            >
         </div>
     </div> 
 </template>
@@ -67,7 +69,17 @@ import {busData} from '@/main.js';
            },
            focusInput(){
               this.$refs.input.focus();
-           }
+           },
+            isNumber(e){
+                if(this.number){ // nếu input là number (Không cho nhập chữ)
+                    e = (e) ? e : window.event;
+                    var charCode = (e.which) ? e.which : e.keyCode;
+                    if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                        e.preventDefault();
+                    } 
+                }
+            },
+           
         },
         mounted(){
             if(this.autofocus == true){
@@ -87,36 +99,23 @@ import {busData} from '@/main.js';
                 })
             }
         },watch:{
-            content:function(){
-                if(this.number){ // kiểm tra số
-                    var reg = /^[0-9.]*$/; 
-                   if(!reg.test(this.content)){
-                       this.content = "";
-                   }
-                //    else{
-                //        if(this.type == 'money'){ // định dạng tiền tệ
-                //            try {
-                //                 var x = this.content;
-                //                 x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
-                //                 x = x.split("").reverse().join(""); // đảo chuỗi
-                //                 x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm
-                //                     return e + ".";
-                //                 });
-                //                 x = x.split("").reverse().join("");// đảo lại chuỗi
-                //                 x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
-                //                 this.content = x;
-                //             } catch{
-                //                 console.log('Lỗi chỗ format tiền nè bạn ơi');
-                //             }
-                //        }
-                //    }
-                }
-            },
             trigger:function(){
                 this.triggerErr = this.trigger;
                 this.$refs.input.focus();
             },
-           
+            content:function(){
+                if(this.type == 'money'){
+                    var x = this.content;
+                    x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
+                    x = x.split("").reverse().join(""); // đảo chuỗi
+                    x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm
+                        return e + ".";
+                    });
+                    x = x.split("").reverse().join("");// đảo lại chuỗi
+                    x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
+                    this.content = x;
+                }
+            }
         },
         
     }

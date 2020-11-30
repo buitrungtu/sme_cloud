@@ -5,7 +5,7 @@
             <li class="li-header" v-bind:class="{active:thisTab==1}" @click="thisTab=1">Điều khoản thanh toán</li>
             <li class="li-header" v-bind:class="{active:thisTab==2}" @click="tabBankAccountOnClick()">Tài khoản ngân hàng</li>
             <li class="li-header" v-bind:class="{active:thisTab==3}" @click="thisTab=3">Địa chỉ khác</li>
-            <li class="li-header" v-bind:class="{active:thisTab==4}" @click="thisTab=4">Ghi chú</li>
+            <li class="li-header" v-bind:class="{active:thisTab==4}" @click="tabNoteOnClick()">Ghi chú</li>
         </ul>
         <div class="content-tab" >
             <div class="contact" v-show="thisTab == 0">
@@ -118,7 +118,7 @@
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px" ref="table">
                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
-                            <MSTextbox :disabled="review"  ref="BankAccount"  v-model="scope.row.BankAccount"/>
+                            <MSTextbox :disabled="review" :ref="scope.row.Name"  v-model="scope.row.BankAccount"/>
                         </template>
                     </el-table-column>
                     <el-table-column prop="BankName" label="TÊN NGÂN HÀNG" width="190">
@@ -178,9 +178,9 @@
                     </div>
 
                     <el-table :data="tableDeliveryAddress" style="width: 100%;" max-height="140">
-                       <el-table-column prop="Address" width="300" label="Địa chỉ giao hàng">
+                       <el-table-column prop="Address" width="358" label="Địa chỉ giao hàng">
                             <template slot-scope="scope">
-                                <MSTextbox :disabled="review" v-model="scope.row.Address" />
+                                <MSTextbox :ref="scope.row.Name" :disabled="review" v-model="scope.row.Address" />
                             </template>
                         </el-table-column>
                         <el-table-column fixed="right" label="" width="50">
@@ -201,7 +201,7 @@
             </div>
 
             <div class="note" v-show="thisTab == 4">
-                <textarea :disabled="review" v-model="obj.Note" tabindex="1"></textarea>
+                <textarea ref="note" :disabled="review" v-model="obj.Note" tabindex="1"></textarea>
             </div>
         </div>
     </div>
@@ -256,10 +256,11 @@ import BaseAPI from '@/BaseAPI.js'
                     BankAccount:'',
                     BankName:'',
                     BankBranch:'',
-                    BankCity:''
+                    BankCity:'',
+                    Name:'BankAccount'
                 }],
                 tableDeliveryAddress:[
-                    {Address:''}
+                    {Address:'',Name:'address'}
                 ],
                 obj:{
                     IsSameAddressSupplier:false
@@ -315,6 +316,9 @@ import BaseAPI from '@/BaseAPI.js'
                 });
             }
         },
+        updated(){
+            
+        },
         methods:{
 
              /**
@@ -358,6 +362,18 @@ import BaseAPI from '@/BaseAPI.js'
             },
             
             /**
+             * Focus vào vùng note khi sang tab ghi chú
+             */
+            tabNoteOnClick(){
+                this.thisTab = 4;
+                setTimeout(()=>{
+                    this.$refs.note.focus();
+                },100)
+            },
+
+
+
+            /**
              * Sự kiện với table tài khoản ngân hàng
              */
             deleteRow(index) {
@@ -368,12 +384,12 @@ import BaseAPI from '@/BaseAPI.js'
                     BankAccount:'',
                     BankName:'',
                     BankBranch:'',
-                    BankCity:''
+                    BankCity:'',
+                    Name:'BankAccount'
                 };
                 this.tableBankAccount.push(newRow);
                 setTimeout(()=>{
-                    console.log(this.$refs.table.$children[8].$children[6].$refs);
-                    this.$refs.table.$children[8].$children[6].$refs.input.focus();
+                    this.$refs.BankAccount.focusInput();
                 },100)
             },
             removeAllRow(){
@@ -389,9 +405,13 @@ import BaseAPI from '@/BaseAPI.js'
             },
             addRowAddress(){
                 let newRow  = {
-                    Address:''
+                    Address:'',
+                    Name:'address'
                 };
                 this.tableDeliveryAddress.push(newRow);
+                setTimeout(()=>{
+                    this.$refs.address.focusInput();
+                },100)
             },
             removeAllRowAddress(){
                 this.tableDeliveryAddress = [];

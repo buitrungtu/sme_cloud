@@ -97,7 +97,7 @@
 
                                         <el-dropdown-menu slot="dropdown">
                                             <el-dropdown-item @click.native.prevent="duplicateAccount(control.row.AccountId)" >Nhân bản</el-dropdown-item>
-                                            <el-dropdown-item @click.native.prevent="deleteAccount(control.row.AccountId)" >Xóa</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="confirmDelete(control.row)" >Xóa</el-dropdown-item>
                                             <el-dropdown-item @click.native.prevent="stopUse(control.row.AccountId)" >Ngưng sử dụng</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
@@ -136,16 +136,30 @@ import BaseAPI from '@/BaseAPI.js'
                 reload:false,
                 totalRecord:0,
                 refresh:true,
-                txtSearch:''
+                txtSearch:'',
+
+                AccountIdDelete:'' // ID đối tượng chuẩn bị xóa
             }
         },
         created(){
-            
+
+            //Khi người dùng xác nhận xóa
+            busData.$on('deleteAccept',()=>{
+                if(this.AccountIdDelete){
+                    this.deleteAccount(this.AccountIdDelete);
+                    this.AccountIdDelete = '';
+                }
+            }),
+            //Khi người dùng hủy xóa
+            busData.$on('cancelDelete',()=>{
+                this.AccountIdDelete = '';
+            })
         },
         mounted(){
             this.getAccounts();
         },
         methods:{
+           
             /**
              * Lấy danh sách tài khoản (Tạo thành dạng cây)
              */
@@ -204,6 +218,13 @@ import BaseAPI from '@/BaseAPI.js'
                     busData.$emit('duplicateAccount',res.data);
                 }
             },
+
+            confirmDelete(row){
+                let mes = 'Bạn có thực sự muốn xóa tài khoản < '+ row.AccountCode +' > không?';
+                this.AccountIdDelete = row.AccountId;
+                busData.$emit('showDialogConfirm',mes);
+            },
+
             /**
              * Xóa tài khoản
              */

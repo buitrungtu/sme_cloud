@@ -167,7 +167,7 @@
     </div> 
         </div>
         <AddSupplier @stateChange="isShow == $event"/>
-        <DialogNotification />
+        <DialogNotification @cancelDelete="cancelDelete()" @deleteAccept='deleteObj()'/>
     </div>
 </template>
 
@@ -197,23 +197,29 @@ import MSSelect from '@/components/common/MSSelect'
                 totalPage:0,
                 pageNow:1,
                 recordOnPage:'20',
-                txtSearch:''
+                txtSearch:'',
+
+                SupplierIdDelete:'' // ID đối tượng chuẩn bị xóa
             }
         },
         created(){
-            busData.$emit('changeTab',1);
 
             //Lắng nghe sự kiện load lại data từ AddSupplier
             busData.$on('reloadData',()=>{
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
+            }),
+
+             //Khi người dùng xác nhận xóa
+            busData.$on('deleteAccept',()=>{
+                if(this.SupplierIdDelete){
+                    this.DeleteSuplier(this.SupplierIdDelete);
+                    this.SupplierIdDelete = '';
+                }
+            }),
+            //Khi người dùng hủy xóa
+            busData.$on('cancelDelete',()=>{
+                this.SupplierIdDelete = '';
             })
-
-
-            //Khi người dùng xác nhận xóa
-            busData.$on('deleteObj',(SupplierId)=>{
-                this.DeleteSuplier(SupplierId);
-            })
-
         },
         mounted(){
             this.GetDataSuplier(this.pageNow,this.recordOnPage);
@@ -251,7 +257,8 @@ import MSSelect from '@/components/common/MSSelect'
              */
             deleteRow(row){
                 let mes = 'Bạn có thực sự muốn xóa nhà cung cấp < '+ row.SupplierCode +' > không?';
-                busData.$emit('showDialogConfirm',mes,row.SupplierId);
+                this.SupplierIdDelete = row.SupplierId;
+                busData.$emit('showDialogConfirm',mes);
             },
 
             /**

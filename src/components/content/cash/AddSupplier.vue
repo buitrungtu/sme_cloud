@@ -292,9 +292,10 @@ import BaseAPI from '@/BaseAPI.js'
                 if(this.obj.IdentityDate){  
                     this.obj.IdentityDate = this.obj.IdentityDate.split('/').reverse().join('/');
                 }
-                // if(this.obj.MaxDebt)
-                //     this.obj.MaxDebt = this.obj.MaxDebt.replace(/\./g,' ');
-
+                //Xóa hết dấu . (format money) đi
+                if(this.obj.MaxDebt)
+                    this.obj.MaxDebt = this.obj.MaxDebt.replace(/\./g,'');
+                
                 //Gọi API
                 let res;
                 if(this.state == 'Add'){
