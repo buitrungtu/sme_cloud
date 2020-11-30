@@ -131,18 +131,19 @@
                         label="CHỨC NĂNG"
                         width="210">
                         <template slot-scope="control">
-                            <div style="display:flex;align-items: center;justify-content: center;">
-                                <el-dropdown>
-                                    <span class="el-dropdown-link">
-                                    Trả tiền <i class="el-icon-caret-bottom"></i>
-                                    </span>
-                                    <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
-                                        <el-dropdown-item @click.native.prevent="deleteRow(control.row)" >Xóa</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </el-dropdown>
-                            </div>
-                        </template>
+                                <div style="display:flex;align-items: center;justify-content: center;">
+                                    <button class="btn-pay">Trả tiền</button>
+                                    <el-dropdown trigger="click">
+                                        <span class="el-dropdown-link">
+                                            <i class="el-icon-caret-bottom"></i>
+                                        </span>
+                                        <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
+                                            <el-dropdown-item @click.native.prevent="deleteRow(control.row)" >Xóa</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </el-dropdown>
+                                </div>
+                            </template>
                     </el-table-column>
                 </el-table>
                 <div class="footer-fixed">
@@ -219,7 +220,12 @@ import MSSelect from '@/components/common/MSSelect'
             document.addEventListener('keyup', this.keyupHandler)
         },
         methods:{
-            //API
+            
+            /**
+                * Lấy danh sách nhà cung cấp từ service
+                * @param {number,String} page
+                * @param {number,String} record
+             */
             async GetDataSuplier(page,record){
                 let res = await BaseAPI.GetByPaging('https://localhost:44363/api/suppliers',page,record); 
                 if(res){
@@ -229,14 +235,16 @@ import MSSelect from '@/components/common/MSSelect'
                     this.pageNow = page
                 }
             },
+             /**
+                * Xóa nhà cung cấp
+                * @param {String} id
+             */
             async DeleteSuplier(id){
                 let res = await BaseAPI.Delete('https://localhost:44363/api/suppliers',id); 
                 if(res && res.status){
                     this.GetDataSuplier(this.pageNow,this.recordOnPage);
                 }
             },
-
-            //Event vue
 
             /**
              * Sự kiện xóa 1 bản ghi
@@ -245,14 +253,17 @@ import MSSelect from '@/components/common/MSSelect'
                 let mes = 'Bạn có thực sự muốn xóa nhà cung cấp < '+ row.SupplierCode +' > không?';
                 busData.$emit('showDialogConfirm',mes,row.SupplierId);
             },
+
             /**
              * Sự kiện thêm supplier
              */
             btnAddSupplierOnClick(){
                 busData.$emit('showFormAddSupplier');
             },
+
             /**
              * Sửa thông tin nhân viên
+             * @param {String} SuppID
              */
             async editRow(SuppID){
                 //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
@@ -265,7 +276,6 @@ import MSSelect from '@/components/common/MSSelect'
              * Sự kiện double click vào 1 trường
              */
             async dbClickForReview(row){
-                console.log(row);
                 //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',row.SupplierId); 
                 if(res && res.data){
@@ -293,6 +303,8 @@ import MSSelect from '@/components/common/MSSelect'
                 }
             },
 
+
+            //Hàm bổ trợ cho chức năng tìm kiếm
             supportSearch(item,search){
                 let aimsSearch = ['SupplierCode','SupplierName','Address','TaxCode','Mobile'];
                 for(let i=0;i<aimsSearch.length;i++){
@@ -305,6 +317,7 @@ import MSSelect from '@/components/common/MSSelect'
             
         },
         computed:{
+            //Kết quả tìm kiếm
             dataSearch(){
                 return this.data.filter(
                     x => !this.txtSearch || this.supportSearch(x,this.txtSearch)
@@ -312,6 +325,7 @@ import MSSelect from '@/components/common/MSSelect'
             }
         },
         watch:{
+            //Cập nhật lại danh sách dữ liệu, khi người dùng thay đổi số trang trên 1 page
             recordOnPage:function(){
                 this.GetDataSuplier(this.pageNow,this.recordOnPage);
             },
@@ -628,5 +642,20 @@ tfoot{
 .disable{
     cursor: default!important;
     color: #9e9e9e;
+}
+.btn-pay{
+    padding: 6px 0 6px 16px!important;
+    color: #0075c0;
+    transition: all .2s ease;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+    margin-right: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 13px;
 }
 </style>

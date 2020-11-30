@@ -64,7 +64,7 @@
                                          <el-checkbox v-model="trackingDetails[0].check" >Đối tượng</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect v-model="trackingDetails[0].value" :data="ListSupp" :disable="!trackingDetails[0].check"/>
+                                         <MSSelect v-model="trackingDetails[0].value" :data="ListSupp" :disable="!trackingDetails[0].check" placeholder=''/>
                                      </div>
                                  </div>
                              </div>
@@ -82,7 +82,7 @@
                                          <el-checkbox v-model="trackingDetails[n].check">{{trackingDetails[n].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect v-model="trackingDetails[n].value" :data="rules" :disable="!trackingDetails[n].check"/>
+                                         <MSSelect v-model="trackingDetails[n].value" :data="rules" :disable="!trackingDetails[n].check" placeholder=''/>
                                      </div>
                                  </div>
                              </div>
@@ -93,7 +93,7 @@
                                          <el-checkbox v-model="trackingDetails[n+1].check">{{trackingDetails[n+1].show}}</el-checkbox>
                                      </div>
                                      <div class="w-1-2">
-                                         <MSSelect v-model="trackingDetails[n+1].value" :data="rules" :disable="!trackingDetails[n+1].check"/>
+                                         <MSSelect v-model="trackingDetails[n+1].value" :data="rules" :disable="!trackingDetails[n+1].check" placeholder='' />
                                      </div>
                                  </div>
                                 </div>     
@@ -164,20 +164,20 @@ import BaseAPI from '@/BaseAPI.js'
 
                 //Theo dõi chi tiết
                 trackingDetails:[ 
-                    {check:false,value:"1",name:'Object',show:'Đối tượng'},
+                    {check:false,value:"",name:'Object',show:'Đối tượng'},
                     {check:false,value:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
 
-                    {check:false,value:"1",name:'ObjectGatherCost',show:'Đối tượng THCP'},
-                    {check:false,value:"1",name:'Construct',show:'Công trình'},
+                    {check:false,value:"",name:'ObjectGatherCost',show:'Đối tượng THCP'},
+                    {check:false,value:"",name:'Construct',show:'Công trình'},
 
-                    {check:false,value:"1",name:'Order',show:'Đơn đặt hàng'},
-                    {check:false,value:"1",name:'PurchaseSell',show:'Hợp đồng bán'},
+                    {check:false,value:"",name:'Order',show:'Đơn đặt hàng'},
+                    {check:false,value:"",name:'PurchaseSell',show:'Hợp đồng bán'},
 
-                    {check:false,value:"1",name:'PurchaseBuy',show:'Hợp đồng mua'},
-                    {check:false,value:"1",name:'ExpenseItem',show:'Khoản mục CP'},
+                    {check:false,value:"",name:'PurchaseBuy',show:'Hợp đồng mua'},
+                    {check:false,value:"",name:'ExpenseItem',show:'Khoản mục CP'},
 
-                    {check:false,value:"1",name:'Unit',show:'Đơn vị'},
-                    {check:false,value:"1",name:'StatisticalCode',show:'Mã thống kê'},
+                    {check:false,value:"",name:'Unit',show:'Đơn vị'},
+                    {check:false,value:"",name:'StatisticalCode',show:'Mã thống kê'},
                 ],
 
                 drawer: false, // Form show hoặc ẩn
@@ -298,10 +298,14 @@ import BaseAPI from '@/BaseAPI.js'
                 for(let i=0;i<this.trackingDetails.length;i++){
                     if(this.trackingDetails[i].check){
                         this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].value;
+                    }else{
+                        this.obj[this.trackingDetails[i].name] = null
                     }
                 }
                 //Call API
                 let res;
+                console.log(this.trackingDetails)
+                console.log(this.obj);
                 if(this.formMode == 'Add'){
                     res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
                 }else{
@@ -385,11 +389,11 @@ import BaseAPI from '@/BaseAPI.js'
     overflow-y: auto;
 }
 .content::-webkit-scrollbar{
-    width: 2.5px;
+    width: 10px;
     background: #fff;
 }
 .content::-webkit-scrollbar-thumb{
-    background: #e0e0e0;
+    background: #b8bcc3;
 }
 
 .dialog-footer{

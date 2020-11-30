@@ -1,7 +1,14 @@
 <template>
     <div class="select">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <el-select v-model="content"  v-on="EventListeners" size="small" :disabled="disable" :placeholder="placeholder">
+        <el-select
+            v-model="content" 
+            v-on="EventListeners"
+            size="small"
+            :disabled="disable"
+            :placeholder="placeholder"
+            :automatic-dropdown="true"	
+        >
             <el-option
                 v-for="item in data"
                 :key="item.value"
@@ -36,6 +43,10 @@
         created(){
             if(this.value){
                 this.content = this.value+'';
+            }else{
+                if(this.required){
+                    this.content = this.data[0].value;
+                }
             }
         },
         methods:{

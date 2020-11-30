@@ -22,7 +22,7 @@
                 <div class="grid-filter">
                     <div class="grid-filter-left">
                         <div class="header-search">
-                            <input type="text" class="txt-search" placeholder="Tìm theo số, tên tài khoản">
+                            <input type="text" v-model="txtSearch" class="txt-search" placeholder="Tìm theo số, tên tài khoản">
                             <div class="icon icon-search"></div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                 <div class="grid-content">
                 <el-table
                         ref="multipleTable"
-                        :data="data"
+                        :data="dataSearch"
                         style="width: 100%"
                         height="100%"
                         row-key="AccountId"
@@ -59,7 +59,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            prop="Propertie"
+                            prop="PropertieName"
                             label="TÍNH CHẤT"
                             width="150">
                         </el-table-column>
@@ -135,7 +135,8 @@ import BaseAPI from '@/BaseAPI.js'
                 multipleSelection: [],
                 reload:false,
                 totalRecord:0,
-                refresh:true
+                refresh:true,
+                txtSearch:''
             }
         },
         created(){
@@ -247,8 +248,26 @@ import BaseAPI from '@/BaseAPI.js'
             collapseAll(){
                 this.collapse = !this.collapse;
             },
-           
+
+            //Hàm bổ trợ cho chức năng tìm kiếm
+            supportSearch(item,search){
+                let aimsSearch = ['AccountCode','AccountName'];
+                for(let i=0;i<aimsSearch.length;i++){
+                    if(item[aimsSearch[i]] && item[aimsSearch[i]].toLowerCase().includes(search.toLowerCase())){
+                        return true;
+                    }
+                }
+                return false;
+            },
         },
+        computed:{
+            //Kết quả tìm kiếm
+            dataSearch(){
+                return this.data.filter(
+                    x => !this.txtSearch || this.supportSearch(x,this.txtSearch)
+                )
+            }
+        }
     }
 </script>
 

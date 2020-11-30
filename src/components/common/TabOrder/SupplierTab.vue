@@ -212,6 +212,8 @@ import MSSelect from '@/components/common/MSSelect'
 import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
 import BaseCBB from '@/components/common/BaseCBB'
+import BaseAPI from '@/BaseAPI.js'
+
     export default {
         props:{
             isPer:Boolean,
@@ -243,15 +245,13 @@ import BaseCBB from '@/components/common/BaseCBB'
                         {TermsOfPayment:'DK03',TermsOfPaymentName:'Điều khoản 3'}
                 ],
                 accountLabel:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
+
                 dataAccountReceivable:[
-                    {AccountCode:'131',AccountName:'Phải thu của khách hàng'}
                 ],
                 
                 dataAccountPay:[
-                    {AccountCode:'331',AccountName:'Phải trả cho người bán'},
-                    {AccountCode:'3388',AccountName:'Phải trả, phải nộp khác'},
-                    {AccountCode:'3411',AccountName:'Các khoản đi vay'},
                 ],
+
                 tableBankAccount:[{
                     BankAccount:'',
                     BankName:'',
@@ -300,6 +300,8 @@ import BaseCBB from '@/components/common/BaseCBB'
         },
         created(){
             this.obj = this.root;  
+            this.GetAccountReceivable();
+            this.GetAccountPay();
         },
         beforeMount(){
             if(this.obj.BankAccount){
@@ -314,6 +316,40 @@ import BaseCBB from '@/components/common/BaseCBB'
             }
         },
         methods:{
+
+             /**
+             * Lấy danh sách tài khoản công nợ phải thu
+             */
+            async GetAccountReceivable(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/accounts/a/2'); 
+                if(res && res.data){
+                    this.dataAccountReceivable = res.data.map((item)=>{
+                        return{
+                            'AccountCode':item.AccountCode,
+                            'AccountName':item.AccountName
+                        }
+                    })
+                }
+            },
+
+              /**
+             * Lấy danh sách tài khoản công nợ phải trả
+             */
+            async GetAccountPay(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/accounts/a/1'); 
+                if(res && res.data){
+                    this.dataAccountPay = res.data.map((item)=>{
+                        return{
+                            'AccountCode':item.AccountCode,
+                            'AccountName':item.AccountName
+                        }
+                    })
+                }
+            },
+
+            /**
+             * Sự kiện click sang tab tài khoản ngân hàng
+             */
             tabBankAccountOnClick(){
                 this.thisTab = 2;
                 setTimeout(()=>{
@@ -321,8 +357,10 @@ import BaseCBB from '@/components/common/BaseCBB'
                 },100)
             },
             
+            /**
+             * Sự kiện với table tài khoản ngân hàng
+             */
             deleteRow(index) {
-                console.log(index);
                 this.tableBankAccount.splice(index, 1);
             },
             addRow(){
@@ -342,6 +380,10 @@ import BaseCBB from '@/components/common/BaseCBB'
                 this.tableBankAccount = [];
             },
             //------------------------------------------------
+
+            /**
+             * Sự kiện với table địa chỉ khác
+             */
             deleteRowAddress(index) {
                 this.tableDeliveryAddress.splice(index, 1);
             },
