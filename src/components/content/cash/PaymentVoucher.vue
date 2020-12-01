@@ -24,7 +24,7 @@
         <div class="black-model" v-show="showBlackModel1"></div>
         <div class="black-model-2" v-show="showBlackModel2"></div>
 
-        <AddSupplier v-if="showAddSupplire"/>
+        <AddSupplier />
         <AddEmployee :visible="showAddEmployee"/>
         <AddGroupSupplier v-if="showAddGroupSupplier"/>
         
@@ -62,8 +62,7 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
         created(){
             busData.$on('showDialog',(mission)=>{
             if(mission == 'AddSupplier'){
-                this.showAddSupplire=true;
-                this.showBlackModel1 = true;
+                busData.$emit('showFormAddSupplier');
             }else if(mission == 'AddEmployee'){
                 this.showAddEmployee=true;
                 this.showBlackModel2 = true;
@@ -94,45 +93,15 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
                 showAddEmployee:false,
                 showAddGroupSupplier:false,
                 options: [
-                    {
-                    value: '1',
-                    label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'
-                    }, {
-                    value: '2',
-                    label: '2. Tạm ứng cho nhân viên',
-                    
-                    }, {
-                    value: '3',
-                    label: '3. Chi mua ngoài có hóa đơn'
-                    }, {
-                    value: '4',
-                    label: '4. Gửi tiền vào ngân hàng'
-                    }, {
-                    value: '5',
-                    label: '5. Chi tiếp khách'
-                    },
-                    {
-                    value: '6',
-                    label: '6. Chi tạm ứng'
-                    },
-                    {
-                    value: '7',
-                    label: '7. Trả lương NV xưởng'
-                    },
-                    {
-                    value: '8',
-                    label: '8. Chi tiền điện'
-                    },
-                    {
-                    value: '9',
-                    label: '9. Chi tiền tiếp khách'
-                    },
-                    {
-                    value: '10',
-                    label: '10. Chi khác',
-                    },
+                    {value: '1',label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'},
+                    {value: '2',label: '2. Tạm ứng cho nhân viên'}, {value: '3',label: '3. Chi mua ngoài có hóa đơn'}, {value: '4',label: '4. Gửi tiền vào ngân hàng'}, 
+                    {value: '5',label: '5. Chi tiếp khách'},
+                    {value: '6',label: '6. Chi tạm ứng'},
+                    {value: '7',label: '7. Trả lương NV xưởng'},
+                    {value: '8',label: '8. Chi tiền điện'},
+                    {value: '9',label: '9. Chi tiền tiếp khách'},
+                    {value: '10',label: '10. Chi khác'},
                 ],
-                
             }
         },
         methods:{

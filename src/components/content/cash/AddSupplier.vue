@@ -157,14 +157,15 @@ import BaseAPI from '@/BaseAPI.js'
         },
         data(){
             return{
-                show:false,
-                showDialogError:false,
-                checkRequire:false,
+                
+                show:false,// ẩn hiện form
+
                 headerGroupSupplies:[{label:'Mã nhóm KH,NCC',width:'125'},{label:'Tên nhóm KH,NCC',width:'180'}],
                 dataGroupSupplies:[],
                 headerEmployees:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'}],
                 dataEmployees:[],
-                vocatives:[
+
+                vocatives:[ //xưng hô
                     {value:'1',label:'Anh'},
                     {value:'2',label:'Chị'},
                     {value:'3',label:'Em'},
@@ -182,24 +183,33 @@ import BaseAPI from '@/BaseAPI.js'
                 },
                 state:'Add', //Thêm hay sửa
                 review:false, // chế độ xem không sửa
-                reset:false
+                reset:false // reset dữ liệu đã nhập trước đó
             }
         },
         created(){
-            //Lắng nghe sự kiện show form từ SupplierPage
+            /**
+             * Lắng nghe sự kiện show form
+             * Author: BTTu(25/11/2020)
+             */
             busData.$on('showFormAddSupplier',()=>{
                 this.GetGroupSupplies();
                 this.GetEmployees();
                 this.show = true;
             }),
 
+            /**
+             * Lắng nghe sự kiện đóng form lỗi
+             * Author: BTTu(25/11/2020)
+             */
             busData.$on('dialogErrorClose',(errCode)=>{
                 this.focusError(errCode);
             })
         },
       
         mounted(){
-            //Nhận sự kiện edit supplier từ form SupplierPage
+            /**
+             * Nhận sự kiện edit supplier từ form SupplierPage
+             */
             busData.$on('editSupplier',(supplier)=>{
                 this.obj = supplier;
                 this.state = 'Edit'
@@ -211,6 +221,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Lấy danh sách nhóm khách hàng
+             * Author: BTTu(25/11/2020)
              */
             async GetGroupSupplies(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/GroupSuppliers'); 
@@ -226,6 +237,7 @@ import BaseAPI from '@/BaseAPI.js'
             
             /**
              * Lấy danh sách nhân viên
+             * Author: BTTu(25/11/2020)
              */
             async GetEmployees(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/employees'); 
@@ -239,12 +251,10 @@ import BaseAPI from '@/BaseAPI.js'
                 }
             },
             
-            
-
-
-
             /**
              * Focus vào những ô nhập liệu lỗi
+             * Author: BTTu(25/11/2020)
+             * @param {String,Number} errCode 
              */
             focusError(errCode){
                 if(errCode == 1){
@@ -264,6 +274,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Validate dữ liệu trước khi gửi lên service 
+             * Author: BTTu(25/11/2020)
              */
             validate(){
                 let err = '';
@@ -280,6 +291,11 @@ import BaseAPI from '@/BaseAPI.js'
             },
             //Event 
 
+            /**
+             * Gọi API cất dữ liệu
+             * Author: BTTu(25/11/2020)
+             * @param {Boolean} isAdd
+             */
             async callApiSaveData(isAdd){
                 //Xử lý dữ liệu
                 //Chuyển trường BankAccount về dạng json
@@ -321,6 +337,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Sự kiện khi click nút cất
+             * Author: BTTu(25/11/2020)
              */
             btnSaveOnClick(){
                 //Check Require
@@ -331,6 +348,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Sự kiện khi click nút cất và thêm
+             * Author: BTTu(25/11/2020)
              */
             btnSaveAndAddOnClick(){
                 if(this.validate()){
@@ -340,6 +358,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Reset lại data của component
+             * Author: BTTu(25/11/2020)
              */
             resetForm(){
                 Object.assign(this.$data, this.$options.data());

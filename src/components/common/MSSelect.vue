@@ -1,7 +1,7 @@
 <template>
     <div class="select">
         <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
-        <el-select
+        <el-select ref="select"
             v-model="content" 
             v-on="EventListeners"
             size="small"
@@ -37,19 +37,16 @@
             return{
                 isFocus:false,
                 showOptionDetail:false,
-                content:''
+                content:this.value
             }
         },
         created(){
-            if(this.value){
-                this.content = this.value+'';
-            }else{
-                if(this.required){
-                    this.content = this.data[0].value;
-                }
-            }
+            
         },
         methods:{
+            focusInput(){
+                this.$refs.select.focus();
+            }
         },
         computed:{
             EventListeners(){

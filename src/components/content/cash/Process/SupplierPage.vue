@@ -166,7 +166,7 @@
         </div>
     </div> 
         </div>
-        <AddSupplier @stateChange="isShow == $event"/>
+        <AddSupplier />
         <DialogNotification @cancelDelete="cancelDelete()" @deleteAccept='deleteObj()'/>
     </div>
 </template>
@@ -229,6 +229,7 @@ import MSSelect from '@/components/common/MSSelect'
             
             /**
                 * Lấy danh sách nhà cung cấp từ service
+                * Author:BTTu (25/11/2020)
                 * @param {number,String} page
                 * @param {number,String} record
              */
@@ -243,6 +244,7 @@ import MSSelect from '@/components/common/MSSelect'
             },
              /**
                 * Xóa nhà cung cấp
+                * Author: BTTu (25/11/2020)
                 * @param {String} id
              */
             async DeleteSuplier(id){
@@ -254,6 +256,7 @@ import MSSelect from '@/components/common/MSSelect'
 
             /**
              * Sự kiện xóa 1 bản ghi
+             * Author: BTTu (25/11/2020)
              */
             deleteRow(row){
                 let mes = 'Bạn có thực sự muốn xóa nhà cung cấp < '+ row.SupplierCode +' > không?';
@@ -263,6 +266,7 @@ import MSSelect from '@/components/common/MSSelect'
 
             /**
              * Sự kiện thêm supplier
+             * Author: BTTu (25/11/2020)
              */
             btnAddSupplierOnClick(){
                 busData.$emit('showFormAddSupplier');
@@ -270,6 +274,7 @@ import MSSelect from '@/components/common/MSSelect'
 
             /**
              * Sửa thông tin nhân viên
+             * Author: BTTu (25/11/2020)
              * @param {String} SuppID
              */
             async editRow(SuppID){
@@ -281,6 +286,8 @@ import MSSelect from '@/components/common/MSSelect'
             },
             /**
              * Sự kiện double click vào 1 trường
+             * Author: BTTu (25/11/2020)
+             * @param {Object} row
              */
             async dbClickForReview(row){
                 //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
@@ -289,32 +296,44 @@ import MSSelect from '@/components/common/MSSelect'
                     busData.$emit('editSupplier',res.data);
                 }
             },
-            //Xử lý phím tắt
+            /**
+             * Xử lý phím tắt 
+             * Author: BTTu (25/11/2020)
+             */
             keyupHandler(event){
+                //Show form thêm nhà cung cấp
                 if (event.ctrlKey && event.code  === 'F9') {
                     busData.$emit('showFormAddSupplier');
                 }
             },
-            //Phân trang
-            gotoPage(page){
+
+            /**
+             * Xử lý phân trang
+             * Author: BTTu (25/11/2020)
+             */
+            gotoPage(page){ // tới thẳng 1 trang bất kỳ
                 this.GetDataSuplier(page,this.recordOnPage);
             },
-            prePage(){
+            prePage(){ // Lùi lại 1 trang
                 if(this.pageNow > 1){
                     this.GetDataSuplier(this.pageNow-1,this.recordOnPage);
                 }
             },
-            nextPage(){
+            nextPage(){ // Tiến lên 1 trang
                 if(this.pageNow < this.totalPage){
                     this.GetDataSuplier(this.pageNow+1,this.recordOnPage);
                 }
             },
+            //---------------------------------------------------------------------------
 
-
-            //Hàm bổ trợ cho chức năng tìm kiếm
+            /**
+             * Hàm bổ trợ cho chức năng tìm kiếm
+             * @param {Object} item
+             * @param {String} search
+             */
             supportSearch(item,search){
                 let aimsSearch = ['SupplierCode','SupplierName','Address','TaxCode','Mobile'];
-                for(let i=0;i<aimsSearch.length;i++){
+                for(let i=0;i < aimsSearch.length;i++){
                     if(item[aimsSearch[i]] && item[aimsSearch[i]].toLowerCase().includes(search.toLowerCase())){
                         return true;
                     }
@@ -324,10 +343,13 @@ import MSSelect from '@/components/common/MSSelect'
             
         },
         computed:{
-            //Kết quả tìm kiếm
+            /**
+             * Tìm kiếm all column
+             * Author: BTTu (25/11/2020)
+             */
             dataSearch(){
                 return this.data.filter(
-                    x => !this.txtSearch || this.supportSearch(x,this.txtSearch)
+                    item => !this.txtSearch || this.supportSearch(item,this.txtSearch)
                 )
             }
         },

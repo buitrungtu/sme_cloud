@@ -70,7 +70,7 @@
                              </div>
                             <div class="w-1-2 flex">
                                 <div class="w-5-6 flex">
-                                    <el-checkbox v-model="trackingDetails[1].check">Tài khoản ngân hàng</el-checkbox>
+                                    <el-checkbox v-model="trackingDetails[1].value">Tài khoản ngân hàng</el-checkbox>
                                 </div>     
                              </div>
                          </div>
@@ -139,33 +139,34 @@ import BaseAPI from '@/BaseAPI.js'
             return {
                 formSize:'800px',
                 followClick:false,
-                AccountID:"",
                 dummy:['1'],
+
                 accountHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'200'}],
                 ListAccounts:[
                 ],
-                ListType:[
-                    {value:'1',label:'Dư Nợ'},
-                    {value:'2',label:'Dư Có'},
-                    {value:'3',label:'Lưỡng tính'},
-                    {value:'4',label:'Không có số dư'},
+                
+                ListType:[ //Tính chất
+                    {value:1,label:'Dư Nợ'},
+                    {value:2,label:'Dư Có'},
+                    {value:3,label:'Lưỡng tính'},
+                    {value:4,label:'Không có số dư'},
                 ],
-                ListSupp:[
+                ListSupp:[// theo dõi chi tiết theo đối tượng
                     {value:'1',label:'Nhà cung cấp'},
                     {value:'2',label:'Khách hàng'},
                     {value:'3',label:'Nhân viên'}
                 ],
-                rules:[
+                rules:[ // theo dõi chi tiết theo các cái còn lại
                     {value:'1',label:'Chỉ cảnh báo'},
                     {value:'2',label:'Bắt buộc nhập'},
                 ],
                 rangeFor:[2,4,6,8],
                 isShow:false,
 
-                //Theo dõi chi tiết
+                //Xử lý theo dõi chi tiết
                 trackingDetails:[ 
                     {check:false,value:"",name:'Object',show:'Đối tượng'},
-                    {check:false,value:true,name:'BankAccount',show:'Tài khoản ngân hàng'},
+                    {check:false,value:false,name:'BankAccount',show:'Tài khoản ngân hàng'},
 
                     {check:false,value:"",name:'ObjectGatherCost',show:'Đối tượng THCP'},
                     {check:false,value:"",name:'Construct',show:'Công trình'},
@@ -182,29 +183,37 @@ import BaseAPI from '@/BaseAPI.js'
 
                 drawer: false, // Form show hoặc ẩn
                 reset:false, // reset nội dung form
-                formMode:'Add', 
-                obj:{
+
+                formMode:'Add', //Quyết định POST hay PUT
+
+                obj:{ //dữ liệu tài khoản đem đi cất
                     BankAccount:false, 
                     IsForeignCurrencyAccounting:false,
-                    Status:true
+                    Status:true,
+                    Propertie:1
                 },
-                initialData:{
-                    BankAccount:false, 
-                    IsForeignCurrencyAccounting:false,
-                    Status:true
-                }
+
             };
         },
         created(){
+            /**
+             * Hiện form thêm tài khoản
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('showDialogAddAccount',()=>{
-                this.getAccounts();
-                this.drawer = true;
+                this.getAccounts(); //Lấy danh sách tài khoản tổng hợp
+                this.drawer = true; 
                 this.reset = false;
-                setTimeout(()=>{
+
+                setTimeout(()=>{ //focus vào ô AccountCode
                     this.$refs.AccountCode.focusInput();
                 },200)
             })
 
+            /**
+             * Lắng nghe sự kiện edit từ AccountPage
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('editAccount',(data)=>{
                 this.obj = data;
                 console.log(this.obj);
@@ -214,6 +223,7 @@ import BaseAPI from '@/BaseAPI.js'
                         this.trackingDetails[i].value = this.obj[this.trackingDetails[i].name];
                     }
                 }
+                
                 this.drawer = true;
                 this.formMode = 'Edit';
                 this.reset = false;
@@ -222,6 +232,10 @@ import BaseAPI from '@/BaseAPI.js'
                 },200)
             })
 
+            /**
+             * Lắng nghe sự kiện nhân bản đối tượng từ AccountPage
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('duplicateAccount',(data)=>{
                 this.obj = data;
                 console.log(this.obj);
@@ -236,6 +250,10 @@ import BaseAPI from '@/BaseAPI.js'
                 this.obj.AccountCode = '';
             })
 
+            /**
+             * Lắng nghe sự kiện đóng form lỗi từ DialogNotification
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('dialogErrorClose',(errCode)=>{
                 this.focusError(errCode);
             })
@@ -248,10 +266,16 @@ import BaseAPI from '@/BaseAPI.js'
            
             /**
              * Lấy danh sách tài khoản tổng hợp
+             * Author: BTTu (25/11/2020)
              */
             async getAccounts(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
+                    res.data = res.data.sort((a,b)=>{
+                        if(a.AccountCode > b.AccountCode)   return 1;
+                        else if(a.AccountCode < b.AccountCode)  return -1;
+                        return 0
+                    });
                     this.ListAccounts = res.data.map((item)=>{
                         return{
                             'AccountCode':item.AccountCode,
@@ -265,6 +289,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Validate dữ liệu trước khi đem cất
+             * Author: BTTu (25/11/2020)
              */
             validate(){
                 let err;
@@ -279,8 +304,11 @@ import BaseAPI from '@/BaseAPI.js'
                 }
                 return true
             },
+
             /**
              * Focus vào ô nhập liệu bị lỗi cho người dùng
+             * Author: BTTu (25/11/2020)
+             * @param {String,Number} errCode
              */
             focusError(errCode){
                 if(errCode == 1){
@@ -292,9 +320,11 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Gọi API để cất dữ liệu
+             * Author: BTTu (25/11/2020)
+             * @param {Boolean} isAdd
              */
             async callApiSaveData(isAdd){
-                //gom dữ liệu - chi tiết theo dõi
+                //gom dữ liệu phần chi tiết theo dõi
                 for(let i=0;i<this.trackingDetails.length;i++){
                     if(this.trackingDetails[i].check){
                         this.obj[this.trackingDetails[i].name] = this.trackingDetails[i].value;
@@ -302,13 +332,14 @@ import BaseAPI from '@/BaseAPI.js'
                         this.obj[this.trackingDetails[i].name] = null
                     }
                 }
-
+                if(!this.obj.Propertie || !this.obj.Propertie == 0){
+                    this.obj.Propertie = 1;
+                }
                 this.obj.BankAccount = this.trackingDetails[1].value;
+                
 
                 //Call API
                 let res;
-                console.log(this.trackingDetails)
-                console.log(this.obj);
                 if(this.formMode == 'Add'){
                     res = await BaseAPI.Post('https://localhost:44363/api/accounts',this.obj);
                 }else{
@@ -327,9 +358,11 @@ import BaseAPI from '@/BaseAPI.js'
                             this.resetForm();
                             this.getAccounts();
                             
+                            //Reset lại các ô nhập liệu
                             setTimeout(()=>{
                                 this.reset = false;
                             },100)
+                            //Focus lại vào ô nhập mã
                             setTimeout(()=>{
                                 this.$refs.AccountCode.focusInput();
                             },200)
@@ -339,6 +372,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Đưa form về trạng thái ban đầu
+             * Author: BTTu (25/11/2020)
              */
             resetForm(){
                 Object.assign(this.$data, this.$options.data());
@@ -347,6 +381,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Sự kiện thoát form
+             * Author: BTTu (25/11/2020)
              */
             btnCloseOnClick(){
                 this.resetForm();
@@ -354,6 +389,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Sự kiện cho nút cất
+             * Author: BTTu (25/11/2020)
              */
             btnSaveOnClick(){
                 if(this.validate()){
@@ -362,6 +398,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Sự kiện cho nút cất và thêm
+             * Author: BTTu (25/11/2020)
              */
             btnSaveAndAddOnClick(){
                 if(this.validate()){
@@ -370,6 +407,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             /**
              * Thay đổi kích thước form 
+             * Author: BTTu (25/11/2020)
              */
             resizeForm(){
                 if(this.formSize == '800px'){

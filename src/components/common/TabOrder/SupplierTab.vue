@@ -4,7 +4,7 @@
             <li class="li-header" v-bind:class="{active:thisTab==0}" @click="thisTab=0">Liên hệ</li>
             <li class="li-header" v-bind:class="{active:thisTab==1}" @click="thisTab=1">Điều khoản thanh toán</li>
             <li class="li-header" v-bind:class="{active:thisTab==2}" @click="tabBankAccountOnClick()">Tài khoản ngân hàng</li>
-            <li class="li-header" v-bind:class="{active:thisTab==3}" @click="thisTab=3">Địa chỉ khác</li>
+            <li class="li-header" v-bind:class="{active:thisTab==3}" @click="tabBankAddressOnClick()">Địa chỉ khác</li>
             <li class="li-header" v-bind:class="{active:thisTab==4}" @click="tabNoteOnClick()">Ghi chú</li>
         </ul>
         <div class="content-tab" >
@@ -157,7 +157,7 @@
                     <label class="label-input">Vị trí địa lý</label>
                     <div class="row-input">
                         <div class="w-1-2" style="padding-right:12px" >
-                            <MSSelect :disable="review"  value="1" :data="nations" placeholder="Quốc Gia"/>
+                            <MSSelect ref="nation" :disable="review"  value="1" :data="nations" placeholder="Quốc Gia"/>
                         </div>
                         <div class="w-1-2">
                             <MSSelect :disable="review" v-model="obj.City" :data="cities" placeholder="Tỉnh/Thành phố"/>
@@ -266,37 +266,39 @@ import BaseAPI from '@/BaseAPI.js'
                     IsSameAddressSupplier:false
                 },
                 //Vị trí địa lý
-                nations:[{value:'1',label:'Việt Nam'}],
-                cities:[{value:'1',label:'Hà Nội'},
-                    {value:'2',label:'Đà Nẵng'},
-                    {value:'3',label:'Hồ Chí Minh'},
-                    {value:'4',label:'Gia Lai'},
-                    {value:'5',label:'Cần Thơ'}
+                nations:[{value:'1',label:'Việt Nam'}], //Quốc gia
+                cities:[{value:1,label:'Hà Nội'}, // Thành phố
+                    {value:2,label:'Đà Nẵng'},
+                    {value:3,label:'Hồ Chí Minh'},
+                    {value:4,label:'Gia Lai'},
+                    {value:5,label:'Cần Thơ'}
                 ],
-                districts:[
-                    {value:'1',label:'Hoàn Kiếm'},
-                    {value:'2',label:'Đống Đa'},
-                    {value:'3',label:'Bắc Từ Liêm'},
-                    {value:'4',label:'Nam Từ Liêm'},
-                    {value:'5',label:'Tây Hồ'},
-                    {value:'6',label:'Hoàng Mai'},
-                    {value:'7',label:'Ba Đình'},
-                    {value:'8',label:'Thanh Xuân'},
-                    {value:'9',label:'Hai Bà Trưng'},
-                    {value:'10',label:'Cầu Giấy'},
+                districts:[ // Quận huyện
+                    {value:1,label:'Hoàn Kiếm'},
+                    {value:2,label:'Đống Đa'},
+                    {value:3,label:'Bắc Từ Liêm'},
+                    {value:4,label:'Nam Từ Liêm'},
+                    {value:5,label:'Tây Hồ'},
+                    {value:6,label:'Hoàng Mai'},
+                    {value:7,label:'Ba Đình'},
+                    {value:8,label:'Thanh Xuân'},
+                    {value:9,label:'Hai Bà Trưng'},
+                    {value:10,label:'Cầu Giấy'},
                 ],
-                villages:[
-                    {value:'1',label:'Tây Tựu'},
-                    {value:'2',label:'Minh Khai'},
-                    {value:'3',label:'Cổ Nhuế'},
-                    {value:'4',label:'Thượng Cát'},
-                    {value:'5',label:'Giảng Võ'},
-                    {value:'6',label:'Liên Mạc'},
-                    {value:'7',label:'Xuân Đỉnh'},
-                    {value:'8',label:'Phúc Diễn'},
-                    {value:'9',label:'Đông Ngạc'},
-                    {value:'10',label:'Mễ Trì'},
+                villages:[ //Làng xã
+                    {value:1,label:'Tây Tựu'},
+                    {value:2,label:'Minh Khai'},
+                    {value:3,label:'Cổ Nhuế'},
+                    {value:4,label:'Thượng Cát'},
+                    {value:5,label:'Giảng Võ'},
+                    {value:6,label:'Liên Mạc'},
+                    {value:7,label:'Xuân Đỉnh'},
+                    {value:8,label:'Phúc Diễn'},
+                    {value:9,label:'Đông Ngạc'},
+                    {value:10,label:'Mễ Trì'},
                 ],
+
+                rowAddress:1
             }
         },
         created(){
@@ -305,9 +307,18 @@ import BaseAPI from '@/BaseAPI.js'
             this.GetAccountPay();
         },
         beforeMount(){
+            /**
+             * Chuyển json -> đối tượng hiện lên grid tài khoản ngân hàng
+             * Author: BTTu(25/11/2020)
+             */
             if(this.obj.BankAccount){
                 this.tableBankAccount = JSON.parse(this.obj.BankAccount);
             }
+
+            /**
+             * Chuyển mảng địa chỉ -> mảng đối tượng địa chỉ
+             * Author: BTTu(25/11/2020)
+             */
             if(this.obj.DeliveryAddress){
                 this.tableDeliveryAddress = this.obj.DeliveryAddress.map((item)=>{
                     return{
@@ -323,6 +334,7 @@ import BaseAPI from '@/BaseAPI.js'
 
              /**
              * Lấy danh sách tài khoản công nợ phải thu
+             * Author: BTTu(25/11/2020)
              */
             async GetAccountReceivable(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts/a/2'); 
@@ -338,6 +350,7 @@ import BaseAPI from '@/BaseAPI.js'
 
               /**
              * Lấy danh sách tài khoản công nợ phải trả
+             * Author: BTTu(25/11/2020)
              */
             async GetAccountPay(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts/a/1'); 
@@ -353,6 +366,7 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Sự kiện click sang tab tài khoản ngân hàng
+             * Author: BTTu(25/11/2020)
              */
             tabBankAccountOnClick(){
                 this.thisTab = 2;
@@ -363,6 +377,7 @@ import BaseAPI from '@/BaseAPI.js'
             
             /**
              * Focus vào vùng note khi sang tab ghi chú
+             * Author: BTTu(25/11/2020)
              */
             tabNoteOnClick(){
                 this.thisTab = 4;
@@ -371,10 +386,22 @@ import BaseAPI from '@/BaseAPI.js'
                 },100)
             },
 
+            /**
+             * Focus vào vùng note khi sang tab ghi chú
+             * Author: BTTu(25/11/2020)
+             */
+            tabBankAddressOnClick(){
+                this.thisTab = 3;
+                setTimeout(()=>{
+                    this.$refs.nation.focusInput();
+                },100)
+            },
 
 
             /**
              * Sự kiện với table tài khoản ngân hàng
+             * Author: BTTu(25/11/2020)
+             * @param {String,Number} index
              */
             deleteRow(index) {
                 this.tableBankAccount.splice(index, 1);
@@ -385,36 +412,44 @@ import BaseAPI from '@/BaseAPI.js'
                     BankName:'',
                     BankBranch:'',
                     BankCity:'',
-                    Name:'BankAccount'
+                    Name:'BankAccount1'
                 };
                 this.tableBankAccount.push(newRow);
                 setTimeout(()=>{
-                    this.$refs.BankAccount.focusInput();
-                },100)
+                    console.log(this.$refs.BankAccount1);
+                    this.$refs.BankAccount1.focusInput();
+                },1000)
             },
             removeAllRow(){
                 this.tableBankAccount = [];
             },
             //------------------------------------------------
 
-            /**
+             /**
              * Sự kiện với table địa chỉ khác
+             * Author: BTTu(25/11/2020)
+             * @param {String,Number} index
              */
             deleteRowAddress(index) {
                 this.tableDeliveryAddress.splice(index, 1);
+                this.rowAddress--;
             },
             addRowAddress(){
                 let newRow  = {
                     Address:'',
-                    Name:'address'
+                    Name:'address'+this.rowAddress
                 };
                 this.tableDeliveryAddress.push(newRow);
-                setTimeout(()=>{
-                    this.$refs.address.focusInput();
-                },100)
+                this.$nextTick(() =>{
+                    console.log(this.$refs[newRow.Name]);
+                    this.$refs[newRow.Name].focusInput();
+                    //this.$refs[newRow.Name].$refs.input.focus();
+                })
+                this.rowAddress++;
             },
             removeAllRowAddress(){
                 this.tableDeliveryAddress = [];
+                this.rowAddress=0;
             },
         },
     }

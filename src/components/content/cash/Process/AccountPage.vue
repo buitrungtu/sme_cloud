@@ -55,7 +55,7 @@
                         <el-table-column
                             prop="AccountName"
                             label="TÊN TÀI KHOẢN"
-                            width="300">
+                            width="350">
                         </el-table-column>
 
                         <el-table-column
@@ -67,7 +67,7 @@
                         <el-table-column
                             prop="AccountNameEnglish"
                             label="TÊN TIẾNG ANH"
-                            width="300">
+                            width="345">
                         </el-table-column>
 
                         <el-table-column
@@ -79,14 +79,14 @@
                         <el-table-column
                             prop="Status"
                             label="TRẠNG THÁI"
-                            width="150">
+                            width="200">
                         </el-table-column>
 
 
                         <el-table-column
                             fixed="right"
                             label="Chức năng"
-                            width="150">
+                            width="210">
                             <template slot-scope="control">
                                 <div style="display:flex;align-items: center;justify-content: center;">
                                     <button class="btn-edit" @click="btnEditOnClick(control.row.AccountId)">Sửa</button>
@@ -143,14 +143,21 @@ import BaseAPI from '@/BaseAPI.js'
         },
         created(){
 
-            //Khi người dùng xác nhận xóa
+            /**
+             * Khi người dùng xác nhận xóa
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('deleteAccept',()=>{
                 if(this.AccountIdDelete){
                     this.deleteAccount(this.AccountIdDelete);
                     this.AccountIdDelete = '';
                 }
             }),
-            //Khi người dùng hủy xóa
+
+            /**
+             * Khi người dùng hủy xóa
+             * Author: BTTu (25/11/2020)
+             */
             busData.$on('cancelDelete',()=>{
                 this.AccountIdDelete = '';
             })
@@ -162,17 +169,26 @@ import BaseAPI from '@/BaseAPI.js'
            
             /**
              * Lấy danh sách tài khoản (Tạo thành dạng cây)
+             * Author: BTTu (25/11/2020)
              */
             async getAccounts(){
                 let tempdata = [];
                 let res = await BaseAPI.Get('https://localhost:44363/api/accounts'); 
                 if(res && res.data){
-                    tempdata = res.data;
-                    this.totalRecord = res.data.length;
-                    console.log(res.data)
+                    //Sắp xếp theo AccountCode
+                    tempdata = res.data.sort((a,b)=>{
+                        if(a.AccountCode > b.AccountCode)   return 1;
+                        else if(a.AccountCode < b.AccountCode)  return -1;
+                        return 0
+                    });
+                    this.totalRecord = res.data.length; // tổng số bản ghi
+                    //Phân cấp cha con
                     for(let i =0 ;i<tempdata.length;i++){
                         tempdata[i].children = [];
-                        tempdata[i].Status == true?tempdata[i].Status = 'Đang sử dụng':'Ngưng sử dụng';
+
+                        if(tempdata[i].Status == true)
+                            tempdata[i].Status = 'Đang sử dụng';
+                        else    tempdata[i].Status = 'Ngưng sử dụng';
 
                         if(!tempdata[i].parent){
                             tempdata[i].parent = 0;
@@ -188,18 +204,18 @@ import BaseAPI from '@/BaseAPI.js'
                         }
                         if(sureNot == true) continue;
                     }
+                    
                     let result =  tempdata.filter(function(item){
                         return item.children.length >= 0 && item.parent == 0;
                     })
-                    this.data = result.sort((a,b)=>{
-                        if(a.AccountCode > b.AccountCode)   return 1;
-                        else if(a.AccountCode < b.AccountCode)  return -1;
-                        return 0
-                    });
+                    this.data = result;
                 }
             },
+            
             /**
              * Sửa thông tin tài khoản
+             * Author: BTTu (25/11/2020)
+             * @param {String} id
              */
             async btnEditOnClick(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
@@ -208,8 +224,11 @@ import BaseAPI from '@/BaseAPI.js'
                     busData.$emit('editAccount',res.data);
                 }
             },
+
             /**
              * Nhân bản tài khoản
+             * Author: BTTu (25/11/2020)
+             * @param {String} id
              */
             async duplicateAccount(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
@@ -219,6 +238,11 @@ import BaseAPI from '@/BaseAPI.js'
                 }
             },
 
+            /**
+             * Trước khi xóa, yêu cầu xác nhận lần 2 để xóa
+             * Author: BTTu (25/11/2020)
+             * @param {Object} row
+             */
             confirmDelete(row){
                 let mes = 'Bạn có thực sự muốn xóa tài khoản < '+ row.AccountCode +' > không?';
                 this.AccountIdDelete = row.AccountId;
@@ -227,6 +251,8 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Xóa tài khoản
+             * Author: BTTu (25/11/2020)
+             * @param {String} id
              */
             async deleteAccount(id){
                 let res = await BaseAPI.Delete('https://localhost:44363/api/accounts',id); 
@@ -234,15 +260,20 @@ import BaseAPI from '@/BaseAPI.js'
                     this.reloadData();
                 }
             },
+
             /**
              * Ngưng sử dụng
+             * Author: BTTu (25/11/2020)
+             * @param {String} id
              */
             async stopUse(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/accounts',id); 
                 if(res && res.data){
-                    res.data.status = false;
-                    let res = await BaseAPI.Put('https://localhost:44363/api/accounts',id,res.data);
-                    if(res){
+                    let currenAcc = res.data;
+                    console.log(currenAcc);
+                    currenAcc.Status = false;
+                    let res2 = await BaseAPI.Put('https://localhost:44363/api/accounts',currenAcc.AccountId,currenAcc);
+                    if(res2){
                         this.reloadData();
                     }
                 } 
@@ -250,27 +281,37 @@ import BaseAPI from '@/BaseAPI.js'
 
             /**
              * Sự kiện thêm tài khoản
+             * Author: BTTu (25/11/2020)
              */
             btnAddAccountOnClick(){
                 //gửi yêu cầu show form cho AddAccount
                 busData.$emit('showDialogAddAccount');
             },
+
             /**
              * Sự kiện double click vào 1 bản ghi
+             * Author: BTTu (25/11/2020)
              */
             dbClickForEdit(row){
                 this.btnEditOnClick(row.AccountId);
             },
 
+            /**
+             * Load lại dữ liệu
+             */
             reloadData(){
                 this.getAccounts();
             },
-        
+
             collapseAll(){
                 this.collapse = !this.collapse;
             },
 
-            //Hàm bổ trợ cho chức năng tìm kiếm
+            /**
+             * Hàm bổ trợ cho chức năng tìm kiếm
+             * @param {Object} item
+             * @param {String} search
+             */
             supportSearch(item,search){
                 let aimsSearch = ['AccountCode','AccountName'];
                 for(let i=0;i<aimsSearch.length;i++){
@@ -282,7 +323,10 @@ import BaseAPI from '@/BaseAPI.js'
             },
         },
         computed:{
-            //Kết quả tìm kiếm
+            /**
+             * Tìm kiếm all column
+             * Author: BTTu (25/11/2020)
+             */
             dataSearch(){
                 return this.data.filter(
                     x => !this.txtSearch || this.supportSearch(x,this.txtSearch)
