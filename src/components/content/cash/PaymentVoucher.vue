@@ -19,15 +19,146 @@
             </div>
         </div>
 
-        <ContentPaymentVoucher />
-        
-        <div class="black-model" v-show="showBlackModel1"></div>
-        <div class="black-model-2" v-show="showBlackModel2"></div>
+        <div class="body-layout">
+            <div class="info-top">
+                <div class="payment-infomation">
+                    <div class="w-4-5 basic-info">
+                        <div class="row-input">
+                            <div class="w-3-7">
+                                <BaseCBB label="Đối tượng" v-model="obj.SupplierId" :disable="showState" :header="suppHead" :data="suppliers"/>
+                            </div>
+                            <div class="w-4-7 input-2">
+                                <MSTextbox v-model="obj.Receiver" :disable="showState" label="Người nhận"/>
+                            </div>
+                        </div>
+                        <div class="row-input input-1">
+                            <MSTextbox v-model="obj.Address" :disable="showState" label="Địa chỉ"/>
+                        </div>
+                        <div class="row-input input-1">
+                            <MSTextbox v-model="obj.ReasonSpend" label="Lý do chi" :disable="showState"/>
+                        </div>
+                        <div class="row-input">
+                            <div class="w-3-7 input-1">
+                                <BaseCBB label="Nhân viên" v-model="obj.EmployeeId" :disable="showState" :header="employHead" :data="employees"/>
+                            </div>
+                            <div class="w-4-7 width-240">
+                                <MSTextbox label="Kèm theo"  v-model="obj.LicenseAmount" :disable="showState" :number="true" textAlign = "right" placeholder="Số lượng"/>
+                                <div class="root-invoice">Chứng từ gốc</div>
+                            </div>
+                        </div>
+                        <div class="row-input">
+                            <div class="reference-title">Tham chiếu</div>
+                            <div class="reference-more">...</div>
+                        </div>
+                    </div>
+                    <div class="w-1-5 time-info">
+                        <div class="row-input-right">
+                            <MSDatetime v-model="obj.DateAccounting " :disable="showState" label="Ngày hạch toán" />
+                        </div>
+                        <div class="row-input-right">
+                            <MSDatetime v-model="obj.DatePayment" :disable="showState" label="Ngày phiếu chi" />
+                        </div>
+                        <div class="row-input-right">
+                            <MSTextbox v-model="obj.PaymentVoucherCode" :disable="showState" label="Số phiếu chi" value="PC0023"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-cost">
+                    <div class="sum-title">Tổng tiền</div>
+                    <h1 class="sum-number">0,00</h1>
+                </div>
+            </div>
 
-        <AddSupplier />
-        <AddEmployee :visible="showAddEmployee"/>
-        <AddGroupSupplier v-if="showAddGroupSupplier"/>
+            <div class="grid-payment">
+                <div class="grid-head">
+                    <div class="head-left">
+                        Hạch toán
+                    </div>
+                    <div class="head-right">
+                        <div class="label">Loại tiền</div>
+                        <div class="select">
+                            <BaseCBB v-model="currMoney" :disable="showState" :header="moneyHead" :data="monies" :plus="false"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-accounting">
+                    <el-table :data="tableData" style="width: 100%">
+                        <el-table-column label="#" width="50" type="index">
+                        </el-table-column>
+
+                        <el-table-column prop="Explain"  label="DIỄN GIẢI" width="200">
+                            <template slot-scope="scope">
+                                <MSTextbox :disabled="showState" :ref="scope.row.Name"  v-model="scope.row.Explain"/>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column prop="DebtAccountId" label="TK NỢ" width="125">
+                            <template slot-scope="scope">
+                                <BaseCBB v-model="scope.row.DebtAccountId" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column prop="CreditorAccountId" label="TK NỢ" width="125">
+                            <template slot-scope="scope">
+                                <BaseCBB v-model="scope.row.CreditorAccountId" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
+                            </template>
+                        </el-table-column>
+                        
+
+                        <el-table-column prop="Money"  label="SỐ TIỀN" width="200">
+                            <template slot-scope="scope">
+                                <MSTextbox v-model="scope.row.Money" :disabled="showState" :ref="scope.row.Name"  />
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column prop="SupplierId" label="TK NỢ" width="125">
+                            <template slot-scope="scope">
+                                <BaseCBB v-model="scope.row.SupplierId" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
+                            </template>
+                        </el-table-column>
+                        
+                        <el-table-column prop="SupplierName"  label="TÊN ĐỐI TƯỢNG" width="250">
+                            <template slot-scope="scope">
+                                <MSTextbox v-model="scope.row.SupplierName" :disabled="true" :ref="scope.row.Name"  />
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column fixed="right" label="" width="43">
+                            <template slot-scope="scope">
+                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                                    <div class="icon icon-delete"></div>
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="grid-footer">
+                        <div class="btn-grid-act">
+                            <button @click="addRow()">Thêm dòng</button>
+                            <button @click="removeAllRow()">Xóa hết dòng</button>
+                        </div>
+                    </div>
+
+                    <div class="upload-file">
+                        <div class="upload-title">
+                            <div class="icon icon-upload"></div>
+                            <div class="text">Đính kèm</div>
+                            <div class="max-size">Dung lượng tối đa 5MB</div>
+                        </div>
+                        <el-upload
+                            class="upload-demo"
+                            drag
+                            multiple
+                            action="#"
+                            >
+                            <div class="el-upload__text" style="font-style: italic;">Kéo thả tệp vào đây hoặc bấm vào đây</div>
+                        </el-upload>
+                    </div>
+                </div>
+            </div>
+        </div>
         
+        <AddSupplier />
+
         <div class="footer-layout">
             <div class="footer-left">
                 <button class="btn-cancel">Hủy</button>
@@ -41,57 +172,29 @@
         </div>
     </div>
 </template>
-
 <script>
-import ContentPaymentVoucher from './ContentPaymentVoucher'
+
 import MSSelect from '@/components/common/MSSelect'
+import MSDatetime from '@/components/common/MSDatetime'
 import MSButton from '@/components/common/MSButton'
-import {busData} from '@/main.js'
 import AddSupplier from '@/components/content/cash/AddSupplier'
-import AddEmployee from '@/components/content/cash/AddEmployee'
-import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
+import BaseCBB from '@/components/common/BaseCBB'
+
     export default {
         components:{
-            ContentPaymentVoucher,
             MSSelect,
             MSButton,
             AddSupplier,
-            AddEmployee,
-            AddGroupSupplier
+            MSDatetime,
+            BaseCBB
         },
         created(){
-            busData.$on('showDialog',(mission)=>{
-            if(mission == 'AddSupplier'){
-                busData.$emit('showFormAddSupplier');
-            }else if(mission == 'AddEmployee'){
-                this.showAddEmployee=true;
-                this.showBlackModel2 = true;
-            }else if(mission == 'AddGroupSupplier'){
-                this.showAddGroupSupplier=true;
-                this.showBlackModel3 = true;
-            }
-            })
-            busData.$on('closeDialogSupplier',()=>{
-                this.showAddSupplire=false;
-                this.showBlackModel1 = false;    
-            })
-            busData.$on('closeDialogEmployee',()=>{
-                this.showAddEmployee=false;
-                this.showBlackModel2 = false;
-            })
-            busData.$on('closeDialogGroupSupplier',()=>{
-                this.showAddGroupSupplier=false;
-                this.showBlackModel3 = false;
-            })
+            
         },
         data(){
             return{
-                showBlackModel1:false,
-                showBlackModel2:false,
-                showBlackModel3:false,
-                showAddSupplire:false,
-                showAddEmployee:false,
-                showAddGroupSupplier:false,
+                showState:false,
+                objName:'',
                 options: [
                     {value: '1',label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'},
                     {value: '2',label: '2. Tạm ứng cho nhân viên'}, {value: '3',label: '3. Chi mua ngoài có hóa đơn'}, {value: '4',label: '4. Gửi tiền vào ngân hàng'}, 
@@ -102,12 +205,59 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
                     {value: '9',label: '9. Chi tiền tiếp khách'},
                     {value: '10',label: '10. Chi khác'},
                 ],
+
+                //data cho combobox đối tượng
+                suppHead:[{label:'Đối tượng',width:'100'},{label:'Tên đối tượng',width:'250'},{label:'Mã số thuế',width:'100'},
+                    {label:'Địa chỉ',width:'200'},{label:'Điện thoại',width:'250'}
+                ],
+                suppliers:[],
+
+                //data cho combobox nhân viên
+                employHead:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'250'},{label:'Đơn vị',width:'100'},
+                    {label:'Điện thoại di động',width:'100'}
+                ],
+                employees:[],
+
+                //data loại tiền
+                currMoney:'VND',
+                moneyHead:[{label:'Mã loại tiền',width:'100'},{label:'Tên loại tiền',width:'150'}],
+                monies:[{MoneyCode:'VND',MoneyName:'Việt Nam Đồng'},{MoneyCode:'USD',MoneyName:'Đô La Mỹ'}],
+
+                //data account
+                accHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'150'}],
+                accounts:[],
+                
+                
+                tableData: [{
+                    
+                },],
+                addCount:0,
+
+
+                obj:{
+
+                }
             }
         },
         methods:{
             goBack(){
                 this.$router.back();
-            }
+            },
+            deleteRow(index) {
+                this.tableData.splice(index, 1);
+                if(this.addCount > 0)
+                -- this.addCount;
+            },
+            addRow(){
+                let newRow  = {
+                    
+                };
+                this.tableData = [newRow,...this.tableData];
+                ++ this.addCount;
+            },
+            removeAllRow(){
+                this.tableData = []
+            },
         }
     }
 </script>
@@ -174,6 +324,7 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
     height: 50px;
     justify-content: space-between;
     align-items: center;
+    margin-top: 30px;
 }
 .footer-left,.footer-right{
     padding: 8px 16px;
@@ -192,6 +343,191 @@ import AddGroupSupplier from '@/components/content/cash/AddGroupSupplier'
     overflow: visible;
     transition: all .2s ease;
     cursor: pointer;
+}
+.body-layout{
+    background-color: #f4f5f8;
+    width: 100%;
+    height: calc(100vh - 102px);
+    overflow: auto;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+}
+.body-layout::-webkit-scrollbar{
+    width: 10px;
+    background: #fff;
+}
+.body-layout::-webkit-scrollbar-thumb{
+     background: #888888;
+}
+.info-top{
+    display: flex;
+    width: 100%;
+}
+.payment-infomation{
+    width: 75%!important;
+    padding: 16px 0px 15px 30px;
+    display: flex;
+}
+
+.input-1{
+    padding-right: 16px;
+}
+.input-2{
+    padding: 0 0px 0 12px;
+}
+.width-240{
+    width: 240px !important;
+    display: flex;
+}
+.root-invoice{
+    padding:28px 0.5rem 0px 0.5rem;
+    white-space: nowrap;
+}
+.reference-title{
+    margin-right: 16px;
+    min-width: 75px;
+}
+.reference-more{
+    cursor: pointer;
+    color: #0075c0;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+}
+.row-input-right{
+    width: 185px;
+    padding-bottom: 12px;
+    align-items: flex-end;
+    padding-left: 16px;
+    border-left: 1px solid #d4d7dc;
+}
+.basic-info{
+    height: 100%;
+    padding-right: 16px
+}
+.time-info{
+    height: 100%;
+    padding-top: 1px;
+}
+
+.total-cost{
+    width: 25%!important;
+    padding: 16px 30px 15px 0px;
+    text-align: right;
+}
+.sum-title{
+    font-size: 14px;
+}
+.sum-number{
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.grid-payment{
+    background: #fff;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    height: calc(100vh - 454px);
+}
+.grid-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0 18px 19px;
+    position: sticky;
+    left: 0;
+}
+.head-left{
+    position: relative;
+    height: 32px;
+    margin: 0;
+    padding: 0 16px;
+    color: #212121!important;
+    text-decoration: unset;
+    font-size: 16px;
+    font-weight: unset;
+}
+.head-right{
+    display: flex;
+    position: absolute;
+    right: 30px;
+    top: 12px;
+    align-items: center;
+    justify-content: flex-end;
+}
+.head-right .label{
+    white-space: nowrap;
+    padding:0px 10px 10px 20px;
+}
+.head-right .select{
+    width: 100px;
+}
+.grid-accounting{
+    position: relative;
+    padding: 0px 30px;
+    background: #fff;
+}
+.el-table__row .el-input .el-input__inner{
+  border-style:none;
+}
+.hover-row .el-input .el-input__inner{
+  border-style:solid;   
+}
+.icon.icon-delete{
+    background-position: -460px -312px;
+}
+.grid-footer{
+    width: calc(100% - 60px);
+    padding: 0 30px;
+    background-color: #fff;
+}
+.btn-grid-act{
+    padding-top: 10px;
+    padding-bottom: 32px;
+}
+.btn-grid-act button{
+    padding: 2px 20px;
+    margin-right: 10px;
+    border-color: #8d9096;
+    border-radius: 2.5px;
+    height: 24px;
+    border: 1px solid #8d9096;
+    color: #212121;
+    background-color: transparent;
+    transition: all .2s ease;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+}
+
+
+.upload-title{
+    margin-bottom: 6px;
+    width: fit-content;
+    color: #212121;
+    display: flex;
+}
+.icon.icon-upload{
+    background-position: -539px -203px;
+    margin-right: 8px;
+}
+.upload-title .text{
+    color: #212121;
+    white-space: nowrap;
+    font-weight: 700;
+}
+.max-size{
+    margin-left: 15px;
+    color: #757575;
+    white-space: nowrap;
 }
 
 </style>

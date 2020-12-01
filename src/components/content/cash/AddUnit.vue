@@ -17,14 +17,11 @@
                 </div>
                 <div class="row-input">
                     <div class="w-1-3" style="padding-right: 9px;">
-                        <UnitCBB label="Thuộc đơn vị" v-bind:plus="false"/>
                     </div>
                     <div class="w-2-3">
-                        <UnitCBB label="Cấp tổ chức" v-bind:plus="false"/>
                     </div>
                 </div>
                <div class="label-input">Tài khoản chi phí lương</div>
-                <DebtAccountCBB  style="width:200px;margin-top:3px" />
             </div>
         </el-drawer>
     </div>
@@ -33,13 +30,9 @@
 <script>
 import {busData} from '@/main.js';
 import MSTextbox from '@/components/common/MSTextbox'
-import UnitCBB from '@/components/common/combobox/UnitCBB'
-import DebtAccountCBB from '@/components/common/combobox/DebtAccountCBB'
     export default {
         components:{
             MSTextbox,
-            UnitCBB,
-            DebtAccountCBB
         },
          data() {
              

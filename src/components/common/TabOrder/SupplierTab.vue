@@ -116,7 +116,7 @@
             </div>
             <div class="bank-account" v-show="thisTab == 2">
                 <el-table :data="tableBankAccount" style="width: 100%" max-height="150px" ref="table">
-                   <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
+                    <el-table-column prop="BankAccount"  label="SỐ TÀI KHOẢN" width="190">
                          <template slot-scope="scope">
                             <MSTextbox :disabled="review" :ref="scope.row.Name"  v-model="scope.row.BankAccount"/>
                         </template>

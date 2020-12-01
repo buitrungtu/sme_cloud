@@ -125,13 +125,11 @@
 
 <script>
 import {busData} from '@/main.js';
-import MSTextbox from '@/components/common/MSTextbox'
 import BaseCBB from '@/components/common/BaseCBB'
 import MSSelect from '@/components/common/MSSelect'
 import BaseAPI from '@/BaseAPI.js'
     export default {
         components:{
-            MSTextbox,
             BaseCBB,
             MSSelect,
         },

@@ -34,9 +34,6 @@
                            </div>
                        </div>
                        <div class="row-input">
-                           <UnitCBB label="Đơn vị" v-bind:required="true"/>
-                       </div>
-                       <div class="row-input">
                            <MSTextbox label="Chức danh"/>
                        </div>
                         <div class="row-input" v-show="isCus || isSupplier">
@@ -99,12 +96,10 @@
 </template>
 
 <script>
-import MSTextbox from '@/components/common/MSTextbox'
 import MSDatetime from '@/components/common/MSDatetime'
 import EmployeeTab from '@/components/common/TabOrder/EmployeeTab'
 import MSSelect from '@/components/common/MSSelect'
 import {busData} from '@/main.js'
-import UnitCBB from '@/components/common/combobox/UnitCBB'
 import AddUnit from '@/components/content/cash/AddUnit'
 // import BaseCBB from '@/components/common/BaseCBB'
 
@@ -113,12 +108,10 @@ import AddUnit from '@/components/content/cash/AddUnit'
             visible:Boolean
         },
         components:{
-            MSTextbox,
             MSDatetime,
             EmployeeTab,
             MSSelect,
             // BaseCBB,
-            UnitCBB,
             AddUnit
         },
         data(){

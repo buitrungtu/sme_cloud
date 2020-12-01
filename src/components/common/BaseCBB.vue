@@ -32,10 +32,10 @@
                 <div class="icon icon-add"></div>
             </div>
         </div>
-        <div class="add-new" v-show="addNewF9"> 
+        <!-- <div class="add-new" v-show="addNewF9"> 
             <div class="icon icon-add" ></div>
             <div class="text">Thêm mới (F9)</div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -90,7 +90,6 @@ import {busData} from '@/main.js';
 .combobox{
     width: 100%;
     position: relative;
-    height: 51px;
 }
 .cbb-content{
     overflow-y: scroll;
