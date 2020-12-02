@@ -443,7 +443,6 @@ import BaseAPI from '@/BaseAPI.js'
                 this.$nextTick(() =>{
                     console.log(this.$refs[newRow.Name]);
                     this.$refs[newRow.Name].focusInput();
-                    //this.$refs[newRow.Name].$refs.input.focus();
                 })
                 this.rowAddress++;
             },

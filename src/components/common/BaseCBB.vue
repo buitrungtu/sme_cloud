@@ -1,6 +1,6 @@
 <template>
     <div class="combobox" :class="{disabled:disable}">
-        <div class="cb-label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
+        <div class="cb-label" v-show="label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
             v-model="content"
             v-on="EventListeners"
@@ -12,7 +12,7 @@
             :disabled="disable"
         >
             <el-option :value="1" class="cb-header">
-                <span v-for="(thead,index) in header" :key="index" :style="{width:thead[1]+'px',float: 'left'}" class="ellipsis" >{{thead.label}}</span>
+                <span v-for="(thead,index) in header" :key="index" :style="{width:thead['width'] + 'px',float: 'left'}" class="ellipsis" >{{thead.label}}</span>
             </el-option>
             <div class="cbb-content">
                 <el-option
@@ -69,7 +69,9 @@ import {busData} from '@/main.js';
         },
         methods:{
             showDialog(){
-               busData.$emit('showDialog',this.mission)
+               if(this.mission == 'AddSupplier'){
+                    busData.$emit('showFormAddSupplier');
+               }
             },
         },
         computed:{
@@ -80,6 +82,11 @@ import {busData} from '@/main.js';
                         vm.$emit('ElInput', event.target.value)
                     }
                 })
+            }
+        },
+        watch:{
+            value:function(){
+                this.content = this.value;
             }
         }
     }

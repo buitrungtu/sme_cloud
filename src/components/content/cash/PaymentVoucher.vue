@@ -25,10 +25,10 @@
                     <div class="w-4-5 basic-info">
                         <div class="row-input">
                             <div class="w-3-7">
-                                <BaseCBB label="Đối tượng" v-model="obj.SupplierId" :disable="showState" :header="suppHead" :data="suppliers"/>
+                                <BaseCBB label="Đối tượng" v-model="SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" mission="AddSupplier"/>
                             </div>
                             <div class="w-4-7 input-2">
-                                <MSTextbox v-model="obj.Receiver" :disable="showState" label="Người nhận"/>
+                                <MSTextbox  v-model="obj.Receiver" :disable="showState" label="Người nhận"/>
                             </div>
                         </div>
                         <div class="row-input input-1">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="row-input">
                             <div class="w-3-7 input-1">
-                                <BaseCBB label="Nhân viên" v-model="obj.EmployeeId" :disable="showState" :header="employHead" :data="employees"/>
+                                <BaseCBB label="Nhân viên" v-model="obj.EmployeeCode" :disable="showState" :header="employHead" :data="employees" :indexshow=2 />
                             </div>
                             <div class="w-4-7 width-240">
                                 <MSTextbox label="Kèm theo"  v-model="obj.LicenseAmount" :disable="showState" :number="true" textAlign = "right" placeholder="Số lượng"/>
@@ -79,6 +79,10 @@
                         <div class="select">
                             <BaseCBB v-model="currMoney" :disable="showState" :header="moneyHead" :data="monies" :plus="false"/>
                         </div>
+                        <div class="label" v-show="currMoney == 'USD'">Tỷ giá</div>
+                        <div class="select" v-show="currMoney == 'USD'">
+                            <MSTextbox value="23.150,00" :disabled="true" />
+                        </div>
                     </div>
                 </div>
                 <div class="grid-accounting">
@@ -86,19 +90,19 @@
                         <el-table-column label="#" width="50" type="index">
                         </el-table-column>
 
-                        <el-table-column prop="Explain"  label="DIỄN GIẢI" width="200">
+                        <el-table-column prop="Explain"  label="DIỄN GIẢI" width="300">
                             <template slot-scope="scope">
-                                <MSTextbox :disabled="showState" :ref="scope.row.Name"  v-model="scope.row.Explain"/>
+                                <MSTextbox :disabled="showState"  v-model="scope.row.Explain"/>
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="DebtAccountId" label="TK NỢ" width="125">
+                        <el-table-column prop="DebtAccountId" label="TK NỢ" width="200">
                             <template slot-scope="scope">
                                 <BaseCBB v-model="scope.row.DebtAccountId" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="CreditorAccountId" label="TK NỢ" width="125">
+                        <el-table-column prop="CreditorAccountId" label="TK NỢ" width="200">
                             <template slot-scope="scope">
                                 <BaseCBB v-model="scope.row.CreditorAccountId" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
                             </template>
@@ -111,19 +115,25 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="SupplierId" label="TK NỢ" width="125">
+                        <el-table-column prop="exchange"  label="Quy đổi" width="150">
                             <template slot-scope="scope">
-                                <BaseCBB v-model="scope.row.SupplierId" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
+                                <MSTextbox v-model="scope.row.exchange" :disabled="showState" :ref="scope.row.Name"  />
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column prop="SupplierCode" label="Đối tượng" width="250">
+                            <template slot-scope="scope">
+                                <BaseCBB v-model="scope.row.SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
                             </template>
                         </el-table-column>
                         
-                        <el-table-column prop="SupplierName"  label="TÊN ĐỐI TƯỢNG" width="250">
+                        <el-table-column prop="SupplierName"  label="TÊN ĐỐI TƯỢNG" width="350">
                             <template slot-scope="scope">
                                 <MSTextbox v-model="scope.row.SupplierName" :disabled="true" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
 
-                        <el-table-column fixed="right" label="" width="43">
+                        <el-table-column fixed="right" label="" width="50">
                             <template slot-scope="scope">
                                 <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
                                     <div class="icon icon-delete"></div>
@@ -131,6 +141,10 @@
                             </template>
                         </el-table-column>
                     </el-table>
+                    
+                  
+
+
                     <div class="grid-footer">
                         <div class="btn-grid-act">
                             <button @click="addRow()">Thêm dòng</button>
@@ -179,6 +193,7 @@ import MSDatetime from '@/components/common/MSDatetime'
 import MSButton from '@/components/common/MSButton'
 import AddSupplier from '@/components/content/cash/AddSupplier'
 import BaseCBB from '@/components/common/BaseCBB'
+import BaseAPI from '@/BaseAPI.js'
 
     export default {
         components:{
@@ -188,9 +203,7 @@ import BaseCBB from '@/components/common/BaseCBB'
             MSDatetime,
             BaseCBB
         },
-        created(){
-            
-        },
+        
         data(){
             return{
                 showState:false,
@@ -207,16 +220,17 @@ import BaseCBB from '@/components/common/BaseCBB'
                 ],
 
                 //data cho combobox đối tượng
-                suppHead:[{label:'Đối tượng',width:'100'},{label:'Tên đối tượng',width:'250'},{label:'Mã số thuế',width:'100'},
-                    {label:'Địa chỉ',width:'200'},{label:'Điện thoại',width:'250'}
+                suppHead:[{label:'Đối tượng',width:'100'},{label:'Tên đối tượng',width:'250'},{label:'Mã số thuế',width:'120'},
+                    {label:'Địa chỉ',width:'200'},{label:'Điện thoại',width:'100'}
                 ],
                 suppliers:[],
-
+                suppliersDB:[],
                 //data cho combobox nhân viên
-                employHead:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'250'},{label:'Đơn vị',width:'100'},
-                    {label:'Điện thoại di động',width:'100'}
+                employHead:[{label:'Mã nhân viên',width:'100'},{label:'Tên nhân viên',width:'200'},{label:'Đơn vị',width:'100'},
+                    {label:'ĐT di động',width:'100'}
                 ],
                 employees:[],
+                employeesDB:[],
 
                 //data loại tiền
                 currMoney:'VND',
@@ -227,19 +241,69 @@ import BaseCBB from '@/components/common/BaseCBB'
                 accHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'150'}],
                 accounts:[],
                 
-                
-                tableData: [{
-                    
-                },],
                 addCount:0,
-
-
                 obj:{
-
-                }
+                    ReasonSpend:'Chi tiền cho ',
+                    DateAccounting:this.dateNow(),
+                    DatePayment:this.dateNow()
+                },
+                tableData: [
+                    {Explain:'Chi tiền cho'},
+                ],
+                SupplierCode:'',
+                Receiver:''
             }
         },
+        created(){
+            this.getSuppliers();
+            this.getEmployees();
+            this.getAccounts();
+        },
         methods:{
+            
+            async getSuppliers(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/suppliers/GetAll');
+                if(res && res.data){
+                    this.suppliersDB = res.data;
+                    this.suppliers = res.data.map((item)=>{
+                        return{
+                            "SupplierCode":item.SupplierCode,
+                            "SupplierName": item.SupplierName,
+                            "TaxCode": item.TaxCode,
+                            "Address": item.Address,
+                            "Mobile": item.Mobile
+                        }
+                    })
+                }
+            },
+
+            async getEmployees(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/Employees');
+                if(res && res.data){
+                    this.employeesDB = res.data;
+                    this.employees = res.data.map((item)=>{
+                        return{
+                            "EmployeeCode":item.EmployeeCode,
+                            "EmployeeName": item.EmployeeName,
+                            "Đơn vị": item.Unit,
+                            "Mobile": item.Mobile
+                        }
+                    })
+                }
+            },
+
+            async getAccounts(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/Accounts');
+                if(res && res.data){
+                    this.accounts = res.data.map((item)=>{
+                        return{
+                            "AccountCode":item.AccountCode,
+                            "AccountName": item.AccountName,
+                        }
+                    })
+                }
+            },
+
             goBack(){
                 this.$router.back();
             },
@@ -252,12 +316,42 @@ import BaseCBB from '@/components/common/BaseCBB'
                 let newRow  = {
                     
                 };
-                this.tableData = [newRow,...this.tableData];
-                ++ this.addCount;
+                this.tableData.push(newRow);
+                ++this.addCount;
             },
             removeAllRow(){
                 this.tableData = []
             },
+
+            dateNow(){
+                var today =  new Date();
+                var dd = String(today. getDate()).padStart(2, '0');
+                var mm = String(today. getMonth() + 1).padStart(2, '0');
+                var yyyy = today.getFullYear();
+                today = mm + '/' + dd + '/' + yyyy;
+                return today
+            },
+        },
+        watch:{
+            SupplierCode:function(){
+                let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
+                this.obj.SupplierCode = this.SupplierCode;
+                if(currSupplier.IsPersonal){
+                   this.obj.Receiver = currSupplier.SupplierName;
+                }else{
+                    this.obj.Receiver = currSupplier.LegalRepresent;
+                }
+                this.obj.Address = currSupplier.Address;
+                this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
+                this.obj.EmployeeCode = currSupplier.EmployeeCode;
+
+                // this.tableData = this.tableData.map((item)=>{
+                //     item.Explain = this.obj.ReasonSpend;
+                //     item.SupplierCode = this.obj.SupplierCode;
+                //     item.SupplierName = this.obj.SupplierName;
+                // })
+
+            }
         }
     }
 </script>
@@ -463,7 +557,7 @@ import BaseCBB from '@/components/common/BaseCBB'
 }
 .head-right .label{
     white-space: nowrap;
-    padding:0px 10px 10px 20px;
+    padding:0px 10px 0px 20px;
 }
 .head-right .select{
     width: 100px;
@@ -529,5 +623,6 @@ import BaseCBB from '@/components/common/BaseCBB'
     color: #757575;
     white-space: nowrap;
 }
+
 
 </style>

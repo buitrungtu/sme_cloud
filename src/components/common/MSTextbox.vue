@@ -115,6 +115,9 @@ import {busData} from '@/main.js';
                     x = x.replace(/^\./, ""); // xóa đi dấu . thừa ở đầu chuỗi nếu có
                     this.content = x;
                 }
+            },
+            value:function(){
+                this.content = this.value;
             }
         },
         
