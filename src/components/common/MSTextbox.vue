@@ -48,12 +48,22 @@ import {busData} from '@/main.js';
                     this.content = name;
                 })
             }
+            
         },
         data(){
             return{
                 isFocus:false,
                 content : this.value,
                 triggerErr:false
+            }
+        },
+        beforeMount(){
+            if(this.type == 'money'){
+                try{
+                    this.content = this.value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                }catch{
+                    this.content = 0;
+                }
             }
         },
         methods:{
@@ -79,7 +89,6 @@ import {busData} from '@/main.js';
                     } 
                 }
             },
-           
         },
         mounted(){
             if(this.autofocus == true){

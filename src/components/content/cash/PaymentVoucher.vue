@@ -109,21 +109,21 @@
                         </el-table-column>
                         
 
-                        <el-table-column prop="Money"  label="SỐ TIỀN" width="200">
+                        <el-table-column prop="Money"  label="SỐ TIỀN" width="200" >
                             <template slot-scope="scope">
-                                <MSTextbox v-model="scope.row.Money" :disabled="showState" :ref="scope.row.Name"  />
+                                <MSTextbox v-model="scope.row.Money" @change="moneyChage(scope.row.Money,scope.$index)" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="exchange"  label="Quy đổi" width="150">
+                        <el-table-column prop="exchange"  label="Quy đổi" width="150" v-if="currMoney == 'USD'">
                             <template slot-scope="scope">
-                                <MSTextbox v-model="scope.row.exchange" :disabled="showState" :ref="scope.row.Name"  />
+                                <MSTextbox v-model="scope.row.exchange" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
 
                         <el-table-column prop="SupplierCode" label="Đối tượng" width="250">
-                            <template slot-scope="scope">
-                                <BaseCBB v-model="scope.row.SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
+                            <template slot-scope="scope" >
+                                <BaseCBB v-model="scope.row.SupplierCode" @change="supplierChage(scope.row.SupplierCode,scope.$index)" :ref="scope.row.SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
                             </template>
                         </el-table-column>
                         
@@ -180,7 +180,11 @@
             <div class="footer-right">
                 <button class="btn-cancel">Cất</button>
                 <div class="btn-save-printf" style="margin-left: 5px;">
-                    <MSButton>Cất và In</MSButton>
+                    <div class="ms-button">
+                        <button class="btn-text">Cất và In</button>
+                        <div class="split"></div>
+                        <button class="icon icon-down"></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,7 +194,6 @@
 
 import MSSelect from '@/components/common/MSSelect'
 import MSDatetime from '@/components/common/MSDatetime'
-import MSButton from '@/components/common/MSButton'
 import AddSupplier from '@/components/content/cash/AddSupplier'
 import BaseCBB from '@/components/common/BaseCBB'
 import BaseAPI from '@/BaseAPI.js'
@@ -198,7 +201,6 @@ import BaseAPI from '@/BaseAPI.js'
     export default {
         components:{
             MSSelect,
-            MSButton,
             AddSupplier,
             MSDatetime,
             BaseCBB
@@ -247,8 +249,8 @@ import BaseAPI from '@/BaseAPI.js'
                     DateAccounting:this.dateNow(),
                     DatePayment:this.dateNow()
                 },
-                tableData: [
-                    {Explain:'Chi tiền cho'},
+                tableData: [ //data payment detail
+                    {Explain:'Chi tiền cho '},
                 ],
                 SupplierCode:'',
                 Receiver:''
@@ -313,14 +315,13 @@ import BaseAPI from '@/BaseAPI.js'
                 -- this.addCount;
             },
             addRow(){
-                let newRow  = {
-                    
-                };
+                let newRow = Object.assign({}, this.tableData[this.addCount]);
                 this.tableData.push(newRow);
                 ++this.addCount;
             },
             removeAllRow(){
-                this.tableData = []
+                this.tableData = [];
+                this.addCount = 0;
             },
 
             dateNow(){
@@ -331,10 +332,19 @@ import BaseAPI from '@/BaseAPI.js'
                 today = mm + '/' + dd + '/' + yyyy;
                 return today
             },
+
+
+            moneyChage(money,row){
+                this.tableData[row].exchange = money.replace(/\./g,'') * 23150;
+            },
+            supplierChage(supplierCode,row){
+                this.tableData[row].SupplierName = this.suppliersDB.find(item => item.SupplierCode == supplierCode).SupplierName;
+            }
         },
         watch:{
             SupplierCode:function(){
                 let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
+                //Master
                 this.obj.SupplierCode = this.SupplierCode;
                 if(currSupplier.IsPersonal){
                    this.obj.Receiver = currSupplier.SupplierName;
@@ -344,12 +354,7 @@ import BaseAPI from '@/BaseAPI.js'
                 this.obj.Address = currSupplier.Address;
                 this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
                 this.obj.EmployeeCode = currSupplier.EmployeeCode;
-
-                // this.tableData = this.tableData.map((item)=>{
-                //     item.Explain = this.obj.ReasonSpend;
-                //     item.SupplierCode = this.obj.SupplierCode;
-                //     item.SupplierName = this.obj.SupplierName;
-                // })
+                //Detail
 
             }
         }
@@ -380,6 +385,50 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .icon.icon-history{
     background-position: -648px -144px;
+}
+.ms-button{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.btn-text{
+    height: 100%;
+    padding: 6px 14px 6px 20px;
+    border-radius: 3px 0 0 3px;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    transition: all .2s ease;
+    box-sizing: border-box;
+    background-color: #35bf22;
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 13px;
+}
+.ms-button .icon.icon-down{
+    background-color: #35bf22;
+    border-radius: 0 3px 3px 0;
+    height: 100%;
+    padding: 6px 16px 6px 8px;
+    position: relative;
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all .2s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-position: -840px -351px;
+    width: 42px;
+}
+.split{
+    position: absolute;
+    height: 20px;
+    background: #fff;
+    top: 7px;
+    right: 41px;
+    border-right: 2px solid #fff;
 }
 .title-layout{
     font-weight: 700;
