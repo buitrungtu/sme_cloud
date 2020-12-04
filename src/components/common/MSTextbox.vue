@@ -48,6 +48,7 @@ import {busData} from '@/main.js';
                     this.content = name;
                 })
             }
+            
         },
         data(){
             return{
@@ -79,7 +80,6 @@ import {busData} from '@/main.js';
                     } 
                 }
             },
-           
         },
         mounted(){
             if(this.autofocus == true){
@@ -105,7 +105,7 @@ import {busData} from '@/main.js';
             },
             content:function(){
                 if(this.type == 'money'){
-                    var x = this.content;
+                    var x = this.content.toString();
                     x = x.replace(/\./g, ""); // xóa hết dấu . cũ đi
                     x = x.split("").reverse().join(""); // đảo chuỗi
                     x = x.replace(/.../g, function (e) { // cứ 3 ký tự thì thêm 1 dấu chấm

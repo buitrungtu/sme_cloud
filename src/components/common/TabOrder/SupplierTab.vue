@@ -550,7 +550,7 @@ import BaseAPI from '@/BaseAPI.js'
 }
 .title-right{
     position: absolute;
-    top: 2px;
+    top: -3px;
     left: 35px;
     height: 32px;
     z-index: 4;

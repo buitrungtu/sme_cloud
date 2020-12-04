@@ -11,7 +11,7 @@
             :multiple="multiple"
             :disabled="disable"
         >
-            <el-option :value="1" class="cb-header">
+            <el-option :value="1" class="cb-header" disabled>
                 <span v-for="(thead,index) in header" :key="index" :style="{width:thead['width'] + 'px',float: 'left'}" class="ellipsis" >{{thead.label}}</span>
             </el-option>
             <div class="cbb-content">

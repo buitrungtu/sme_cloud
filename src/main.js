@@ -36,6 +36,8 @@ const router = new VueRouter({
 export const busData = new Vue();
 Vue.config.productionTip = false
 
+
+
 new Vue({
   el:'#app',
   router,

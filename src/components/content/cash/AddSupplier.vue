@@ -265,7 +265,6 @@ import BaseAPI from '@/BaseAPI.js'
                     }
                 } else if(errCode == 2){
                      if(!this.obj.IsPersonal){
-                        console.log(this.$refs.SupplierName1)
                         this.$refs.SupplierName1.focusInput();
                     }else{
                         this.$refs.SupplierName2.focusInput();
