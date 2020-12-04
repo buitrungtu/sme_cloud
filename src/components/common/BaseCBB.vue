@@ -21,7 +21,7 @@
                     :value="Object.values(item)[0]"
                     :label="Object.values(item)[indexshow-1]"
                     >
-                    <span :style="{width:Object.values(header[i])[1] + 'px',float: 'left'}" class="ellipsis" 
+                    <span :style="{width:Object.values(header[i])[1] + 'px',float: 'left'}" :title="propertyVal" class="ellipsis" 
                         v-for="(propertyVal,i) in Object.values(item)" :key="i">{{ propertyVal }}
                     </span>
                 </el-option>

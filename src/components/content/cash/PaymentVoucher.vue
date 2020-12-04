@@ -102,7 +102,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="CreditorAccountId" label="TK NỢ" width="200">
+                        <el-table-column prop="CreditorAccountId" label="TK CÓ" width="200">
                             <template slot-scope="scope">
                                 <BaseCBB v-model="scope.row.CreditorAccountId" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
                             </template>
@@ -120,7 +120,7 @@
                                 <MSTextbox v-model="scope.row.exchange" :disabled="showState" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
-
+ 
                         <el-table-column prop="SupplierCode" label="Đối tượng" width="250">
                             <template slot-scope="scope">
                                 <BaseCBB v-model="scope.row.SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
@@ -141,10 +141,7 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    
                   
-
-
                     <div class="grid-footer">
                         <div class="btn-grid-act">
                             <button @click="addRow()">Thêm dòng</button>
@@ -242,13 +239,15 @@ import BaseAPI from '@/BaseAPI.js'
                 accounts:[],
                 
                 addCount:0,
+
                 obj:{
                     ReasonSpend:'Chi tiền cho ',
                     DateAccounting:this.dateNow(),
                     DatePayment:this.dateNow()
                 },
+
                 tableData: [
-                    {Explain:'Chi tiền cho'},
+                    {Explain:'Chi tiền cho',CreditorAccountId:'1111'},
                 ],
                 SupplierCode:'',
                 Receiver:''
@@ -307,15 +306,14 @@ import BaseAPI from '@/BaseAPI.js'
             goBack(){
                 this.$router.back();
             },
+
             deleteRow(index) {
                 this.tableData.splice(index, 1);
                 if(this.addCount > 0)
                 -- this.addCount;
             },
             addRow(){
-                let newRow  = {
-                    
-                };
+                let newRow  = this.tableData[this.addCount];
                 this.tableData.push(newRow);
                 ++this.addCount;
             },
