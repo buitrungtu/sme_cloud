@@ -3,7 +3,7 @@
         <div class="header-layout">
             <div class="header-left">
                 <div class="icon icon-history"></div>
-                <div class="title-layout">Phiếu chi PC00023</div>
+                <div class="title-layout">Phiếu chi {{obj.PaymentVoucherCode}}</div>
                 <div class="payment-type">
                    <MSSelect v-bind:data="options" value="10"/>             
                  </div>
@@ -246,7 +246,7 @@ import BaseAPI from '@/BaseAPI.js'
                     ReasonSpend:'Chi tiền cho ',
                     DateAccounting:this.dateNow(),
                     DatePayment:this.dateNow(),
-                    
+                    PaymentVoucherCode:''
                 },
                 tableData: [ //data payment detail
                     {Explain:'Chi tiền cho',CreditorAccountId:'1111'},
@@ -254,13 +254,17 @@ import BaseAPI from '@/BaseAPI.js'
                 SupplierCode:'',
                 Receiver:'',
 
-                totalMoney:'0,00'
+                totalMoney:'0,00',
+
+                
             }
         },
         created(){
+            this.getRecommendCode();
             this.getSuppliers();
             this.getEmployees();
             this.getAccounts();
+            
         },
         methods:{
             /**
@@ -312,7 +316,22 @@ import BaseAPI from '@/BaseAPI.js'
                     })
                 }
             },
-
+            /**
+             * Gợi ý mã phiếu chi 
+             */
+            async getRecommendCode(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers/GetMaxCode');
+                if(res && res.data){
+                    // let head='',tail='';
+                    // for(let i=0;i<res.data;i++){
+                    //     if(res.data[i] <= '9' && res.data > '0'){
+                    //         tail += res.data[i];
+                    //     }else   head += res.data[i];
+                    // }
+                    // this.obj.PaymentVoucherCode = head + (Number(tail) + 1);
+                    this.obj.PaymentVoucherCode = res.data;
+                }
+            },
 
             /**
              * Cất dữ liệu
@@ -322,6 +341,7 @@ import BaseAPI from '@/BaseAPI.js'
                     item.Money = this.moneyToNumber(item.Money);
                 })
                 this.obj.PaymentVoucherDetail = this.tableData;
+                console.log(this.obj);
                 let res = await BaseAPI.Post('https://localhost:44363/api/PaymentVouchers',this.obj); 
                 if(res){
                     console.log(res);
@@ -386,13 +406,17 @@ import BaseAPI from '@/BaseAPI.js'
              * Chuyển số sang dạng tiền tệ
              */
             numberToMoney(number){
-                return number.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                if(number)
+                    return number.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                else    return number;
             },
             /**
              * Chuyển tiền tệ về dạng số để tính toán
              */
             moneyToNumber(money){
-                return Number(money.toString().replace(/\./g,''));
+                if(money)
+                    return Number(money.toString().replace(/\./g,''));
+                else    return money;
             },
            
 
