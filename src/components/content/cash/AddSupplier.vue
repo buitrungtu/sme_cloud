@@ -54,10 +54,10 @@
                             </div>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="review" v-model="obj.GroupSupplierCode" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
+                            <BaseCBB :disabled="review" v-model="obj.GroupSupplierCode" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1 :multiple="true" mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input">
-                            <BaseCBB :disable="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disabled="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                         </div>
                         <label class="label-input">Tên nhà cung cấp</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                            <MSSelect :disable="review" v-model="obj.Vocative" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
+                            <MSSelect :disabled="review" v-model="obj.Vocative" :data="vocatives" style="width:200px; margin-right:12px;"  placeholder="Xưng hô"/>
                             <MSTextbox :disabled="review" ref="SupplierName2" v-model="obj.SupplierName"  placeholder="Họ và tên" style="padding-top:2.5px" />
                         </div>
                         <div class="row-input" style="padding-bottom:0px">
@@ -86,10 +86,10 @@
                     </div>
                     <div class="w-1-2" style="padding:2.3px 2.3px 0px 0px">
                         <div class="row-input">
-                            <BaseCBB :disable="review" v-model="obj.GroupSupplierCode" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
+                            <BaseCBB :disabled="review" v-model="obj.GroupSupplierCode" :multiple="true" label="Nhóm nhà cung cấp" :header="headerGroupSupplies" :data="dataGroupSupplies" :indexshow=1  mission="AddGropSupplier"/>
                         </div>
                         <div class="row-input" style="padding-top:2.5px">
-                            <BaseCBB :disable="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
+                            <BaseCBB :disabled="review" v-model="obj.EmployeeCode"  label="Nhân viên mua hàng" :header="headerEmployees" :data="dataEmployees" :indexshow=2 mission="AddEmployee"/>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         </div>  
                     </div>
                 </div>
-                 <div class="dialog-footer" v-show="review">
+                <div class="dialog-footer" v-show="review">
                     <div class="divide"></div>
                     <div class="btn-footer">
                         <div class="btn-right">
@@ -212,6 +212,7 @@ import BaseAPI from '@/BaseAPI.js'
              */
             busData.$on('editSupplier',(supplier)=>{
                 this.obj = supplier;
+                if(this.obj.MaxDebt)    this.obj.MaxDebt = this.obj.MaxDebt.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
                 this.state = 'Edit'
                 this.show = true;
                 this.review = true; //để chế độ xem không cho sửa

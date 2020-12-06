@@ -5,9 +5,9 @@
             v-model="content" 
             v-on="EventListeners"
             size="small"
-            :disabled="disable"
+            :disabled="disabled"
             :placeholder="placeholder"
-            :automatic-dropdown="true"	
+            :automatic-dropdown="autodrop"	
         >
             <el-option
                 v-for="item in data"
@@ -29,7 +29,11 @@
             required:Boolean,
             placeholder:String,
             value:[String,Number],
-            disable:Boolean
+            disabled:Boolean,
+            autodrop:{
+                type:Boolean,
+                default:true
+            }
         },
         components:{
         },

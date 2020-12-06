@@ -13,7 +13,7 @@
                     <div class="w-1-2" style="padding-right: 26px;" >
                         <label class="label-input">Người liên hệ</label>
                         <div class="row-input" style="padding-bottom: 4px;">
-                        <MSSelect :disable="review" v-model="obj.VocativeContact" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
+                        <MSSelect :disabled="review" v-model="obj.VocativeContact" :data="options" placeholder="Xưng hô" style="width:100px; margin-right:12px;" />
                         <MSTextbox :disabled="review" v-model="obj.FullnameContact" style="width:calc(100% - 112px);padding-top:3px" placeholder="Họ và tên"/> 
                         </div>
                         <div class="row-input" style="padding-bottom: 4px;">
@@ -91,7 +91,7 @@
                 <div class="w-3-4" style="display:flex">
                     <div class="w-input">
                         <div class="row-input" >
-                            <BaseCBB :disable="review" v-model="obj.TermsOfPayment" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
+                            <BaseCBB :disabled="review" v-model="obj.TermsOfPayment" label="Điều khoản thanh toán" :header="header"  :data="data" :indexshow=1 />
                         </div>
                     </div>
                     <div class="w-input">
@@ -107,10 +107,10 @@
                 </div>
                 <div class="row-input">
                     <div class="w-input">
-                        <BaseCBB :disable="review" label="Tài khoản công nợ phải thu" v-model="obj.AccountCodeReceivable" :header="accountLabel" :data="dataAccountReceivable"/>
+                        <BaseCBB :disabled="review" label="Tài khoản công nợ phải thu" v-model="obj.AccountCodeReceivable" :header="accountLabel" :data="dataAccountReceivable"/>
                     </div>
                     <div class="w-input" v-show="isCus">
-                        <BaseCBB :disable="review" label="Tài khoản công nợ phải trả" v-model="obj.AccountCodePay" :header="accountLabel" :data="dataAccountPay"/>
+                        <BaseCBB :disabled="review" label="Tài khoản công nợ phải trả" v-model="obj.AccountCodePay" :header="accountLabel" :data="dataAccountPay"/>
                     </div>
                 </div>
             </div>
@@ -157,18 +157,18 @@
                     <label class="label-input">Vị trí địa lý</label>
                     <div class="row-input">
                         <div class="w-1-2" style="padding-right:12px" >
-                            <MSSelect ref="nation" :disable="review"  value="1" :data="nations" placeholder="Quốc Gia"/>
+                            <MSSelect ref="nation" :disabled="review" :autodrop="false"  value="1" :data="nations" placeholder="Quốc Gia"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :disable="review" v-model="obj.City" :data="cities" placeholder="Tỉnh/Thành phố"/>
+                            <MSSelect :disabled="review" v-model="obj.City" :data="cities" placeholder="Tỉnh/Thành phố"/>
                         </div>
                     </div>
                     <div class="row-input" >
                         <div class="w-1-2" style="padding-right:12px">
-                            <MSSelect :disable="review" v-model="obj.District"  :data="districts" placeholder="Quận/Huyện"/>
+                            <MSSelect :disabled="review" v-model="obj.District"  :data="districts" placeholder="Quận/Huyện"/>
                         </div>
                         <div class="w-1-2">
-                            <MSSelect :disable="review" v-model="obj.Village" :data="villages" placeholder="Xã/Phường"/>
+                            <MSSelect :disabled="review" v-model="obj.Village" :data="villages" placeholder="Xã/Phường"/>
                         </div>
                     </div>
                 </div>

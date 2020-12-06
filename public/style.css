@@ -287,7 +287,7 @@ input,button,textarea{
     background: #fff;
 }
 .el-table__body-wrapper::-webkit-scrollbar-thumb{
-    background: #e0e0e0;
+    background: #b8bcc3;
 }
 
 
@@ -343,4 +343,10 @@ tbody tr td{
 .el-table__row.el-table__row--level-0{
     font-weight: 700;
     color: #212121;
+}
+thead.has-gutter tr th:first-child{
+    border-left: none; 
+}
+thead tr th:last-child{
+    border-right: none !important; 
 }

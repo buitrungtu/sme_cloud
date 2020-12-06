@@ -87,6 +87,7 @@
 
                     <el-table-column
                     type="selection"
+                    fixed="left"
                     width="50">
                     </el-table-column>
 
@@ -549,8 +550,9 @@ import MSSelect from '@/components/common/MSSelect'
 }
 .grid-content{
     background: #fff;
-    width: 100%;
+    width: calc(100% - 30px);
     height:calc(100% - 70px);
+    padding:0px 15px;
 }
 .table-scroll{
     overflow-y: auto;
@@ -628,12 +630,15 @@ tfoot{
     z-index: 2;
 }
 .grid-footer{
-    width: 100%;
-    height: 40px;
+    width: calc(100% - 225px);
+    height: 38px;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    bottom: 11px; 
+    right: 32px;
 }
 .footer-left{
     margin-left: 30px;

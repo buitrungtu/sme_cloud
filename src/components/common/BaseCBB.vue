@@ -1,5 +1,5 @@
 <template>
-    <div class="combobox" :class="{disabled:disable}">
+    <div class="combobox" :class="{disabled:disabled}">
         <div class="cb-label" v-show="label">{{this.label}} <span style="color:red" v-show="required">*</span> </div>
         <el-select
             v-model="content"
@@ -9,7 +9,7 @@
             placeholder=""
             :loading="loading"
             :multiple="multiple"
-            :disabled="disable"
+            :disabled="disabled"
         >
             <el-option :value="1" class="cb-header" disabled>
                 <span v-for="(thead,index) in header" :key="index" :style="{width:thead['width'] + 'px',float: 'left'}" class="ellipsis" >{{thead.label}}</span>
@@ -56,7 +56,7 @@ import {busData} from '@/main.js';
             indexshow:Number, //tính từ 1,
             multiple:Boolean,
             value:[String,Array],
-            disable:Boolean
+            disabled:Boolean
         },
         data(){
             return{

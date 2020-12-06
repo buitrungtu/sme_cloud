@@ -5,7 +5,7 @@
                 <div class="icon icon-history"></div>
                 <div class="title-layout">Phiếu chi {{obj.PaymentVoucherCode}}</div>
                 <div class="payment-type">
-                   <MSSelect v-bind:data="options" value="10"/>             
+                   <MSSelect v-bind:data="options" value="10" :disabled="showState"/>             
                  </div>
             </div>
             <div class="header-right">
@@ -25,24 +25,24 @@
                     <div class="w-4-5 basic-info">
                         <div class="row-input">
                             <div class="w-3-7">
-                                <BaseCBB label="Đối tượng" v-model="SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" mission="AddSupplier"/>
+                                <BaseCBB label="Đối tượng" v-model="SupplierCode" :disabled="showState" :header="suppHead" :data="suppliers" mission="AddSupplier"/>
                             </div>
                             <div class="w-4-7 input-2">
-                                <MSTextbox  v-model="obj.Receiver" :disable="showState" label="Người nhận"/>
+                                <MSTextbox  v-model="obj.Receiver" :disabled="showState" label="Người nhận"/>
                             </div>
                         </div>
                         <div class="row-input input-1">
-                            <MSTextbox v-model="obj.Address" :disable="showState" label="Địa chỉ"/>
+                            <MSTextbox v-model="obj.Address" :disabled="showState" label="Địa chỉ"/>
                         </div>
                         <div class="row-input input-1">
-                            <MSTextbox v-model="obj.ReasonSpend" label="Lý do chi" :disable="showState"/>
+                            <MSTextbox v-model="obj.ReasonSpend" label="Lý do chi" :disabled="showState"/>
                         </div>
                         <div class="row-input">
                             <div class="w-3-7 input-1">
-                                <BaseCBB label="Nhân viên" v-model="obj.EmployeeCode" :disable="showState" :header="employHead" :data="employees" :indexshow=2 />
+                                <BaseCBB label="Nhân viên" v-model="obj.EmployeeCode" :disabled="showState" :header="employHead" :data="employees" :indexshow=2 />
                             </div>
                             <div class="w-4-7 width-240">
-                                <MSTextbox label="Kèm theo"  v-model="obj.LicenseAmount" :disable="showState" :number="true" textAlign = "right" placeholder="Số lượng"/>
+                                <MSTextbox label="Kèm theo"  v-model="obj.LicenseAmount" :disabled="showState" :number="true" textAlign = "right" placeholder="Số lượng"/>
                                 <div class="root-invoice">Chứng từ gốc</div>
                             </div>
                         </div>
@@ -53,13 +53,13 @@
                     </div>
                     <div class="w-1-5 time-info">
                         <div class="row-input-right">
-                            <MSDatetime v-model="obj.DateAccounting " :disable="showState" label="Ngày hạch toán" />
+                            <MSDatetime v-model="obj.DateAccounting " :disabled="showState" label="Ngày hạch toán" />
                         </div>
                         <div class="row-input-right">
-                            <MSDatetime v-model="obj.DatePayment" :disable="showState" label="Ngày phiếu chi" />
+                            <MSDatetime v-model="obj.DatePayment" :disabled="showState" label="Ngày phiếu chi" />
                         </div>
                         <div class="row-input-right">
-                            <MSTextbox v-model="obj.PaymentVoucherCode" :disable="showState" label="Số phiếu chi" value="PC0023"/>
+                            <MSTextbox v-model="obj.PaymentVoucherCode" :disabled="showState" label="Số phiếu chi" value="PC0023"/>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     <div class="head-right">
                         <div class="label">Loại tiền</div>
                         <div class="select">
-                            <BaseCBB v-model="currMoney" :disable="showState" :header="moneyHead" :data="monies" :plus="false"/>
+                            <BaseCBB v-model="currMoney" :disabled="showState" :header="moneyHead" :data="monies" :plus="false"/>
                         </div>
                         <div class="label" v-show="currMoney == 'USD'">Tỷ giá</div>
                         <div class="select" v-show="currMoney == 'USD'">
@@ -98,20 +98,20 @@
 
                         <el-table-column prop="DebtAccountCode" label="TK NỢ" width="200">
                             <template slot-scope="scope">
-                                <BaseCBB v-model="scope.row.DebtAccountCode" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
+                                <BaseCBB v-model="scope.row.DebtAccountCode" :disabled="showState" :header="accHead" :data="accounts" :plus="false"/>
                             </template>
                         </el-table-column>
 
                         <el-table-column prop="CreditorAccountCode" label="TK CÓ" width="200">
                             <template slot-scope="scope">
-                                <BaseCBB v-model="scope.row.CreditorAccountCode" :disable="showState" :header="accHead" :data="accounts" :plus="false"/>
+                                <BaseCBB v-model="scope.row.CreditorAccountCode" :disabled="showState" :header="accHead" :data="accounts" :plus="false"/>
                             </template>
                         </el-table-column>
                         
 
                         <el-table-column prop="Money"  label="SỐ TIỀN" width="200" >
                             <template slot-scope="scope">
-                                <MSTextbox v-model="scope.row.Money" @change="moneyChage(scope.row.Money,scope.$index)" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
+                                <MSTextbox v-model="scope.row.Money" @change="moneyChage(scope.row.Money,scope.$index,scope)" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
 
@@ -123,7 +123,7 @@
  
                         <el-table-column prop="SupplierCode" label="Đối tượng" width="250">
                             <template slot-scope="scope" >
-                                <BaseCBB v-model="scope.row.SupplierCode" @change="supplierChage(scope.row.SupplierCode,scope.$index)" :ref="scope.row.SupplierCode" :disable="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
+                                <BaseCBB v-model="scope.row.SupplierCode" @change="supplierChage(scope.row.SupplierCode,scope.$index)" :ref="scope.row.SupplierCode" :disabled="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
                             </template>
                         </el-table-column>
                         
@@ -135,7 +135,7 @@
 
                         <el-table-column fixed="right" label="" width="50">
                             <template slot-scope="scope">
-                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small" :disabled="showState" >
                                     <div class="icon icon-delete"></div>
                                 </el-button>
                             </template>
@@ -144,8 +144,8 @@
                   
                     <div class="grid-footer">
                         <div class="btn-grid-act">
-                            <button @click="addRow()">Thêm dòng</button>
-                            <button @click="removeAllRow()">Xóa hết dòng</button>
+                            <button :disabled="showState" @click="addRow()">Thêm dòng</button>
+                            <button :disabled="showState" @click="removeAllRow()">Xóa hết dòng</button>
                         </div>
                     </div>
 
@@ -155,11 +155,12 @@
                             <div class="text">Đính kèm</div>
                             <div class="max-size">Dung lượng tối đa 5MB</div>
                         </div>
-                        <el-upload
+                        <el-upload 
                             class="upload-demo"
                             drag
                             multiple
                             action="#"
+                            :disabled="showState"
                             >
                             <div class="el-upload__text" style="font-style: italic;">Kéo thả tệp vào đây hoặc bấm vào đây</div>
                         </el-upload>
@@ -170,7 +171,7 @@
         
         <AddSupplier />
 
-        <div class="footer-layout">
+        <div class="footer-layout" v-show="!showState">
             <div class="footer-left">
                 <button class="btn-cancel" @click="goBack()">Hủy</button>
             </div>
@@ -183,6 +184,14 @@
                         <button class="icon icon-down"></button>
                     </div>
                 </div>
+            </div>
+        </div>
+         <div class="footer-layout" v-show="showState">
+            <div class="footer-left">
+                <button class="btn-cancel" @click="goBack()">Hủy</button>
+            </div>
+            <div class="footer-right">
+                <button class="btn-save-edit" @click="showState = false">Sửa</button>
             </div>
         </div>
     </div>
@@ -205,7 +214,7 @@ import BaseAPI from '@/BaseAPI.js'
         
         data(){
             return{
-                showState:false,
+                showState:false, //chỉ xem không sửa
                 objName:'',
                 options: [
                     {value: '1',label: '1. Trả tiền nhà cung cấp (Không theo hóa đơn)'},
@@ -249,14 +258,11 @@ import BaseAPI from '@/BaseAPI.js'
                     PaymentVoucherCode:''
                 },
                 tableData: [ //data payment detail
-                    {Explain:'Chi tiền cho',CreditorAccountId:'1111'},
+                    {Explain:'Chi tiền cho',CreditorAccountId:'1111',State:'Normal'},
                 ],
                 SupplierCode:'',
                 Receiver:'',
-
                 totalMoney:'0,00',
-
-                
             }
         },
         created(){
@@ -322,14 +328,17 @@ import BaseAPI from '@/BaseAPI.js'
             async getRecommendCode(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers/GetMaxCode');
                 if(res && res.data){
-                    // let head='',tail='';
-                    // for(let i=0;i<res.data;i++){
-                    //     if(res.data[i] <= '9' && res.data > '0'){
-                    //         tail += res.data[i];
-                    //     }else   head += res.data[i];
-                    // }
-                    // this.obj.PaymentVoucherCode = head + (Number(tail) + 1);
-                    this.obj.PaymentVoucherCode = res.data;
+                    let str = res.data,num,Code='PC',i;
+                    for(i = 0;i<str.length;i++){
+                        if(str[i] <= '9' && str[i] > '0')
+                            break;
+                    }
+                    num = Number(str.slice(i,str.length))+1;
+                    let zerolength = 5 - num.toString().length;
+                    for(i=0;i<zerolength;i++){
+                        Code += '0';
+                    } 
+                    this.obj.PaymentVoucherCode = Code + num;
                 }
             },
 
@@ -343,8 +352,9 @@ import BaseAPI from '@/BaseAPI.js'
                 this.obj.PaymentVoucherDetail = this.tableData;
                 console.log(this.obj);
                 let res = await BaseAPI.Post('https://localhost:44363/api/PaymentVouchers',this.obj); 
-                if(res){
-                    console.log(res);
+                if(res.data.Success){
+                    // để vê
+                    this.showState = true;
                 }   
             },
 
@@ -363,6 +373,7 @@ import BaseAPI from '@/BaseAPI.js'
             },
             addRow(){
                 let newRow = Object.assign({}, this.tableData[this.addCount]);
+                newRow.State = 'add';
                 this.tableData.push(newRow);
                 ++this.addCount;
             },
@@ -377,7 +388,6 @@ import BaseAPI from '@/BaseAPI.js'
             moneyChage(money,row){
                 money = this.moneyToNumber(money)
                 this.tableData[row].Exchange = this.numberToMoney(money * 23150);
-
                 this.$nextTick(() =>{ // tính lại tổng tiền
                     this.recalTotalMoney();
                 })
@@ -465,7 +475,11 @@ import BaseAPI from '@/BaseAPI.js'
              */
             currMoney:function(){
                 this.recalTotalMoney();
+            },
+            tableData:function(){
+                console.log(this.tableData);
             }
+        
         }
     }
 </script>
@@ -579,7 +593,7 @@ import BaseAPI from '@/BaseAPI.js'
     margin-top: 30px;
 }
 .footer-left,.footer-right{
-    padding: 8px 16px;
+    padding: 7px 16px;
     display: flex;
 }
 .btn-cancel{
@@ -780,5 +794,19 @@ import BaseAPI from '@/BaseAPI.js'
     margin-left: 15px;
     color: #757575;
     white-space: nowrap;
+}
+.btn-save-edit{
+    background: #248b15;
+    border: 1px solid transparent;
+    color: #fff;
+    margin-left: 5px;
+    border-radius: 3px;
+    height: 36px;
+    padding: 7px 20px;
+    transition: all .25s ease;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 13px;
+    cursor: pointer;
 }
 </style>

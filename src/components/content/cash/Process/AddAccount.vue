@@ -150,13 +150,13 @@ import BaseAPI from '@/BaseAPI.js'
                     {value:4,label:'Không có số dư'},
                 ],
                 ListSupp:[// theo dõi chi tiết theo đối tượng
-                    {value:'1',label:'Nhà cung cấp'},
-                    {value:'2',label:'Khách hàng'},
-                    {value:'3',label:'Nhân viên'}
+                    {value:1,label:'Nhà cung cấp'},
+                    {value:2,label:'Khách hàng'},
+                    {value:3,label:'Nhân viên'}
                 ],
                 rules:[ // theo dõi chi tiết theo các cái còn lại
-                    {value:'1',label:'Chỉ cảnh báo'},
-                    {value:'2',label:'Bắt buộc nhập'},
+                    {value:1,label:'Chỉ cảnh báo'},
+                    {value:2,label:'Bắt buộc nhập'},
                 ],
                 rangeFor:[2,4,6,8],
                 isShow:false,
@@ -202,7 +202,6 @@ import BaseAPI from '@/BaseAPI.js'
                 this.getAccounts(); //Lấy danh sách tài khoản tổng hợp
                 this.drawer = true; 
                 this.reset = false;
-
                 setTimeout(()=>{ //focus vào ô AccountCode
                     this.$refs.AccountCode.focusInput();
                 },200)
@@ -213,15 +212,14 @@ import BaseAPI from '@/BaseAPI.js'
              * Author: BTTu (25/11/2020)
              */
             busData.$on('editAccount',(data)=>{
+                this.getAccounts(); //Lấy danh sách tài khoản tổng hợp
                 this.obj = data;
-                console.log(this.obj);
                 for(let i=0;i<this.trackingDetails.length;i++){
                     if(this.obj[this.trackingDetails[i].name]){
                         this.trackingDetails[i].check = true;
                         this.trackingDetails[i].value = this.obj[this.trackingDetails[i].name];
                     }
                 }
-                
                 this.drawer = true;
                 this.formMode = 'Edit';
                 this.reset = false;
@@ -236,7 +234,6 @@ import BaseAPI from '@/BaseAPI.js'
              */
             busData.$on('duplicateAccount',(data)=>{
                 this.obj = data;
-                console.log(this.obj);
                 for(let i=0;i<this.trackingDetails.length;i++){
                     if(this.obj[this.trackingDetails[i].name]){
                         this.trackingDetails[i].check = true;
@@ -258,7 +255,6 @@ import BaseAPI from '@/BaseAPI.js'
 
         },
         mounted(){
-           
         },
         methods:{
            
@@ -330,12 +326,10 @@ import BaseAPI from '@/BaseAPI.js'
                         this.obj[this.trackingDetails[i].name] = null
                     }
                 }
-                if(!this.obj.Propertie || !this.obj.Propertie == 0){
+                if(!this.obj.Propertie || this.obj.Propertie == 0){
                     this.obj.Propertie = 1;
                 }
                 this.obj.BankAccount = this.trackingDetails[1].value;
-                
-
                 //Call API
                 let res;
                 if(this.formMode == 'Add'){
@@ -355,7 +349,6 @@ import BaseAPI from '@/BaseAPI.js'
                         else{ //Save and add
                             this.resetForm();
                             this.getAccounts();
-                            
                             //Reset lại các ô nhập liệu
                             setTimeout(()=>{
                                 this.reset = false;

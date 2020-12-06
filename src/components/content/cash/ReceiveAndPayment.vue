@@ -447,8 +447,9 @@ import MSSelect from '@/components/common/MSSelect'
 }
 .grid-content{
     background: #fff;
-    width: 100%;
+    width: calc(100% - 30px);
     height:calc(100% - 70px);
+    padding:0px 15px;
 }
 .table-scroll{
     overflow-y: auto;
@@ -527,25 +528,25 @@ tfoot{
     height: 44px;
 }
 .total-footer{
-    height: 35px;
+    height: 32px;
     border-top: 1px solid #e0e0e0;
     display: flex;
     background: transparent;
     position: fixed;
-    bottom: 40px;
-    width: calc(100% - 225px);
-    padding-top:3px;
+    bottom: 22px;
+    width: calc(100% - 255px);
+    background: #f8f9fe;
 }
 
 .grid-footer{
     width: calc(100% - 225px);
-    height: 40px;
+    height: 32px;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    bottom: 5px;
+    bottom: 3px; 
     right: 41px;
 }
 .total-label{
