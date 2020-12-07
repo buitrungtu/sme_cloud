@@ -350,3 +350,9 @@ thead.has-gutter tr th:first-child{
 thead tr th:last-child{
     border-right: none !important; 
 }
+tbody tr td:first-child{
+    border-left: none; 
+}
+tbody tr td:last-child{
+    border-right: none; 
+}

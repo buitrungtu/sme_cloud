@@ -1,5 +1,5 @@
 <template>
-    <div class="payment-voucher">
+    <div class="payment-voucher" v-shortkey="['esc']" @shortkey="goBack()">
         <div class="header-layout">
             <div class="header-left">
                 <div class="icon icon-history"></div>
@@ -14,7 +14,9 @@
                 <div class="toolkit">
                     <div class="icon icon-setting"></div>
                     <div class="icon icon-help"></div>
-                    <div @click="goBack()" class="icon icon-close"></div>
+                    <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Đóng (ESC)" placement="top-start">
+                        <div @click="goBack()" class="icon icon-close"></div>
+                    </el-tooltip>
                 </div>
             </div>
         </div>
@@ -191,7 +193,7 @@
                 <button class="btn-cancel" @click="goBack()">Hủy</button>
             </div>
             <div class="footer-right">
-                <button class="btn-save-edit" @click="showState = false">Sửa</button>
+                <button class="btn-save-edit" @click="btnEditOnClick()">Sửa</button>
             </div>
         </div>
     </div>
@@ -255,14 +257,15 @@ import BaseAPI from '@/BaseAPI.js'
                     ReasonSpend:'Chi tiền cho ',
                     DateAccounting:this.dateNow(),
                     DatePayment:this.dateNow(),
-                    PaymentVoucherCode:''
+                    PaymentVoucherCode:'',
                 },
-                tableData: [ //data payment detail
+                PaymentVoucherDetail: [ //data payment detail
                     {Explain:'Chi tiền cho',CreditorAccountId:'1111',State:'Normal'},
                 ],
                 SupplierCode:'',
                 Receiver:'',
                 totalMoney:'0,00',
+                formMode:'Add'
             }
         },
         created(){
@@ -271,8 +274,26 @@ import BaseAPI from '@/BaseAPI.js'
             this.getEmployees();
             this.getAccounts();
             
+            //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
+
+            let PaymentVoucherId = this.$route.params.PaymentVoucherId;
+            if(PaymentVoucherId){
+                this.getPaymentVoucher(PaymentVoucherId);
+            }
         },
         methods:{
+            async getPaymentVoucher(id){
+                let res = await BaseAPI.GetObj('https://localhost:44363/api/PaymentVouchers',id); 
+                if(res.data.Success){
+                    this.obj = res.data.Data;
+                    this.SupplierCode = this.obj.SupplierCode;
+                    this.PaymentVoucherDetail = this.obj.PaymentVoucherDetail;
+                    this.PaymentVoucherDetail = this.PaymentVoucherDetail.map(item=>({...item,State:'Edit'}));
+                    this.recalTotalMoney();
+                    this.showState = true;
+            
+                }
+            },
             /**
              * Lấy danh sách đối tượng (nhà cung cấp)
              */
@@ -349,15 +370,24 @@ import BaseAPI from '@/BaseAPI.js'
                 this.tableData.map((item)=>{
                     item.Money = this.moneyToNumber(item.Money);
                 })
-                this.obj.PaymentVoucherDetail = this.tableData;
+                this.obj.PaymentVoucherDetail = this.PaymentVoucherDetail;
+                this.obj.TotalMoney = this.moneyToNumber(this.totalMoney.replace(",00",""));
                 console.log(this.obj);
-                let res = await BaseAPI.Post('https://localhost:44363/api/PaymentVouchers',this.obj); 
+                let res;
+                if(this.formMode == 'Add'){
+                    res = await BaseAPI.Post('https://localhost:44363/api/PaymentVouchers',this.obj); 
+                }else{ //formMode = 'Edit'
+                    res = await BaseAPI.Put('https://localhost:44363/api/PaymentVouchers',this.obj.PaymentVoucherId,this.obj); 
+                }
                 if(res.data.Success){
-                    // để vê
                     this.showState = true;
                 }   
             },
 
+            btnEditOnClick(){
+                this.showState = false;
+                this.formMode = 'Edit'
+            },
 
 
             //thoát dialog
@@ -367,19 +397,30 @@ import BaseAPI from '@/BaseAPI.js'
 
             //Xử lý với Grid
             deleteRow(index) {
-                this.tableData.splice(index, 1);
+                if(this.PaymentVoucherDetail[index].State == 'Edit')
+                    this.PaymentVoucherDetail[index].State = "Delete";
+                else    this.PaymentVoucherDetail.splice(index, 1);
+                    
                 if(this.addCount > 0)
                 -- this.addCount;
+                console.log(this.PaymentVoucherDetail);
             },
             addRow(){
-                let newRow = Object.assign({}, this.tableData[this.addCount]);
-                newRow.State = 'add';
-                this.tableData.push(newRow);
+                let newRow = Object.assign({}, this.PaymentVoucherDetail[this.addCount]);
+                newRow.State = 'Add';
+                this.PaymentVoucherDetail.push(newRow);
                 ++this.addCount;
+                console.log(this.PaymentVoucherDetail);
             },
             removeAllRow(){
-                this.tableData = [];
+                this.PaymentVoucherDetail = this.PaymentVoucherDetail.filter(item =>item.State == 'Edit' || item.State == 'Delete'); // những bản ghi này có trong database
+                this.PaymentVoucherDetail.forEach(item => {
+                    item.State = 'Delete';
+                });
+
                 this.addCount = 0;
+                console.log(this.PaymentVoucherDetail);
+
             },
 
              /**
@@ -421,11 +462,13 @@ import BaseAPI from '@/BaseAPI.js'
                 else    return number;
             },
             /**
-             * Chuyển tiền tệ về dạng số để tính toán
+             * Chuyển tiền tệ về dạng số để tính toán, để lưu
              */
             moneyToNumber(money){
-                if(money)
-                    return Number(money.toString().replace(/\./g,''));
+                if(money){
+                    let regex = /[.,\s]/g;
+                    return Number(money.toString().replace(regex,''));
+                }
                 else    return money;
             },
            
@@ -444,7 +487,11 @@ import BaseAPI from '@/BaseAPI.js'
                 this.totalMoney = this.numberToMoney(sum) +',00';
             }
         },
-      
+        computed:{
+            tableData(){
+                return this.PaymentVoucherDetail.filter(item => item.State != "Delete")
+            }
+        },
         watch:{
             /**
              * Binding dữ liệu theo 
@@ -468,7 +515,6 @@ import BaseAPI from '@/BaseAPI.js'
                     item.SupplierCode = this.obj.SupplierCode;
                     item.SupplierName = this.obj.Receiver;
                 })
-
             },
             /**
              * Tính lại tổng tiền theo dạng tiền tệ hiện tại
@@ -476,10 +522,6 @@ import BaseAPI from '@/BaseAPI.js'
             currMoney:function(){
                 this.recalTotalMoney();
             },
-            tableData:function(){
-                console.log(this.tableData);
-            }
-        
         }
     }
 </script>

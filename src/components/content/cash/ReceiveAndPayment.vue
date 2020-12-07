@@ -83,7 +83,7 @@
             <div class="grid-content">
                 <el-table
                         ref="multipleTable"
-                        :data="dataSearch"
+                        :data="listPaymentVoucher"
                         style="width: 100%"
                         height="100%"
                         @cell-dblclick="dbClickForReview"	
@@ -91,54 +91,48 @@
 
                         <el-table-column
                         type="selection"
-                        width="45">
+                        width="50">
                         </el-table-column>
 
                         <el-table-column
-                        property="SupplierCode"
+                        property="DateAccounting"
                         label="NGÀY THU TIỀN"
                         width="150">
                         </el-table-column>
 
                         <el-table-column
-                        property="SupplierName"
+                        property="PaymentVoucherCode"
                         label="SỐ CHỨNG TỪ"
                         width="150">
                         </el-table-column>
 
                         <el-table-column
-                        property="Address"
+                        property="ReasonSpend"
                         label="DIỄN GIẢI"
                         width="300">
                         </el-table-column>
 
                         <el-table-column
-                        property="Debt"
+                        property="TotalMoney"
                         label="SỐ TIỀN"
                         width="150">
                         </el-table-column>
 
                         <el-table-column
-                        property="TaxCode"
+                        property="Receiver"
                         label="ĐỐI TƯỢNG"
                         width="218">
                         </el-table-column>
 
                         <el-table-column
-                        property="Mobile"
+                        property="Category"
                         label="LÝ DO THU/CHI"
                         width="250">
                         </el-table-column>
 
                         <el-table-column
-                        property="Mobile"
+                        property="Type"
                         label="LOẠI CHỨNG TỪ"
-                        width="150">
-                        </el-table-column>
-
-                        <el-table-column
-                        property="Mobile"
-                        label="CHI NHÁNH"
                         width="150">
                         </el-table-column>
 
@@ -193,6 +187,7 @@
 <script>
 import {busData} from '@/main.js'
 import MSSelect from '@/components/common/MSSelect'
+import BaseAPI from '@/BaseAPI.js'
 
     export default {
         components:{
@@ -200,7 +195,7 @@ import MSSelect from '@/components/common/MSSelect'
         },
         data(){
             return{
-                data: [
+                listPaymentVoucher: [
                     //Danh sách nhà cung cấp
                 ],
                 
@@ -220,7 +215,37 @@ import MSSelect from '@/components/common/MSSelect'
         created(){
             busData.$emit('changeTab',1);
         },
+        mounted(){
+            this.GetPaymentVouchers();
+        },
         methods:{
+
+            async GetPaymentVouchers(){
+                let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers');
+                if(res && res.data){
+                    this.listPaymentVoucher = res.data;
+                    this.listPaymentVoucher.forEach(item => {
+                        item.DateAccounting = this.formatDate(item.DateAccounting);
+                        item.Category = 'Chi khác';item.Type = 'Phiếu chi';
+                        item.TotalMoney = this.formatMoney(item.TotalMoney) + ',00';
+                    });
+                }
+                
+            },
+            
+            formatMoney(number){
+                if(number)
+                    return number.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+                else    return number;
+            },
+
+            formatDate(date){
+                let temp = date.substring(0,10);
+                temp = temp.split('-').reverse().join('/');
+                return temp;
+            },
+
+
             gotoPaymentVoucher(){
                 this.$router.push('/paymentvoucher');
             },
@@ -230,14 +255,21 @@ import MSSelect from '@/components/common/MSSelect'
              * Author: BTTu (25/11/2020)
              * @param {Object} row
              */
-            async dbClickForReview(row){
-                //Lấy thông tin nhân viên đó rồi gửi sang form addSupplier để sửa
-                // let res = await BaseAPI.GetObj('https://localhost:44363/api/suppliers',row.SupplierId); 
-                // if(res && res.data){
-                //     busData.$emit('editSupplier',res.data);
-                // }
-                console.log(row);
+            dbClickForReview(row){
+                this.$router.push({name:"paymentvoucher",params:{PaymentVoucherId:row.PaymentVoucherId}});
+                //Lấy thông tin phiếu chi rồi gửi sang form PaymentVoucher để sửa
+                
             },
+
+            /**
+             * Xóa 1 bản ghi
+             */
+            async deleteRow(row){
+                let res = await BaseAPI.Delete('https://localhost:44363/api/PaymentVouchers',row.PaymentVoucherId); 
+                if(res.data.Success){
+                    this.GetPaymentVouchers();
+                }
+            }
         },
         computed:{
              /**
@@ -245,7 +277,7 @@ import MSSelect from '@/components/common/MSSelect'
              * Author: BTTu (25/11/2020)
              */
             dataSearch(){
-                return this.data.filter(
+                return this.listPaymentVoucher.filter(
                     item => !this.txtSearch || this.supportSearch(item,this.txtSearch)
                 )
             }
