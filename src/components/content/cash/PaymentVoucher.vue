@@ -259,8 +259,8 @@ import BaseAPI from '@/BaseAPI.js'
                     DatePayment:this.dateNow(),
                     PaymentVoucherCode:'',
                 },
-                PaymentVoucherDetail: [ //data payment detail
-                    {Explain:'Chi tiền cho',CreditorAccountId:'1111',State:'Normal'},
+                PaymentVoucherDetails: [ //data payment detail
+                    {Explain:'Chi tiền cho ',CreditorAccountId:'1111',State:'Add'},
                 ],
                 SupplierCode:'',
                 Receiver:'',
@@ -275,7 +275,6 @@ import BaseAPI from '@/BaseAPI.js'
             this.getAccounts();
             
             //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
-
             let PaymentVoucherId = this.$route.params.PaymentVoucherId;
             if(PaymentVoucherId){
                 this.getPaymentVoucher(PaymentVoucherId);
@@ -287,11 +286,13 @@ import BaseAPI from '@/BaseAPI.js'
                 if(res.data.Success){
                     this.obj = res.data.Data;
                     this.SupplierCode = this.obj.SupplierCode;
-                    this.PaymentVoucherDetail = this.obj.PaymentVoucherDetail;
-                    this.PaymentVoucherDetail = this.PaymentVoucherDetail.map(item=>({...item,State:'Edit'}));
+                    this.PaymentVoucherDetails = this.obj.PaymentVoucherDetails;
+                    this.PaymentVoucherDetails.forEach(item=>{
+                        item.State = 'Edit';
+                    })
                     this.recalTotalMoney();
                     this.showState = true;
-            
+                    
                 }
             },
             /**
@@ -370,7 +371,7 @@ import BaseAPI from '@/BaseAPI.js'
                 this.tableData.map((item)=>{
                     item.Money = this.moneyToNumber(item.Money);
                 })
-                this.obj.PaymentVoucherDetail = this.PaymentVoucherDetail;
+                this.obj.PaymentVoucherDetails = this.PaymentVoucherDetails;
                 this.obj.TotalMoney = this.moneyToNumber(this.totalMoney.replace(",00",""));
                 console.log(this.obj);
                 let res;
@@ -397,29 +398,28 @@ import BaseAPI from '@/BaseAPI.js'
 
             //Xử lý với Grid
             deleteRow(index) {
-                if(this.PaymentVoucherDetail[index].State == 'Edit')
-                    this.PaymentVoucherDetail[index].State = "Delete";
-                else    this.PaymentVoucherDetail.splice(index, 1);
+                if(this.PaymentVoucherDetails[index].State == 'Edit')
+                    this.PaymentVoucherDetails[index].State = "Delete";
+                else    this.PaymentVoucherDetails.splice(index, 1);
                     
                 if(this.addCount > 0)
                 -- this.addCount;
-                console.log(this.PaymentVoucherDetail);
+                this.recalTotalMoney();
             },
             addRow(){
-                let newRow = Object.assign({}, this.PaymentVoucherDetail[this.addCount]);
+                let newRow = Object.assign({}, this.PaymentVoucherDetails[this.addCount]);
                 newRow.State = 'Add';
-                this.PaymentVoucherDetail.push(newRow);
+                this.PaymentVoucherDetails.push(newRow);
                 ++this.addCount;
-                console.log(this.PaymentVoucherDetail);
+
             },
             removeAllRow(){
-                this.PaymentVoucherDetail = this.PaymentVoucherDetail.filter(item =>item.State == 'Edit' || item.State == 'Delete'); // những bản ghi này có trong database
-                this.PaymentVoucherDetail.forEach(item => {
+                this.PaymentVoucherDetails = this.PaymentVoucherDetails.filter(item =>item.State == 'Edit' || item.State == 'Delete'); // những bản ghi này có trong database
+                this.PaymentVoucherDetails.forEach(item => {
                     item.State = 'Delete';
                 });
-
                 this.addCount = 0;
-                console.log(this.PaymentVoucherDetail);
+                this.recalTotalMoney();
 
             },
 
@@ -428,7 +428,7 @@ import BaseAPI from '@/BaseAPI.js'
              */
             moneyChage(money,row){
                 money = this.moneyToNumber(money)
-                this.tableData[row].Exchange = this.numberToMoney(money * 23150);
+                this.PaymentVoucherDetails[row].Exchange = this.numberToMoney(money * 23150);
                 this.$nextTick(() =>{ // tính lại tổng tiền
                     this.recalTotalMoney();
                 })
@@ -438,7 +438,7 @@ import BaseAPI from '@/BaseAPI.js'
              * Sự kiện kích hoạt khi người dùng chọn đối tượng nhà cung cấp trên grid
              */
             supplierChage(supplierCode,row){
-                this.tableData[row].SupplierName = this.suppliersDB.find(item => item.SupplierCode == supplierCode).SupplierName;
+                this.PaymentVoucherDetails[row].SupplierName = this.suppliersDB.find(item => item.SupplierCode == supplierCode).SupplierName;
             },
 
             //------------------------
@@ -485,11 +485,14 @@ import BaseAPI from '@/BaseAPI.js'
                         sum += this.moneyToNumber(this.tableData[i].Exchange);
                 }
                 this.totalMoney = this.numberToMoney(sum) +',00';
+                console.log(this.tableData);
             }
         },
         computed:{
             tableData(){
-                return this.PaymentVoucherDetail.filter(item => item.State != "Delete")
+                if(this.PaymentVoucherDetails)
+                    return this.PaymentVoucherDetails.filter(item => item.State != "Delete")
+                else    return [];
             }
         },
         watch:{
@@ -497,24 +500,25 @@ import BaseAPI from '@/BaseAPI.js'
              * Binding dữ liệu theo 
              */
             SupplierCode:function(){
-                let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
-                //Master
-                this.obj.SupplierCode = this.SupplierCode;
-                if(currSupplier.IsPersonal){
-                   this.obj.Receiver = currSupplier.SupplierName;
-                }else{
-                    this.obj.Receiver = currSupplier.LegalRepresent;
+                if(this.SupplierCode){
+                    let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
+                    //Master
+                    this.obj.SupplierCode = this.SupplierCode;
+                    if(currSupplier.IsPersonal){
+                    this.obj.Receiver = currSupplier.SupplierName;
+                    }else{
+                        this.obj.Receiver = currSupplier.LegalRepresent;
+                    }
+                    this.obj.Address = currSupplier.Address;
+                    this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
+                    this.obj.EmployeeCode = currSupplier.EmployeeCode;
+                    //Detail
+                    this.tableData.map((item)=>{
+                        item.Explain = this.obj.ReasonSpend;
+                        item.SupplierCode = this.obj.SupplierCode;
+                        item.SupplierName = this.obj.Receiver;
+                    })
                 }
-                this.obj.Address = currSupplier.Address;
-                this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
-                this.obj.EmployeeCode = currSupplier.EmployeeCode;
-                //Detail
-                
-                this.tableData.map((item)=>{
-                    item.Explain = this.obj.ReasonSpend;
-                    item.SupplierCode = this.obj.SupplierCode;
-                    item.SupplierName = this.obj.Receiver;
-                })
             },
             /**
              * Tính lại tổng tiền theo dạng tiền tệ hiện tại
