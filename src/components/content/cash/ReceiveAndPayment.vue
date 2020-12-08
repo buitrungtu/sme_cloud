@@ -86,7 +86,7 @@
                         :data="listPaymentVoucher"
                         style="width: 100%"
                         height="100%"
-                        @cell-dblclick="dbClickForReview"	
+                        @cell-dblclick="editRecordOnClick"	
                     >
 
                         <el-table-column
@@ -142,13 +142,14 @@
                             width="125">
                             <template slot-scope="control">
                                     <div style="display:flex;align-items: center;justify-content: center;">
-                                        <button class="btn-pay">Xem</button>
+                                        <button @click="editRecordOnClick(control.row)" class="btn-pay">Xem</button>
                                         <el-dropdown trigger="click">
                                             <span class="el-dropdown-link">
                                                 <i class="el-icon-caret-bottom"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Sửa</el-dropdown-item>
+                                                <el-dropdown-item @click.native.prevent="editRecordOnClick(control.row)" >Xem</el-dropdown-item>
+                                                <el-dropdown-item @click.native.prevent="editRow(control.row.SupplierId)" >Nhân bản</el-dropdown-item>
                                                 <el-dropdown-item @click.native.prevent="deleteRow(control.row)" >Xóa</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
@@ -255,7 +256,7 @@ import BaseAPI from '@/BaseAPI.js'
              * Author: BTTu (25/11/2020)
              * @param {Object} row
              */
-            dbClickForReview(row){
+            editRecordOnClick(row){
                 this.$router.push({name:"paymentvoucher",params:{PaymentVoucherId:row.PaymentVoucherId}});
                 //Lấy thông tin phiếu chi rồi gửi sang form PaymentVoucher để sửa
                 

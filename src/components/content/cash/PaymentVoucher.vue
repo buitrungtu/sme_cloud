@@ -281,6 +281,9 @@ import BaseAPI from '@/BaseAPI.js'
             }
         },
         methods:{
+            /**
+             * Lấy thông tin phiếu chi
+             */
             async getPaymentVoucher(id){
                 let res = await BaseAPI.GetObj('https://localhost:44363/api/PaymentVouchers',id); 
                 if(res.data.Success){
@@ -289,6 +292,7 @@ import BaseAPI from '@/BaseAPI.js'
                     this.PaymentVoucherDetails = this.obj.PaymentVoucherDetails;
                     this.PaymentVoucherDetails.forEach(item=>{
                         item.State = 'Edit';
+                        item.Money = this.numberToMoney(item.Money);
                     })
                     this.recalTotalMoney();
                     this.showState = true;
@@ -368,11 +372,15 @@ import BaseAPI from '@/BaseAPI.js'
              * Cất dữ liệu
              */
             async btnSaveOnClick(){
-                this.tableData.map((item)=>{
+                //chuyển dạng tiền sang số để lưu
+                this.PaymentVoucherDetails.map((item)=>{
                     item.Money = this.moneyToNumber(item.Money);
                 })
+                //Lưu Phiếu chi detail
                 this.obj.PaymentVoucherDetails = this.PaymentVoucherDetails;
+                //Lưu tổng tiền
                 this.obj.TotalMoney = this.moneyToNumber(this.totalMoney.replace(",00",""));
+
                 console.log(this.obj);
                 let res;
                 if(this.formMode == 'Add'){
@@ -383,6 +391,7 @@ import BaseAPI from '@/BaseAPI.js'
                 if(res.data.Success){
                     this.showState = true;
                 }   
+                console.log(res);
             },
 
             btnEditOnClick(){
@@ -411,7 +420,6 @@ import BaseAPI from '@/BaseAPI.js'
                 newRow.State = 'Add';
                 this.PaymentVoucherDetails.push(newRow);
                 ++this.addCount;
-
             },
             removeAllRow(){
                 this.PaymentVoucherDetails = this.PaymentVoucherDetails.filter(item =>item.State == 'Edit' || item.State == 'Delete'); // những bản ghi này có trong database
@@ -485,7 +493,6 @@ import BaseAPI from '@/BaseAPI.js'
                         sum += this.moneyToNumber(this.tableData[i].Exchange);
                 }
                 this.totalMoney = this.numberToMoney(sum) +',00';
-                console.log(this.tableData);
             }
         },
         computed:{
@@ -513,10 +520,12 @@ import BaseAPI from '@/BaseAPI.js'
                     this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
                     this.obj.EmployeeCode = currSupplier.EmployeeCode;
                     //Detail
-                    this.tableData.map((item)=>{
-                        item.Explain = this.obj.ReasonSpend;
-                        item.SupplierCode = this.obj.SupplierCode;
-                        item.SupplierName = this.obj.Receiver;
+                    this.PaymentVoucherDetails.map((item)=>{
+                        if(item.State == 'Add'){
+                            item.Explain = this.obj.ReasonSpend;
+                            item.SupplierCode = this.obj.SupplierCode;
+                            item.SupplierName = this.obj.Receiver;
+                        }
                     })
                 }
             },
