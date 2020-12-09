@@ -271,18 +271,21 @@ import {busData} from '@/main.js'
             }
         },
         created(){
-            //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
-            let PaymentVoucherId = this.$route.params.PaymentVoucherId;
-            if(PaymentVoucherId){
-                this.getPaymentVoucher(PaymentVoucherId);
-            }
-
+            
             this.getRecommendCode();
             this.getSuppliers();
             this.getEmployees();
             this.getAccounts();
             
-            
+            //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
+            let PaymentVoucherId = this.$route.params.PaymentVoucherId;
+            this.$nextTick(()=>{
+                if(PaymentVoucherId){
+                    this.getPaymentVoucher(PaymentVoucherId);
+                }
+            })
+           
+
 
             /**
              * Lắng nghe sự kiện đóng form lỗi
@@ -301,6 +304,14 @@ import {busData} from '@/main.js'
 
         },
         methods:{
+            
+            // async prepareData(){
+            //     this.getRecommendCode();
+            //     this.getSuppliers();
+            //     this.getEmployees();
+            //     this.getAccounts();
+            // },
+
 
             async saveRecommend(){
                 await this.getRecommendCode(); //Lấy ra mã gợi ý mới
@@ -379,17 +390,17 @@ import {busData} from '@/main.js'
             async getRecommendCode(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers/GetMaxCode');
                 if(res && res.data){
-                    let str = res.data,num,Code='PC',i;
-                    for(i = 0;i<str.length;i++){
-                        if(str[i] <= '9' && str[i] > '0')
-                            break;
-                    }
-                    num = Number(str.slice(i,str.length))+1;
-                    let zerolength = 5 - num.toString().length;
-                    for(i=0;i<zerolength;i++){
-                        Code += '0';
-                    } 
-                    this.obj.PaymentVoucherCode = Code + num;
+                    // let str = res.data,num,Code='PC',i;
+                    // for(i = 0;i<str.length;i++){
+                    //     if(str[i] <= '9' && str[i] > '0')
+                    //         break;
+                    // }
+                    // num = Number(str.slice(i,str.length))+1;
+                    // let zerolength = 5 - num.toString().length;
+                    // for(i=0;i<zerolength;i++){
+                    //     Code += '0';
+                    // } 
+                    this.obj.PaymentVoucherCode = res.data;
                 }
             },
 
@@ -476,6 +487,9 @@ import {busData} from '@/main.js'
                 console.log(res);
             },
 
+            /**
+             * Đặt form thành trạng thái sửa
+             */
             btnEditOnClick(){
                 this.showState = false;
                 this.formMode = 'Edit'
@@ -589,7 +603,7 @@ import {busData} from '@/main.js'
                 if(this.PaymentVoucherDetails)
                     return this.PaymentVoucherDetails.filter(item => item.State != "Delete")
                 else    return [];
-            }
+            },
         },
         watch:{
             /**
@@ -600,7 +614,6 @@ import {busData} from '@/main.js'
                     let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
                     //Master
                     this.obj.SupplierCode = this.SupplierCode;
-                    console.log(currSupplier.IsPersonal);
                     if(currSupplier.IsPersonal){
                         this.obj.Receiver = currSupplier.SupplierName;
                     }else{
@@ -618,6 +631,9 @@ import {busData} from '@/main.js'
                     })
                 }
             },
+            /**
+             * Bind diễn giải theo lý do chi
+             */
             'obj.ReasonSpend':function(newVal,oldVal){
                 this.PaymentVoucherDetails.map((item)=>{
                     if(item.Explain == oldVal){
@@ -629,6 +645,9 @@ import {busData} from '@/main.js'
              * Tính lại tổng tiền theo dạng tiền tệ hiện tại
              */
             currMoney:function(){
+                this.tableData.forEach(item =>{
+                    item.Exchange = this.numberToMoney(this.moneyToNumber(item.Money)*23150);
+                })
                 this.recalTotalMoney();
             },
         }

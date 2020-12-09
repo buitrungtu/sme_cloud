@@ -91,6 +91,7 @@
 
                         <el-table-column
                         type="selection"
+                        fixed="left"
                         width="50">
                         </el-table-column>
 
@@ -157,7 +158,7 @@
                                 </template>
                         </el-table-column>
                 </el-table>
-
+                
                 <div class="footer-fixed">
                     <div class="total-footer">
                         <div class="total-label" style="width:150px; margin-left:45px">Tổng</div>
@@ -561,8 +562,7 @@ tfoot{
     bottom: 5px;
     left: 185px;
     width: 100%;
-    z-index: 2;
-    height: 44px;
+    height: 54px;
 }
 .total-footer{
     height: 32px;
@@ -573,6 +573,7 @@ tfoot{
     bottom: 22px;
     width: calc(100% - 255px);
     background: #f8f9fe;
+    z-index: 3;
 }
 
 .grid-footer{
@@ -585,6 +586,7 @@ tfoot{
     position: fixed;
     bottom: 3px; 
     right: 41px;
+    z-index: 3;
 }
 .total-label{
     width: 150px;
@@ -593,8 +595,8 @@ tfoot{
     text-align: center;
 }
 .total-money{
-     width: 150px;
-    margin-left: 450px;
+    width: 150px;
+    margin-left: 550px;
     font-weight: 700;
     text-align: center;
 }
