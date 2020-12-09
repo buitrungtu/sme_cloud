@@ -52,12 +52,12 @@ import {busData} from '@/main.js'
             
             btnConfirmOnClick(){
                 this.show = false;
-                busData.$emit('deleteAccept');
+                busData.$emit('acceptConfirm');
             },
 
             btnCancelOnClick(){
                 this.show = false;
-                busData.$emit('cancelDelete');
+                busData.$emit('cancelConfirm');
             }
         }
     }

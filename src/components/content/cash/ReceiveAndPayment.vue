@@ -109,7 +109,7 @@
                         <el-table-column
                         property="ReasonSpend"
                         label="DIỄN GIẢI"
-                        width="300">
+                        width="400">
                         </el-table-column>
 
                         <el-table-column
@@ -121,7 +121,7 @@
                         <el-table-column
                         property="Receiver"
                         label="ĐỐI TƯỢNG"
-                        width="218">
+                        width="240">
                         </el-table-column>
 
                         <el-table-column
@@ -182,6 +182,7 @@
                 </div>
             </div>
         </div>
+        <DialogNotification />
     </div>
 </template>
 
@@ -327,6 +328,9 @@ import BaseAPI from '@/BaseAPI.js'
     box-sizing: border-box;
     outline: none;
     position: relative;
+}
+.button-add button:hover{
+    background: #35bf22;
 }
 .button-add .split{
     left: 0px;

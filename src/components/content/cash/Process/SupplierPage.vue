@@ -130,7 +130,7 @@
                     <el-table-column
                         fixed="right"
                         label="CHỨC NĂNG"
-                        width="210">
+                        width="185">
                         <template slot-scope="control">
                                 <div style="display:flex;align-items: center;justify-content: center;">
                                     <button class="btn-pay">Trả tiền</button>
@@ -168,7 +168,7 @@
     </div> 
         </div>
         <AddSupplier />
-        <DialogNotification @cancelDelete="cancelDelete()" @deleteAccept='deleteObj()'/>
+        <DialogNotification />
     </div>
 </template>
 
@@ -211,14 +211,14 @@ import MSSelect from '@/components/common/MSSelect'
             }),
 
              //Khi người dùng xác nhận xóa
-            busData.$on('deleteAccept',()=>{
+            busData.$on('acceptConfirm',()=>{
                 if(this.SupplierIdDelete){
                     this.DeleteSuplier(this.SupplierIdDelete);
                     this.SupplierIdDelete = '';
                 }
             }),
             //Khi người dùng hủy xóa
-            busData.$on('cancelDelete',()=>{
+            busData.$on('cancelConfirm',()=>{
                 this.SupplierIdDelete = '';
             })
         },

@@ -69,7 +69,9 @@ import {busData} from '@/main.js';
                }
            },
            focusInput(){
-              this.$refs.input.focus();
+                setTimeout(()=>{
+                    this.$refs.input.focus();
+                },100)
            },
             isNumber(e){
                 if(this.number){ // nếu input là number (Không cho nhập chữ)

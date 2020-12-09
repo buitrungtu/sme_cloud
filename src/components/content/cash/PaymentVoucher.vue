@@ -55,13 +55,13 @@
                     </div>
                     <div class="w-1-5 time-info">
                         <div class="row-input-right">
-                            <MSDatetime v-model="obj.DateAccounting " :disabled="showState" label="Ngày hạch toán" />
+                            <MSDatetime v-model="obj.DateAccounting" ref="DateAccounting" :disabled="showState" label="Ngày hạch toán" />
                         </div>
                         <div class="row-input-right">
-                            <MSDatetime v-model="obj.DatePayment" :disabled="showState" label="Ngày phiếu chi" />
+                            <MSDatetime v-model="obj.DatePayment" ref="DatePayment" :disabled="showState" label="Ngày phiếu chi" />
                         </div>
                         <div class="row-input-right">
-                            <MSTextbox v-model="obj.PaymentVoucherCode" :disabled="showState" label="Số phiếu chi" value="PC0023"/>
+                            <MSTextbox v-model="obj.PaymentVoucherCode" ref="PaymentVoucherCode" :disabled="showState" label="Số phiếu chi" value="PC0023"/>
                         </div>
                     </div>
                 </div>
@@ -196,6 +196,7 @@
                 <button class="btn-save-edit" @click="btnEditOnClick()">Sửa</button>
             </div>
         </div>
+        <DialogNotification />
     </div>
 </template>
 <script>
@@ -205,6 +206,7 @@ import MSDatetime from '@/components/common/MSDatetime'
 import AddSupplier from '@/components/content/cash/AddSupplier'
 import BaseCBB from '@/components/common/BaseCBB'
 import BaseAPI from '@/BaseAPI.js'
+import {busData} from '@/main.js'
 
     export default {
         components:{
@@ -260,7 +262,7 @@ import BaseAPI from '@/BaseAPI.js'
                     PaymentVoucherCode:'',
                 },
                 PaymentVoucherDetails: [ //data payment detail
-                    {Explain:'Chi tiền cho ',CreditorAccountId:'1111',State:'Add'},
+                    {Explain:'Chi tiền cho ',CreditorAccountCode:'1111',State:'Add'},
                 ],
                 SupplierCode:'',
                 Receiver:'',
@@ -269,18 +271,42 @@ import BaseAPI from '@/BaseAPI.js'
             }
         },
         created(){
-            this.getRecommendCode();
-            this.getSuppliers();
-            this.getEmployees();
-            this.getAccounts();
-            
             //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
             let PaymentVoucherId = this.$route.params.PaymentVoucherId;
             if(PaymentVoucherId){
                 this.getPaymentVoucher(PaymentVoucherId);
             }
+
+            this.getRecommendCode();
+            this.getSuppliers();
+            this.getEmployees();
+            this.getAccounts();
+            
+            
+
+            /**
+             * Lắng nghe sự kiện đóng form lỗi
+             */
+            busData.$on('dialogErrorClose',(errCode)=>{
+                //gọi hàm focus vào các ô nhập liệu lỗi
+                this.focusError(errCode);
+            })
+
+            /**
+             * Khi người dùng chọn tự động tăng số chứng từ
+             */
+            busData.$on('acceptConfirm',()=>{
+                this.saveRecommend();
+            })
+
         },
         methods:{
+
+            async saveRecommend(){
+                await this.getRecommendCode(); //Lấy ra mã gợi ý mới
+                this.btnSaveOnClick(); // Lưu dữ liệu
+            },
+
             /**
              * Lấy thông tin phiếu chi
              */
@@ -296,7 +322,6 @@ import BaseAPI from '@/BaseAPI.js'
                     })
                     this.recalTotalMoney();
                     this.showState = true;
-                    
                 }
             },
             /**
@@ -369,9 +394,63 @@ import BaseAPI from '@/BaseAPI.js'
             },
 
             /**
+             * Focus vào những ô nhập liệu lỗi
+             * @param {String,Number} errCode 
+             */
+            focusError(errCode){
+                 switch(errCode){
+                    case 1:
+                        this.$refs.PaymentVoucherCode.focusInput();
+                        break;
+                    case 2:
+                        this.$refs.DateAccounting.focusInput();
+                        break;
+                    case 3:
+                        this.$refs.DatePayment.focusInput();
+                        break;
+                    default:
+                }
+            },
+
+            /**
+             * Validate dữ liệu trước khi gửi lên service 
+             */
+            validate(){
+                let err = '';
+                if(!this.obj.PaymentVoucherCode){
+                    err = 'Số phiếu chi không được bỏ trống';
+                    busData.$emit('showDialogError',err,1);
+                    return false;
+                }else if(!this.obj.DateAccounting){
+                    err = 'Ngày hạch toán không được để trống';
+                    busData.$emit('showDialogError',err,2);
+                    return false;
+                }else if(!this.obj.DatePayment){
+                    err = 'Ngày phiếu chi không được để trống';
+                    busData.$emit('showDialogError',err,3);
+                    return false;
+                }else{
+                    for(let i =0;i<this.PaymentVoucherDetails.length;i++){
+                        if(!this.PaymentVoucherDetails[i].DebtAccountCode){
+                            err = 'Tài khoản nợ không được để trống';
+                            busData.$emit('showDialogError',err,4);
+                            return false;
+                        }else if(!this.PaymentVoucherDetails[i].CreditorAccountCode){
+                            err = 'Tài khoản có không được để trống';
+                            busData.$emit('showDialogError',err,5);
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            },
+
+
+            /**
              * Cất dữ liệu
              */
             async btnSaveOnClick(){
+                if(this.validate() == false)    return;
                 //chuyển dạng tiền sang số để lưu
                 this.PaymentVoucherDetails.map((item)=>{
                     item.Money = this.moneyToNumber(item.Money);
@@ -390,6 +469,9 @@ import BaseAPI from '@/BaseAPI.js'
                 }
                 if(res.data.Success){
                     this.showState = true;
+                }else{
+                    //Lỗi gửi về từ server, truyền thông tin lỗi cho form DialogError
+                    busData.$emit('showDialogConfirm',res.data.Message + ". Bạn có muốn trương trình tự động tăng số chứng từ không?");
                 }   
                 console.log(res);
             },
@@ -405,7 +487,21 @@ import BaseAPI from '@/BaseAPI.js'
                 this.$router.back();
             },
 
-            //Xử lý với Grid
+            /**
+             * Xử lý với Grid
+             */
+
+            //Thêm dòng
+            addRow(){
+                let newRow = Object.assign({}, this.PaymentVoucherDetails[this.addCount]);
+                newRow.Money = this.moneyToNumber(newRow.Money);
+                newRow.Money = this.numberToMoney(newRow.Money);
+                newRow.State = 'Add';
+                this.PaymentVoucherDetails.push(newRow);
+                ++this.addCount;
+                this.recalTotalMoney();
+            },
+            //Xóa dòng
             deleteRow(index) {
                 if(this.PaymentVoucherDetails[index].State == 'Edit')
                     this.PaymentVoucherDetails[index].State = "Delete";
@@ -415,12 +511,7 @@ import BaseAPI from '@/BaseAPI.js'
                 -- this.addCount;
                 this.recalTotalMoney();
             },
-            addRow(){
-                let newRow = Object.assign({}, this.PaymentVoucherDetails[this.addCount]);
-                newRow.State = 'Add';
-                this.PaymentVoucherDetails.push(newRow);
-                ++this.addCount;
-            },
+            //Xóa hết dòng
             removeAllRow(){
                 this.PaymentVoucherDetails = this.PaymentVoucherDetails.filter(item =>item.State == 'Edit' || item.State == 'Delete'); // những bản ghi này có trong database
                 this.PaymentVoucherDetails.forEach(item => {
@@ -428,7 +519,6 @@ import BaseAPI from '@/BaseAPI.js'
                 });
                 this.addCount = 0;
                 this.recalTotalMoney();
-
             },
 
              /**
@@ -440,7 +530,6 @@ import BaseAPI from '@/BaseAPI.js'
                 this.$nextTick(() =>{ // tính lại tổng tiền
                     this.recalTotalMoney();
                 })
-                
             },
             /**
              * Sự kiện kích hoạt khi người dùng chọn đối tượng nhà cung cấp trên grid
@@ -504,15 +593,16 @@ import BaseAPI from '@/BaseAPI.js'
         },
         watch:{
             /**
-             * Binding dữ liệu theo 
+             * Binding dữ liệu
              */
             SupplierCode:function(){
                 if(this.SupplierCode){
                     let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
                     //Master
                     this.obj.SupplierCode = this.SupplierCode;
+                    console.log(currSupplier.IsPersonal);
                     if(currSupplier.IsPersonal){
-                    this.obj.Receiver = currSupplier.SupplierName;
+                        this.obj.Receiver = currSupplier.SupplierName;
                     }else{
                         this.obj.Receiver = currSupplier.LegalRepresent;
                     }
@@ -522,12 +612,18 @@ import BaseAPI from '@/BaseAPI.js'
                     //Detail
                     this.PaymentVoucherDetails.map((item)=>{
                         if(item.State == 'Add'){
-                            item.Explain = this.obj.ReasonSpend;
                             item.SupplierCode = this.obj.SupplierCode;
                             item.SupplierName = this.obj.Receiver;
                         }
                     })
                 }
+            },
+            'obj.ReasonSpend':function(newVal,oldVal){
+                this.PaymentVoucherDetails.map((item)=>{
+                    if(item.Explain == oldVal){
+                        item.Explain = newVal;
+                    }
+                })
             },
             /**
              * Tính lại tổng tiền theo dạng tiền tệ hiện tại

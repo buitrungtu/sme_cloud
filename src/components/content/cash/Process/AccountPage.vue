@@ -147,7 +147,7 @@ import BaseAPI from '@/BaseAPI.js'
              * Khi người dùng xác nhận xóa
              * Author: BTTu (25/11/2020)
              */
-            busData.$on('deleteAccept',()=>{
+            busData.$on('acceptConfirm',()=>{
                 if(this.AccountIdDelete){
                     this.deleteAccount(this.AccountIdDelete);
                     this.AccountIdDelete = '';
@@ -158,7 +158,7 @@ import BaseAPI from '@/BaseAPI.js'
              * Khi người dùng hủy xóa
              * Author: BTTu (25/11/2020)
              */
-            busData.$on('cancelDelete',()=>{
+            busData.$on('cancelConfirm',()=>{
                 this.AccountIdDelete = '';
             })
         },
