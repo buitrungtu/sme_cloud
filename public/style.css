@@ -55,13 +55,7 @@
 
 
 
-  .icon{
-    width: 24px;
-    height: 24px;
-    background: url("https://actappdc.misacdn.net/img/Sprites.bc13c6df.svg") no-repeat;
-    background-position: -424px -86px;
-    cursor: pointer;
-  }
+  
   .header-search{
       display: flex;
       width: 200px;
@@ -80,39 +74,7 @@
       font-size: 13px;
       font-style: italic;
   }
-  .icon.icon-search{
-      background-position: -988px -356px;
-      position: absolute;
-      top:12px;
-      right: 4px;
-  }
-  .icon.icon-category{
-    background-position: -568px -30px;
-}
-.icon.icon-setting{
-    background-position: -675px -30px;
-}
-.icon.icon-chat{    
-    background-position: -899px -30px;
-}
-.icon.icon-help{
-    background-position: -731px -30px;
-}
-.icon.icon-notification{
-    background-position: -788px -30px;
-}
-.icon.icon-tour{
-    background-position: -984px -144px;
-}
-.icon.icon-close{
-    background-position: -144px -144px;
-}
-.icon.icon-add{
-    background-position: -28px -308px;
-}
-.icon.icon-down{
-    background-position: -556px -355px;
-}
+
 .tour-label{
     padding-left: 5px;
     color: #0075c0;
@@ -330,16 +292,7 @@ tbody tr td{
     font-weight: 400;
     color: #212121;
 }
-.el-table__expand-icon .el-icon-arrow-right{
-    background: url("https://actappdc.misacdn.net/img/Sprites.bc13c6df.svg") no-repeat  -608px -312px;
-    width: 15px;
-	height: 15px;
-}
-.el-table__expand-icon.el-table__expand-icon--expanded .el-icon-arrow-right{
-    background: url("https://actappdc.misacdn.net/img/Sprites.bc13c6df.svg") no-repeat  -560px -312px;
-    width: 15px;
-	height: 15px;
-}
+
 .el-table__row.el-table__row--level-0{
     font-weight: 700;
     color: #212121;

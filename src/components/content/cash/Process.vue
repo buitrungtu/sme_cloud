@@ -106,10 +106,7 @@ import {busData} from '@/main.js'
 .cash-content{
     position: relative;
 }
-.process-board{
-    background-image:url('https://actappdc.misacdn.net/img/qt_TienMat.1f64b87b.svg');
-    height: 340px;
-}
+
 .btn-process{
     height: 90px;
     width: 90px;

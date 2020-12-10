@@ -83,7 +83,7 @@
             <div class="grid-content">
                 <el-table
                         ref="multipleTable"
-                        :data="listPaymentVoucher"
+                        :data="dataSearch"
                         style="width: 100%"
                         height="100%"
                         @cell-dblclick="editRecordOnClick"	
@@ -167,11 +167,11 @@
                     <div class="grid-footer">
                         <div class="footer-left">Tổng số: <span style="font-weight:700">{{totalRecord}}</span> bản ghi</div>
                             <div class="footer-right">
-                                <div class="recordOnPage"><MSSelect v-model="recordOnPage" :data="recordPages"/></div>
+                                <div class="recordOnPage" style="margin-bottom:5px"><MSSelect v-model="recordOnPage" :data="recordPages"/></div>
                                 <div class="totalPage">
                                     <div class="pre" :class="{disable:pageNow == 1}" @click="prePage()">Trước</div>
                                     <div class="page-list">
-                                        <div class="page" v-for="index in 3" :key="index" :class="{active: pageNow == index}" @click="gotoPage(index)">
+                                        <div class="page" v-for="index in totalPage" :key="index" :class="{active: pageNow == index}" @click="gotoPage(index)">
                                             {{index}}
                                         </div>
                                     </div>
@@ -219,14 +219,17 @@ import BaseAPI from '@/BaseAPI.js'
             busData.$emit('changeTab',1);
         },
         mounted(){
-            this.GetPaymentVouchers();
+            this.GetPaymentVouchers(this.pageNow,this.recordOnPage);
         },
         methods:{
 
-            async GetPaymentVouchers(){
-                let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers');
+            async GetPaymentVouchers(page,record){
+                let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers?page='+page+"&&record="+record);
                 if(res && res.data){
-                    this.listPaymentVoucher = res.data;
+                    console.log(res.data);
+                    this.totalRecord = res.data.TotalRecord;
+                    this.totalPage = res.data.TotalPage;
+                    this.listPaymentVoucher = res.data.Data;
                     this.listPaymentVoucher.forEach(item => {
                         item.DateAccounting = this.formatDate(item.DateAccounting);
                         item.Category = 'Chi khác';item.Type = 'Phiếu chi';
@@ -236,6 +239,26 @@ import BaseAPI from '@/BaseAPI.js'
                 
             },
             
+            /**
+             * Xử lý phân trang
+             * Author: BTTu (25/11/2020)
+             */
+            gotoPage(page){ // tới thẳng 1 trang bất kỳ
+                this.GetPaymentVouchers(page,this.recordOnPage);
+            },
+            prePage(){ // Lùi lại 1 trang
+                if(this.pageNow > 1){
+                    this.GetPaymentVouchers(this.pageNow-1,this.recordOnPage);
+                }
+            },
+            nextPage(){ // Tiến lên 1 trang
+                if(this.pageNow < this.totalPage){
+                    this.GetPaymentVouchers(this.pageNow+1,this.recordOnPage);
+                }
+            },
+            //---------------------------------------------------------------------------
+
+
             formatMoney(number){
                 if(number)
                     return number.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
@@ -270,9 +293,26 @@ import BaseAPI from '@/BaseAPI.js'
             async deleteRow(row){
                 let res = await BaseAPI.Delete('https://localhost:44363/api/PaymentVouchers',row.PaymentVoucherId); 
                 if(res.data.Success){
-                    this.GetPaymentVouchers();
+                    this.GetPaymentVouchers(this.pageNow,this.recordOnPage);
                 }
-            }
+            },
+
+            /**
+             * Hàm bổ trợ cho chức năng tìm kiếm
+             * @param {Object} item
+             * @param {String} search
+             */
+            supportSearch(item,search){
+                let aimsSearch = ['DateAccounting','PaymentVoucherCode','ReasonSpend','TotalMoney','Receiver','Category','Type'];
+                for(let i=0;i < aimsSearch.length;i++){
+                    if(item[aimsSearch[i]] && item[aimsSearch[i]].toLowerCase().includes(search.toLowerCase())){
+                        return true;
+                    }
+                }
+                return false;
+            },
+            
+
         },
         computed:{
              /**
@@ -284,7 +324,14 @@ import BaseAPI from '@/BaseAPI.js'
                     item => !this.txtSearch || this.supportSearch(item,this.txtSearch)
                 )
             }
+        },
+        watch:{
+            //Cập nhật lại danh sách dữ liệu, khi người dùng thay đổi số trang trên 1 page
+            recordOnPage:function(){
+                this.GetPaymentVouchers(this.pageNow,this.recordOnPage);
+            },
         }
+        
     }
 </script>
 

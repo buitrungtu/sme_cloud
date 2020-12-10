@@ -304,15 +304,9 @@ import {busData} from '@/main.js'
 
         },
         methods:{
-            
-            // async prepareData(){
-            //     this.getRecommendCode();
-            //     this.getSuppliers();
-            //     this.getEmployees();
-            //     this.getAccounts();
-            // },
-
-
+            /**
+             * Khi người dùng nhâp trùng mã thì gợi ý mã tự tăng
+             */
             async saveRecommend(){
                 await this.getRecommendCode(); //Lấy ra mã gợi ý mới
                 this.btnSaveOnClick(); // Lưu dữ liệu
@@ -478,13 +472,13 @@ import {busData} from '@/main.js'
                 }else{ //formMode = 'Edit'
                     res = await BaseAPI.Put('https://localhost:44363/api/PaymentVouchers',this.obj.PaymentVoucherId,this.obj); 
                 }
+                console.log(res);
                 if(res.data.Success){
                     this.showState = true;
                 }else{
                     //Lỗi gửi về từ server, truyền thông tin lỗi cho form DialogError
                     busData.$emit('showDialogConfirm',res.data.Message + ". Bạn có muốn trương trình tự động tăng số chứng từ không?");
                 }   
-                console.log(res);
             },
 
             /**
@@ -650,6 +644,7 @@ import {busData} from '@/main.js'
                 })
                 this.recalTotalMoney();
             },
+            
         }
     }
 </script>
