@@ -14,6 +14,7 @@ export const routes = [
                 children:[
                     {path:'/',name:'process',component:Process},
                     {path:'/receiveandpayment',name:'receiveandpayment',component:ReceiveAndPayment},
+                    {path:'/paymentvoucher/:id',name:'paymentvoucher',component:PaymentVoucher},
                     {path:'/paymentvoucher',name:'paymentvoucher',component:PaymentVoucher},
                 ]},
             {path:'/supplierpage',name:'supplierpage',component:SupplierPage},

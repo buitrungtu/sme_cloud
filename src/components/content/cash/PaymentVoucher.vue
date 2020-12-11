@@ -1,14 +1,7 @@
 <template>
     <div class="payment-voucher" v-shortkey="['esc']" @shortkey="goBack()">
         <div class="header-layout">
-            <div class="header-left">
-                <div class="icon icon-history"></div>
-                <div class="title-layout">Phiếu chi {{obj.PaymentVoucherCode}}</div>
-                <div class="payment-type">
-                   <MSSelect v-bind:data="options" value="10" :disabled="showState"/>             
-                 </div>
-            </div>
-            <div class="header-right">
+             <div class="header-right">
                 <div class="icon icon-tour"></div>
                 <div class="tour-label">Hướng dẫn</div>
                 <div class="toolkit">
@@ -19,6 +12,14 @@
                     </el-tooltip>
                 </div>
             </div>
+            <div class="header-left">
+                <div class="icon icon-history"></div>
+                <div class="title-layout">Phiếu chi {{obj.PaymentVoucherCode}}</div>
+                <div class="payment-type">
+                   <MSSelect ref="options" v-bind:data="options" value="10" :disabled="showState" :autodrop="false"/>             
+                 </div>
+            </div>
+           
         </div>
 
         <div class="body-layout">
@@ -92,7 +93,7 @@
                         <el-table-column label="#" width="50" type="index">
                         </el-table-column>
 
-                        <el-table-column prop="Explain"  label="DIỄN GIẢI" width="350">
+                        <el-table-column prop="Explain"  label="DIỄN GIẢI" width="450">
                             <template slot-scope="scope">
                                 <MSTextbox :disabled="showState"  v-model="scope.row.Explain"/>
                             </template>
@@ -111,33 +112,33 @@
                         </el-table-column>
                         
 
-                        <el-table-column prop="Money"  label="SỐ TIỀN" width="200" >
+                        <el-table-column prop="Money"  label="SỐ TIỀN" width="250" >
                             <template slot-scope="scope">
                                 <MSTextbox v-model="scope.row.Money" @change="moneyChage(scope.row.Money,scope.$index,scope)" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="Exchange"  label="Quy đổi" width="210" v-if="currMoney == 'USD'">
+                        <el-table-column prop="Exchange"  label="Quy đổi" width="250" v-if="currMoney == 'USD'">
                             <template slot-scope="scope">
-                                <MSTextbox v-model="scope.row.Exchange" :number="true" type="money" textAlign="right" :disabled="showState" :ref="scope.row.Name"  />
+                                <MSTextbox v-model="scope.row.Exchange" :number="true" type="money" textAlign="right" :disabled="showState" />
                             </template>
                         </el-table-column>
  
-                        <el-table-column prop="SupplierCode" label="Đối tượng" width="250">
+                        <el-table-column prop="SupplierCode" label="Đối tượng" width="300">
                             <template slot-scope="scope" >
-                                <BaseCBB v-model="scope.row.SupplierCode" @change="supplierChage(scope.row.SupplierCode,scope.$index)" :ref="scope.row.SupplierCode" :disabled="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
+                                <BaseCBB v-model="scope.row.SupplierCode" @change="supplierChage(scope.row.SupplierCode,scope.$index)" :disabled="showState" :header="suppHead" :data="suppliers" :addNewF9="true" :plus="false"/>
                             </template>
                         </el-table-column>
                         
                         <el-table-column prop="SupplierName"  label="TÊN ĐỐI TƯỢNG" width="350">
                             <template slot-scope="scope">
-                                <MSTextbox v-model="scope.row.SupplierName" :disabled="true" :ref="scope.row.Name"  />
+                                <MSTextbox v-model="scope.row.SupplierName" :disabled="true"  />
                             </template>
                         </el-table-column>
 
                         <el-table-column fixed="right" label="" width="50">
                             <template slot-scope="scope">
-                                <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small" :disabled="showState" >
+                                <el-button @click.native.prevent="deleteRow(scope.row)" type="text" size="small" :disabled="showState" >
                                     <div class="icon icon-delete"></div>
                                 </el-button>
                             </template>
@@ -178,14 +179,19 @@
                 <button class="btn-cancel" @click="goBack()">Hủy</button>
             </div>
             <div class="footer-right">
-                <button class="btn-cancel" @click="btnSaveOnClick()">Cất</button>
-                <div class="btn-save-printf" @click="btnSaveOnClick()" style="margin-left: 5px;">
-                    <div class="ms-button">
-                        <button class="btn-text" >Cất và In</button>
-                        <div class="split"></div>
-                        <button class="icon icon-down"></button>
+                 <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất (Ctrl + S)" placement="top-start">
+                     <button class="btn-cancel" v-shortkey="['ctrl', 's']" @shortkey="btnSaveOnClick()"  @click="btnSaveOnClick()">Cất</button>
+                 </el-tooltip>
+                <el-tooltip class="item" effect="dark" :visible-arrow="false" content="Cất và in (Ctrl + Shift + S)" placement="top-start">
+                    <div class="btn-save-printf"  v-shortkey="['ctrl','shift' ,'s']" @shortkey="btnSaveOnClick()" @click="btnSaveOnClick()" style="margin-left: 5px;">
+                        <div class="ms-button">
+                            <button class="btn-text" >Cất và In</button>
+                            <div class="split"></div>
+                            <button class="icon icon-down"></button>
+                        </div>
                     </div>
-                </div>
+                </el-tooltip>
+              
             </div>
         </div>
          <div class="footer-layout" v-show="showState">
@@ -253,7 +259,6 @@ import {busData} from '@/main.js'
                 accHead:[{label:'Số tài khoản',width:'100'},{label:'Tên tài khoản',width:'150'}],
                 accounts:[],
                 
-                addCount:0,
 
                 obj:{
                     ReasonSpend:'Chi tiền cho ',
@@ -267,7 +272,8 @@ import {busData} from '@/main.js'
                 SupplierCode:'',
                 Receiver:'',
                 totalMoney:'0,00',
-                formMode:'Add'
+                formMode:'Add',
+                errSave:false
             }
         },
         created(){
@@ -278,15 +284,15 @@ import {busData} from '@/main.js'
             this.getAccounts();
             
             //Lấy dữ liệu từ router do bên ReceiveAndPayment gửi sang
-            let PaymentVoucherId = this.$route.params.PaymentVoucherId;
-            this.$nextTick(()=>{
-                if(PaymentVoucherId){
-                    this.getPaymentVoucher(PaymentVoucherId);
-                }
-            })
-           
-
-
+            let PaymentVoucherId = this.$route.params.id;
+            if(PaymentVoucherId){
+                this.$nextTick(()=>{
+                    if(PaymentVoucherId){
+                        this.getPaymentVoucher(PaymentVoucherId);
+                    }
+                })
+            }
+            
             /**
              * Lắng nghe sự kiện đóng form lỗi
              */
@@ -299,9 +305,19 @@ import {busData} from '@/main.js'
              * Khi người dùng chọn tự động tăng số chứng từ
              */
             busData.$on('acceptConfirm',()=>{
-                this.saveRecommend();
+                console.log(this.errSave);
+                if(this.errSave){
+                    this.saveRecommend();
+                }
+            })
+             //Khi người dùng hủy 
+            busData.$on('cancelConfirm',()=>{
+                this.errSave = false;
             })
 
+        },
+        mounted(){
+            this.$refs.options.focusInput();
         },
         methods:{
             /**
@@ -358,7 +374,7 @@ import {busData} from '@/main.js'
                         return{
                             "EmployeeCode":item.EmployeeCode,
                             "EmployeeName": item.EmployeeName,
-                            "Đơn vị": item.Unit,
+                            "Unit": item.Unit,
                             "Mobile": item.Mobile
                         }
                     })
@@ -384,16 +400,6 @@ import {busData} from '@/main.js'
             async getRecommendCode(){
                 let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers/GetMaxCode');
                 if(res && res.data){
-                    // let str = res.data,num,Code='PC',i;
-                    // for(i = 0;i<str.length;i++){
-                    //     if(str[i] <= '9' && str[i] > '0')
-                    //         break;
-                    // }
-                    // num = Number(str.slice(i,str.length))+1;
-                    // let zerolength = 5 - num.toString().length;
-                    // for(i=0;i<zerolength;i++){
-                    //     Code += '0';
-                    // } 
                     this.obj.PaymentVoucherCode = res.data;
                 }
             },
@@ -403,7 +409,7 @@ import {busData} from '@/main.js'
              * @param {String,Number} errCode 
              */
             focusError(errCode){
-                 switch(errCode){
+                switch(errCode){
                     case 1:
                         this.$refs.PaymentVoucherCode.focusInput();
                         break;
@@ -464,6 +470,9 @@ import {busData} from '@/main.js'
                 this.obj.PaymentVoucherDetails = this.PaymentVoucherDetails;
                 //Lưu tổng tiền
                 this.obj.TotalMoney = this.moneyToNumber(this.totalMoney.replace(",00",""));
+                //format date
+                this.obj.DateAccounting = this.obj.DateAccounting.split('/').reverse().join('/');
+                this.obj.DatePayment = this.obj.DatePayment.split('/').reverse().join('/');
 
                 console.log(this.obj);
                 let res;
@@ -476,6 +485,7 @@ import {busData} from '@/main.js'
                 if(res.data.Success){
                     this.showState = true;
                 }else{
+                    this.errSave = true;
                     //Lỗi gửi về từ server, truyền thông tin lỗi cho form DialogError
                     busData.$emit('showDialogConfirm',res.data.Message + ". Bạn có muốn trương trình tự động tăng số chứng từ không?");
                 }   
@@ -501,23 +511,24 @@ import {busData} from '@/main.js'
 
             //Thêm dòng
             addRow(){
-                let newRow = Object.assign({}, this.PaymentVoucherDetails[this.addCount]);
+                let newRow = Object.assign({}, this.tableData[this.tableData.length - 1]);
                 newRow.Money = this.moneyToNumber(newRow.Money);
                 newRow.Money = this.numberToMoney(newRow.Money);
                 newRow.State = 'Add';
                 this.PaymentVoucherDetails.push(newRow);
-                ++this.addCount;
                 this.recalTotalMoney();
             },
             //Xóa dòng
-            deleteRow(index) {
-                if(this.PaymentVoucherDetails[index].State == 'Edit')
-                    this.PaymentVoucherDetails[index].State = "Delete";
-                else    this.PaymentVoucherDetails.splice(index, 1);
+            deleteRow(row) {
+
+                for(let i=0;i<this.PaymentVoucherDetails.length;i++){
+                    if(this.PaymentVoucherDetails[i].PaymentVoucherDetailId == row.PaymentVoucherDetailId){
+                        this.PaymentVoucherDetails[i].State = "Delete";
+                    }
+                }
                     
-                if(this.addCount > 0)
-                -- this.addCount;
-                this.recalTotalMoney();
+                if(this.tableData.length > 0)
+                    this.recalTotalMoney();
             },
             //Xóa hết dòng
             removeAllRow(){
@@ -525,7 +536,6 @@ import {busData} from '@/main.js'
                 this.PaymentVoucherDetails.forEach(item => {
                     item.State = 'Delete';
                 });
-                this.addCount = 0;
                 this.recalTotalMoney();
             },
 
@@ -555,7 +565,7 @@ import {busData} from '@/main.js'
                 var dd = String(today. getDate()).padStart(2, '0');
                 var mm = String(today. getMonth() + 1).padStart(2, '0');
                 var yyyy = today.getFullYear();
-                today = mm + '/' + dd + '/' + yyyy;
+                today = dd + '/' + mm + '/' + yyyy;
                 return today
             },
             /**
@@ -590,7 +600,10 @@ import {busData} from '@/main.js'
                         sum += this.moneyToNumber(this.tableData[i].Exchange);
                 }
                 this.totalMoney = this.numberToMoney(sum) +',00';
-            }
+            },
+
+
+          
         },
         computed:{
             tableData(){
@@ -606,23 +619,23 @@ import {busData} from '@/main.js'
             SupplierCode:function(){
                 if(this.SupplierCode){
                     let currSupplier = this.suppliersDB.find(item => item.SupplierCode == this.SupplierCode);
-                    //Master
-                    this.obj.SupplierCode = this.SupplierCode;
-                    if(currSupplier.IsPersonal){
-                        this.obj.Receiver = currSupplier.SupplierName;
-                    }else{
-                        this.obj.Receiver = currSupplier.LegalRepresent;
-                    }
-                    this.obj.Address = currSupplier.Address;
-                    this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
-                    this.obj.EmployeeCode = currSupplier.EmployeeCode;
-                    //Detail
-                    this.PaymentVoucherDetails.map((item)=>{
-                        if(item.State == 'Add'){
+                    if(currSupplier){
+                        //Master
+                        this.obj.SupplierCode = this.SupplierCode;
+                        if(currSupplier.IsPersonal){
+                            this.obj.Receiver = currSupplier.SupplierName;
+                        }else{
+                            this.obj.Receiver = currSupplier.LegalRepresent;
+                        }
+                        this.obj.Address = currSupplier.Address;
+                        this.obj.ReasonSpend ='Chi tiền cho ' + currSupplier.SupplierName;
+                        this.obj.EmployeeCode = currSupplier.EmployeeCode;
+                        //Detail
+                        this.PaymentVoucherDetails.map((item)=>{
                             item.SupplierCode = this.obj.SupplierCode;
                             item.SupplierName = this.obj.Receiver;
-                        }
-                    })
+                        })
+                    }
                 }
             },
             /**
@@ -634,6 +647,16 @@ import {busData} from '@/main.js'
                         item.Explain = newVal;
                     }
                 })
+            },
+            'obj.DateAccounting':function(newVal,oldVal){
+                if(this.obj.DatePayment == oldVal){
+                    this.obj.DatePayment = newVal;
+                }
+            },
+            'obj.DatePayment':function(newVal,oldVal){
+                if(newVal.split('/').reverse().join('') > this.obj.DateAccounting.split('/').reverse().join('')){
+                    this.obj.DatePayment = oldVal;
+                }
             },
             /**
              * Tính lại tổng tiền theo dạng tiền tệ hiện tại
@@ -666,6 +689,7 @@ import {busData} from '@/main.js'
     padding: 9px 16px 9px 16px;
     display: flex;
     justify-content: space-between;
+    flex-direction: row-reverse;
 }
 .header-left{
     display: flex;
@@ -938,7 +962,9 @@ import {busData} from '@/main.js'
     background: transparent;
     overflow: visible;
 }
-
+.btn-grid-act button:hover{
+    background-color: #d2d3d6;
+}
 
 .upload-title{
     margin-bottom: 6px;

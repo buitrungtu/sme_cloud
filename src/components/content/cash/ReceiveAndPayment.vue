@@ -162,7 +162,7 @@
                 <div class="footer-fixed">
                     <div class="total-footer">
                         <div class="total-label" style="width:150px; margin-left:45px">Tổng</div>
-                        <div class="total-money">0</div>
+                        <div class="total-money">{{totalMoney}}</div>
                     </div>
                     <div class="grid-footer">
                         <div class="footer-left">Tổng số: <span style="font-weight:700">{{totalRecord}}</span> bản ghi</div>
@@ -171,7 +171,7 @@
                                 <div class="totalPage">
                                     <div class="pre" :class="{disable:pageNow == 1}" @click="prePage()">Trước</div>
                                     <div class="page-list">
-                                        <div class="page" v-for="index in totalPage" :key="index" :class="{active: pageNow == index}" @click="gotoPage(index)">
+                                        <div class="page" v-for="index in totalPage" :key="index" :class="{active: index == pageNow}" @click="gotoPage(index)">
                                             {{index}}
                                         </div>
                                     </div>
@@ -213,10 +213,28 @@ import BaseAPI from '@/BaseAPI.js'
                 pageNow:1,
                 recordOnPage:'20',
                 txtSearch:'',
+                totalMoney:0,
+                idDetele:''
             }
         },
         created(){
             busData.$emit('changeTab',1);
+
+            /**
+             * Khi người dùng chọn xóa
+             */
+            busData.$on('acceptConfirm',()=>{
+                if(this.idDetele){
+                    this.deletePaymentVoucher(this.idDetele);
+                }
+            })
+
+             //Khi người dùng hủy xóa
+            busData.$on('cancelConfirm',()=>{
+                this.idDetele = '';
+            })
+
+
         },
         mounted(){
             this.GetPaymentVouchers(this.pageNow,this.recordOnPage);
@@ -226,7 +244,6 @@ import BaseAPI from '@/BaseAPI.js'
             async GetPaymentVouchers(page,record){
                 let res = await BaseAPI.Get('https://localhost:44363/api/PaymentVouchers?page='+page+"&&record="+record);
                 if(res && res.data){
-                    console.log(res.data);
                     this.totalRecord = res.data.TotalRecord;
                     this.totalPage = res.data.TotalPage;
                     this.listPaymentVoucher = res.data.Data;
@@ -235,6 +252,8 @@ import BaseAPI from '@/BaseAPI.js'
                         item.Category = 'Chi khác';item.Type = 'Phiếu chi';
                         item.TotalMoney = this.formatMoney(item.TotalMoney) + ',00';
                     });
+                    this.totalMoney =this.formatMoney(res.data.TotalMoney); 
+                    this.pageNow = page;
                 }
                 
             },
@@ -282,16 +301,24 @@ import BaseAPI from '@/BaseAPI.js'
              * @param {Object} row
              */
             editRecordOnClick(row){
-                this.$router.push({name:"paymentvoucher",params:{PaymentVoucherId:row.PaymentVoucherId}});
+                this.$router.push('/paymentvoucher/'+row.PaymentVoucherId);
                 //Lấy thông tin phiếu chi rồi gửi sang form PaymentVoucher để sửa
                 
             },
 
+            deleteRow(row){
+                let mes = 'Bạn có thực sự muốn xóa số chứng từ < '+ row.PaymentVoucherCode +' > không?';
+                this.idDetele = row.PaymentVoucherId;
+                busData.$emit('showDialogConfirm',mes);
+            },
+
+
+
             /**
              * Xóa 1 bản ghi
              */
-            async deleteRow(row){
-                let res = await BaseAPI.Delete('https://localhost:44363/api/PaymentVouchers',row.PaymentVoucherId); 
+            async deletePaymentVoucher(id){
+                let res = await BaseAPI.Delete('https://localhost:44363/api/PaymentVouchers',id); 
                 if(res.data.Success){
                     this.GetPaymentVouchers(this.pageNow,this.recordOnPage);
                 }

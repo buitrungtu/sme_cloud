@@ -109,6 +109,9 @@ import {busData} from '@/main.js';
     width: 7px;
     background: rgba(144,147,153,.3);
 }
+.cbb-content::-webkit-scrollbar-thumb{
+    background: rgba(144,147,153);
+}
 .cb-label{
     font-size: 12px;
     font-weight: 700;

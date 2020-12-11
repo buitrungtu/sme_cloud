@@ -4,6 +4,7 @@
             {{this.label}}
         </div>
         <el-date-picker
+            ref="input"
             v-model="content"
             v-on="inputListeners"
             type="date"
@@ -42,10 +43,15 @@
                 var dd = String(today. getDate()).padStart(2, '0');
                 var mm = String(today. getMonth() + 1).padStart(2, '0');
                 var yyyy = today.getFullYear();
-                today = mm + '/' + dd + '/' + yyyy;
+                today = dd + '/' + mm + '/' + yyyy;
                 this.valplace = today
             }else{
                 this.valplace = this.placeholder
+            }
+        },
+        methods:{
+            focusInput(){
+                this.$refs.input.focus();
             }
         },
         computed:{
@@ -57,7 +63,13 @@
                     }
                 })
             }
+        },
+        watch:{
+            value:function(){
+                this.content = this.value;
+            }
         }
+
     }
 </script>
 
